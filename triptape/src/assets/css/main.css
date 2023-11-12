@@ -1,0 +1,6 @@
+@import "../css/noto-sans.css";
+
+body {
+    font-family: "Noto Sans";
+    background-color: #F5F5F5;
+}
