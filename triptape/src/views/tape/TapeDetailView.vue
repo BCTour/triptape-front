@@ -2,45 +2,18 @@
 import { ref } from 'vue';
 import RecordList from "@/components/tape/RecordList.vue";
 import TapeInfo from "@/components/tape/TapeInfo.vue";
+import AddRecordForm from '@/components/tape/AddRecordForm.vue';
 
-const records = ref([
-  {
-    recordKey: "1",
-    createtime: "2023-01-01 00:00:00",
-    content: "안녕하세요????? 안녕하십니까?????",
-    img: "dog.png",
-    attractionKey: "1",
-    userKey: "1",
-    parentRecordKey: "13",
-  },
-  {
-    recordKey: "2",
-    createtime: "2023-01-01 00:00:00",
-    content: "안녕하세요????? 안녕하십니까?????",
-    img: "dog.png",
-    attractionKey: "1",
-    userKey: "1",
-    parentRecordKey: "13",
-  },
-  {
-    recordKey: "3",
-    createtime: "2023-01-01 00:00:00",
-    content: "안녕하세요????? 안녕하십니까?????",
-    img: "dog.png",
-    attractionKey: "1",
-    userKey: "1",
-    parentRecordKey: "13",
-  },
-])
 </script>
 
 <template>
   <div class="tape-detail">
     <div class="col">
-      <RecordList v-for="record in records" :key="record.recordKey"/>
+      <RecordList />
     </div>
     <div class="col">
       <TapeInfo/>
+      <AddRecordForm />
     </div>
   </div>
 </template>

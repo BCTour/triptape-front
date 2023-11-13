@@ -12,7 +12,7 @@ const searchText = ref("");
 </script>
 
 <template>
-  <div class="box">
+  <div class="search-bar">
     <select v-model="category">
       <option value="" disabled>검색 조건</option>
       <option v-for="option in options" :key="option.value" :value="option.value">{{ option.name }}</option>
@@ -23,14 +23,14 @@ const searchText = ref("");
 </template>
 
 <style scoped>
-.box {
+.search-bar {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 .search-icon {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   padding: 8px;
   border-radius: 12px;
   margin-left: 8px;
@@ -41,11 +41,13 @@ const searchText = ref("");
 }
 
 select {
-  border-radius: 24px 0px 0px 24px;
+  border-radius: 18px 0px 0px 18px;
+  height: 36px;
 }
 
 input {
-  border-radius: 0px 24px 24px 0px;
+  border-radius: 0px 18px 18px 0px;
+  height: 36px;
 }
 
 </style>

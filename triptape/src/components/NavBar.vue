@@ -8,7 +8,7 @@ const auth = useAuthStore();
 	<nav>
 		<div>
 			<!-- <router-link :to="{name: 'main'}" ><img src="@/assets/img/logo.png"></router-link> -->
-			<router-link :to="{name: 'main'}" ><h1>TRIP-TAPE</h1></router-link>
+			<router-link :to="{name: 'main'}" ><img src="../assets/img/logo1.png" class="logo-img"></router-link>
 			<router-link :to="{name: 'tapeList'}" class="nav-item">테이프</router-link>
 			<router-link :to="{name: 'attractionMain'}" class="nav-item">관광지</router-link>
 		</div>
@@ -27,6 +27,9 @@ const auth = useAuthStore();
 </template>
 
 <style scoped>
+.logo-img {
+	width: 180px;
+}
 nav {
 	display: flex;
 	flex-direction: row;

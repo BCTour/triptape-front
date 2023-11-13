@@ -1,12 +1,21 @@
 <script setup>
+import { ref } from 'vue';
+defineProps({
+  recordKey: Number,
+  createtime: String,
+  content: String,
+  img: String,
+  attractionKey: Number,
+  userKey: Number,
+  parentRecordKey: Number,
+})
 
 </script>
 
 <template>
   <div class="card reactive">
-    <p class="key">#13</p>
-    <h4>레코드 타이틀입니다.</h4>
-    <p>돈이 없어서.... 일본 여행을 못 가요......</p>
+    <p class="key">#{{ recordKey }}</p>
+    <p>{{content}}</p>
   </div>
 </template>
 
@@ -15,7 +24,7 @@
   margin-bottom: 16px;
 }
 .card {
-  padding: 32px;
-  margin-bottom: 16px;
+  padding: 24px;
+  margin-bottom: 12px;
 }
 </style>

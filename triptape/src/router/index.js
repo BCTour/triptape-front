@@ -48,6 +48,11 @@ const router = createRouter({
 					path: '/user/regist',
 					name: 'registUser',
 					component: () => import("@/views/user/UserRegistView.vue")
+				},
+				{
+					path: '/user/find-password',
+					name: 'findPassword',
+					component: () => import("@/views/user/FindPasswordView.vue")
 				}
 			]
 
