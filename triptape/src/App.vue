@@ -4,14 +4,16 @@ import NavBar from "@/components/NavBar.vue";
 </script>
 
 <template>
-  <div>
+  <div class="body">
     <NavBar />
     <RouterView />
   </div>
 </template>
 
 <style scoped>
-div {
+.body {
+  box-sizing: border-box;
+  padding: 64px;
   width: 100%;
 }
 </style>

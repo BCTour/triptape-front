@@ -1,45 +1,38 @@
 <script setup>
 import { ref } from 'vue';
-import { useAuthStore } from '@/stores/auth.js';
 import { useRouter } from 'vue-router';
 
-const auth = useAuthStore();
 const router = useRouter();
-const id = ref("");
-const pw = ref("");
-
-const onLoginClick = () => {
-  console.log(auth)
-  if (auth.login(id.value, pw.value)){
-    alert("로그인 성공!");
-  } else {
-    alert("로그인 실패!");
-  }
-  router.push({name: 'main'});
-}
 
 const onRegistClick = () => {
-  router.push({ name: 'registUser' });
+  
 }
 
 </script>
 
 <template>
   <div class="card">
-    <h1>로그인</h1>
+    <h1>회원가입</h1>
     <div class="input-box">
       <label for="id">아이디</label>
       <input type="text" name="id" placeholder="아이디를 입력해주세요" v-model="id">
     </div>
     <div class="input-box">
+      <label for="name">이름</label>
+      <input type="text" name="name" v-model="name">
+    </div>
+    <div class="input-box">
       <label for="pw">비밀번호</label>
       <input type="password" name="pw" v-model="pw">
     </div>
-    <div class="btn-box">
-      <button @click="onRegistClick" class="primary-outline-btn">회원가입</button>
-      <button @click="onLoginClick" class="primary-btn">로그인</button>
+    <div class="input-box">
+      <label for="confirmPw">비밀번호 확인</label>
+      <input type="password" name="confirmPw" v-model="confirmPw">
     </div>
-    <router-link :to="{name: 'login'}">비밀번호를 잊어버리셨나요?</router-link>
+    <div class="btn-box">
+      <button class="primary-outline-btn" @click="router.go(-1)">취소</button>
+      <button class="primary-btn">가입하기</button>
+    </div>
   </div>
 </template>
 
@@ -65,8 +58,6 @@ div {
   display: flex;
   flex-direction: column;
 }
-
-
 
 .btn-box {
   display: flex;

@@ -1,6 +1,97 @@
+@import "../css/reset.css";
 @import "../css/noto-sans.css";
 
+/* root */
+:root {
+	--caption-color: #8b8b8b;
+}
+* {
+	font-family: "Noto Sans";
+	text-decoration: none;
+}
+
 body {
-    font-family: "Noto Sans";
-    background-color: #F5F5F5;
+	font-family: "Noto Sans";
+	background-color: #F5F5F5;
+	font-size: large;
+}
+
+/* component */
+.card {
+	background-color: white;
+  box-shadow: 0px 3px 6px #00000011;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  transition: all ease 0.3s 0s;
+}
+
+.reactive:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  transition: all ease 0.3s 0s;
+}
+
+/* form */
+input {
+  box-sizing: border-box;
+  background-color: #EEEEEE;
+  border: #DDDDDD solid 1px;
+  font-size: large;
+  border-radius: 12px;
+	height: 48px;
+	padding-left: 16px;
+  /* padding: 10px; */
+}
+
+label {
+  font-size: smaller;
+  color: var(--caption-color);
+  margin: 0px 0px 4px 0px;
+}
+
+button {
+  padding: 8px;
+  font-size: medium;
+  border-radius: 10px;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+select {
+  background-color: white;
+  border: #DDDDDD solid 1px;
+  font-size: large;
+  border-radius: 24px;
+	height: 48px;
+	padding-left: 16px;
+  width: 150px;
+  /* padding: 10px; */
+}
+
+/* Text */
+h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+h2 {
+	font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+h3 {
+	font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+h4 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 16px;
 }

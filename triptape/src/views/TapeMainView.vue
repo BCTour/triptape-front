@@ -1,13 +1,11 @@
 <script setup>
-
+import { RouterView } from "vue-router";
 </script>
 
+
 <template>
-  <div>
-    Tape View
-  </div>
+  <RouterView/>
 </template>
 
 <style scoped>
-
 </style>

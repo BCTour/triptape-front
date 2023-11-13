@@ -20,7 +20,19 @@ const router = createRouter({
 		{
 			path: '/tape',
 			name: "tapeMain",
-			component: TapeMainView
+			component: TapeMainView,
+			children: [
+				{
+					path: '/tape',
+					name: "tapeList",
+					component: () => import("@/views/tape/TapeListView.vue")
+				},
+				{
+					path: '/tape/detail/:id',
+					name: "tapeDetail",
+					component: () => import("@/views/tape/TapeDetailView.vue")
+				},
+			]
 		},
 		{
 			path: '/user',
@@ -28,10 +40,15 @@ const router = createRouter({
 			component: UserMainView,
 			children : [
 				{
-					path: '/login',
+					path: '/user/login',
 					name: "login",
 					component: () => import("@/views/user/LoginView.vue")
 				},
+				{
+					path: '/user/regist',
+					name: 'registUser',
+					component: () => import("@/views/user/UserRegistView.vue")
+				}
 			]
 
 		}
