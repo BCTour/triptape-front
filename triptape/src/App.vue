@@ -13,7 +13,7 @@ import NavBar from "@/components/NavBar.vue";
 <style scoped>
 .body {
   box-sizing: border-box;
-  padding: 64px;
+  padding: 32px 64px;
   width: 100%;
 }
 </style>

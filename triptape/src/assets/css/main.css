@@ -19,7 +19,7 @@ body {
 /* component */
 .card {
 	background-color: white;
-  box-shadow: 0px 3px 6px #00000011;
+  box-shadow: 0px 3px 6px #00000022;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -28,10 +28,39 @@ body {
 
 .reactive:hover {
   cursor: pointer;
-  transform: scale(1.05);
+  transform: scale(1.02);
   transition: all ease 0.3s 0s;
 }
 
+.list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.scroll-view-container {
+  height: 700px; /* 원하는 높이로 설정 */
+  overflow-y: auto; /* 스크롤을 활성화합니다. */
+  overflow-x: visible;
+  padding: 0px 10px 0px 10px;
+}
+
+.sub-heading-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.icon {
+  padding: 4px; 
+}
+.icon:hover {
+  cursor: pointer;
+  background-color: #BBBBBB;
+  border-radius: 12px;
+}
 /* form */
 input {
   box-sizing: border-box;
@@ -39,7 +68,7 @@ input {
   border: #DDDDDD solid 1px;
   font-size: medium;
   border-radius: 12px;
-	height: 48px;
+	height: 40px;
 	padding-left: 16px;
   /* padding: 10px; */
 }
@@ -54,10 +83,13 @@ button {
   padding: 8px;
   font-size: medium;
   border-radius: 10px;
+  border: 0 solid;
+  height: 40px;
 }
 
 button:hover {
   cursor: pointer;
+  transform: scale(0.99);
 }
 
 select {
@@ -79,7 +111,7 @@ select {
 }
 
 .primary-outline-btn {
-  border: black solid 2px;
+  border: black solid 1px;
   background-color: transparent;
 }
 .primary-outline-btn:hover {
@@ -101,11 +133,11 @@ h2 {
 h3 {
 	font-size: 18px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 h4 {
   font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
 }

@@ -35,7 +35,7 @@ const onClickSearch = (category, text) => {
 
 
 <template>
-  <div class="header">
+  <div class="sub-heading-container">
     <SubHeading v-bind="{title: '테이프', description: '현재 진행중인 테이프입니다'}"/>
     <SearchBar :options="searchOptions" @on-click-search="onClickSearch"/>
   </div>
@@ -45,12 +45,6 @@ const onClickSearch = (category, text) => {
 </template>
 
 <style scoped>
-.header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
 .grid-wrap {
   display: flex;
   flex-direction: row;

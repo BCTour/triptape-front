@@ -18,7 +18,7 @@ const searchText = ref("");
       <option v-for="option in options" :key="option.value" :value="option.value">{{ option.name }}</option>
     </select>
     <input type="text" v-model="searchText" />
-    <SearchIcon class="search-icon" @click="$emit('onClickSearch', category, searchText)"/>
+    <SearchIcon class="icon search-icon" @click="$emit('onClickSearch', category, searchText)"/>
   </div>
 </template>
 
@@ -31,13 +31,8 @@ const searchText = ref("");
 .search-icon {
   width: 24px;
   height: 24px;
-  padding: 8px;
-  border-radius: 12px;
+  /* padding: 8px; */
   margin-left: 8px;
-}
-.search-icon:hover {
-  background-color: #BBBBBB;
-  cursor: pointer;
 }
 
 select {

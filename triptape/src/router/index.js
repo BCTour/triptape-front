@@ -4,6 +4,19 @@ import AttractionMainView from "@/views/AttractionMainView.vue";
 import TapeMainView from "@/views/TapeMainView.vue";
 import UserMainView from "@/views/UserMainView.vue";
 
+// const modalRouter = ([
+// 	{
+// 		path: "/attraction/selectAttraction",
+// 		name: "selectAttraction",
+// 		component: () => import("@/views/attraction/SelectAttractionView.vue")
+// 	},
+// 	{
+// 		path: "/attraction/createAttraction",
+// 		name: "createAttraction",
+// 		component: () => import("@/views/attraction/CreateAttractionView.vue")
+// 	},
+// ])
+
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
 	routes: [
@@ -15,7 +28,14 @@ const router = createRouter({
 		{
 			path: '/attraction',
 			name: "attractionMain",
-			component: AttractionMainView
+			component: AttractionMainView,
+			children: [
+				{
+					path: "/attraction/map",
+					name: "attractionMap",
+					component: () => import("@/views/attraction/AttractionMapView.vue")
+				}
+			]
 		},
 		{
 			path: '/tape',
@@ -32,6 +52,11 @@ const router = createRouter({
 					name: "tapeDetail",
 					component: () => import("@/views/tape/TapeDetailView.vue")
 				},
+				{
+					path: '/tape/detail/contained/:id',
+					name: 'attractionContainedTape',
+					component: () => import("@/views/attraction/AttractionContainedTapeView.vue")
+				}
 			]
 		},
 		{
@@ -55,7 +80,6 @@ const router = createRouter({
 					component: () => import("@/views/user/FindPasswordView.vue")
 				}
 			]
-
 		}
 		// {
 		//   path: '/about',
