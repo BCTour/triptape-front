@@ -81,7 +81,7 @@ const attractions = ref([
 
 <template>
   <div class="list scroll-view-container">
-    <AttractionItem v-for="attraction in attractions" :key="attraction.attractionKey" v-bind="attraction"/>
+    <AttractionItem v-for="attraction in attractions" :key="attraction.attractionKey" v-bind="attraction" @click="$router.push({name: 'attractionDetail', params:{id: attraction.attractionKey}})"/>
   </div>
 </template>
 

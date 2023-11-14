@@ -34,6 +34,11 @@ const router = createRouter({
 					path: "/attraction/map",
 					name: "attractionMap",
 					component: () => import("@/views/attraction/AttractionMapView.vue")
+				},
+				{
+					path: "/attraction/detail/:id",
+					name: "attractionDetail",
+					component: () => import("@/views/attraction/AttractionDetailView.vue")
 				}
 			]
 		},

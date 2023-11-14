@@ -1,5 +1,5 @@
 <script setup>
-import AttractionMapView from '@/views/attraction/AttractionMapView.vue';
+import AttractionMapList from '@/components/attraction/AttractionMapList.vue';
 import SubHeading from '@/components/common/SubHeading.vue';
 </script>
 
@@ -8,7 +8,7 @@ import SubHeading from '@/components/common/SubHeading.vue';
     <div class="sub-heading-container">
       <SubHeading v-bind="{title: '테이프에 포함된 장소', description: '테이프 이름', isEnableBack: true}"/>
     </div>
-    <AttractionMapView/>
+    <AttractionMapList/>
   </div>
 </template>
 

@@ -11,11 +11,27 @@ import KakaoMap from "@/components/map/KakaoMap.vue";
     <SubHeading v-bind="{title: '새로운 장소 추가', description: '물의를 일으킬 수 있는 장소의 경우 삭제될 수 있습니다.'}"/>
     <CloseIcon class="icon" @click="$emit('closeModal')"/>
   </div>
-  <KakaoMap />
   <div class="contents">
     <div>
+      <div class="input-box">
+        <label>분류</label>
+        <select></select>
+      </div>
+      <div class="input-box">
+        <label>관광지 이름</label>
+        <input type="text"/>
+      </div>
+      <div class="input-box">
+        <label>주소</label>
+        <input type="text"/>
+      </div>
+      <div class="input-box">
+        <label>설명</label>
+        <input type="text"/>
+      </div>
     </div>
     <div class="map-container">
+      <KakaoMap />
       <div class="btn-box">
         <button class="primary-outline-btn" @click="$emit('closeModal')">취소</button>
         <button class="primary-btn">등록</button>
@@ -25,6 +41,11 @@ import KakaoMap from "@/components/map/KakaoMap.vue";
 </template>
 
 <style scoped>
+.input-box {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
 .card {
   padding: 8px;
 }
