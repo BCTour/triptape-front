@@ -8,14 +8,15 @@ const router = useRouter();
 const id = ref("");
 const pw = ref("");
 
-const onLoginClick = () => {
+const onLoginClick = async () => {
   console.log(auth)
-  if (auth.login(id.value, pw.value)){
+  if (await auth.login(id.value, pw.value)) {
+    console.log('뭐야 시발')
     alert("로그인 성공!");
+    router.push({name: 'main'});
   } else {
     alert("로그인 실패!");
   }
-  router.push({name: 'main'});
 }
 
 const onRegistClick = () => {

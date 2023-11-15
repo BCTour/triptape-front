@@ -25,22 +25,24 @@ const onRegistClick = async () => {
   const formData = new FormData();
   const blob = new Blob([JSON.stringify(user.value)], { type: "application/json" });
   formData.append("user", blob); 
-  
-  const result = await axios({
-    method: "POST",
-    url: "http://localhost:8080/user/regist",
-    mode: "cors",
-    headers : {
-      "Content-Type": "multipart/form-data",
-    },
-    data: formData
-  })
-  console.log(result);
-  console.log(result.data.status);
-  if (result.data.status === 201) {
-    alert("회원가입이 완료되었습니다.");
-    router.push({ name: 'main' });
-  }  
+
+  try {
+    const result = await axios({
+      method: "POST",
+      url: "http://localhost:8080/user/regist",
+      mode: "cors",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data: formData
+    })
+    alert("회원가입에 성공했습니다.");
+    router.push({ name: "login" });
+  } catch (error) {
+    if (error.request.status === 409) {
+      alert("이미 존재하는 아이디입니다.");
+    }
+  }
 }
 
 </script>
