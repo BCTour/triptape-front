@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
@@ -19,7 +19,52 @@ const user = ref({
 
 const confirmPw = ref("");
 
+const isSameConfirmPw = computed(()=>{
+  return user.value.userPw === confirmPw.value ? true : false;
+})
+
+const isValidId = ref(true);
+const idMsg = ref("");
+
+const isValidPw = ref(true);
+const pwMsg = ref("");
+
+const isValidName = ref(true);
+const nameMsg = ref("");
+
+const isValidEmail = ref(true);
+const emailMsg = ref("");
+
+const checkValidation = () => {
+  let isValid = true;
+  if (user.value.userId === "") {
+    isValidId.value = false;
+    idMsg.value = "아이디는 비어있을 수 없습니다.";
+    isValid = false;
+  }
+  if (user.value.userPw === "") {
+    isValidPw.value = false;
+    pwMsg.value = "비밀번호는 비어있을 수 없습니다.";
+    isValid = false;
+  }
+  if (user.value.userName === "") {
+    isValidName.value = false;
+    nameMsg.value = "이름은 비어있을 수 없습니다.";
+    isValid = false;
+  }
+  if (user.value.email === "") {
+    isValidEmail.value = false;
+    emailMsg.value = "이메일은 비어있을 수 없습니다.";
+    isValid = false;
+  }
+
+  return isValid ? true : false;
+}
 const onRegistClick = async () => {
+  // 입력 필드 유효성 확인
+  
+  if (!checkValidation()) return;
+
   console.log(JSON.stringify(user.value));
 
   const formData = new FormData();
@@ -40,7 +85,8 @@ const onRegistClick = async () => {
     router.push({ name: "login" });
   } catch (error) {
     if (error.request.status === 409) {
-      alert("이미 존재하는 아이디입니다.");
+      isValidId.value = false;
+      idMsg.value = "이미 존재하는 아이디입니다.";
     }
   }
 }
@@ -52,19 +98,23 @@ const onRegistClick = async () => {
     <h1>회원가입</h1>
     <div class="input-box">
       <label for="id">아이디</label>
-      <input type="text" name="id" placeholder="아이디를 입력해주세요" v-model="user.userId">
+      <input type="text" :class="{danger: !isValidId}" v-on:click="isValidId=true" name="id" placeholder="아이디를 입력해주세요" v-model="user.userId">
+      <label v-show="!isValidId" class="danger">{{idMsg}}</label>
     </div>
     <div class="input-box">
       <label for="pw">비밀번호</label>
-      <input type="password" name="pw" placeholder="비밀번호를 입력해주세요" v-model="user.userPw">
+      <input type="password" :class="{danger: !isValidPw}" name="pw" placeholder="비밀번호를 입력해주세요" v-model="user.userPw">
+      <label v-show="!isValidPw" class="danger">{{pwMsg}}</label>
     </div>
     <div class="input-box">
       <label for="confirmPw">비밀번호 확인</label>
-      <input type="password" name="confirmPw" placeholder="비밀번호를 다시 입력해주세요" v-model="confirmPw">
+      <input type="password" :class="{danger: !isSameConfirmPw}" name="confirmPw" placeholder="비밀번호를 다시 입력해주세요" v-model="confirmPw">
+      <label v-show="!isSameConfirmPw" class="danger">비밀번호가 일치하지 않습니다.</label>
     </div>
     <div class="input-box">
       <label for="name">이름</label>
-      <input type="text" name="name" placeholder="이름을 입력해주세요" v-model="user.userName">
+      <input type="text" :class="{danger: !isValidName}" name="name" placeholder="이름을 입력해주세요" v-model="user.userName">
+      <label v-show="!isValidName" class="danger">{{nameMsg}}</label>
     </div>
     <div class="input-box">
       <label for="nickname">닉네임</label>
@@ -79,7 +129,8 @@ const onRegistClick = async () => {
     </div>
     <div class="input-box">
       <label for="email">이메일</label>
-      <input type="email" name="email" placeholder="이메일 주소를 입력해주세요" v-model="user.email">
+      <input type="email" :class="{danger: !isValidEmail}" name="email" placeholder="이메일 주소를 입력해주세요" v-model="user.email">
+      <label v-show="!isValidEmail" class="danger">{{emailMsg}}</label>
     </div>  
     <div class="input-box">
       <label for="birthday">생일</label>

@@ -71,7 +71,7 @@ input {
   font-size: medium;
   border-radius: 12px;
 	height: 40px;
-	padding-left: 16px;
+	padding: 0px 16px;
   /* padding: 10px; */
 }
 
@@ -79,6 +79,7 @@ label {
   font-size: smaller;
   color: var(--caption-color);
   margin: 0px 0px 4px 0px;
+  margin-left: 4px;
 }
 
 button {
@@ -153,4 +154,13 @@ h4 {
 input[type="radio"] {
   width: 20px;
   height: 20px;
+}
+
+input.danger {
+  border-color: crimson;
+}
+
+label.danger {
+  color: crimson;
+  margin-top: 4px;
 }
