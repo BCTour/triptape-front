@@ -6,27 +6,41 @@ import axios from 'axios';
 const router = useRouter();
 
 const user = ref({
-  userId: "",
-  userPw: "",
-  userName: "",
-  nickname: "",
+  userId: "ssafy",
+  userPw: "ssafy",
+  userName: "ssafy",
+  nickname: "ssafy",
   gender: 0,
-  email: "",
-  birthday: "",
-  tel: "",
+  email: "ssafy@ssafy",
+  birthday: "2022-11-11",
+  tel: "010-0000-0000",
   isAdmin: 0,
 })
 
 const confirmPw = ref("");
 
-const onRegistClick = () => {
-  // console.log(user.value);
-  axios.post("http://localhost:8080/user/regist", { user: user.value })
-  .then((response) => {
-    console.log(response);
-  }).catch((error) => {
-    console.log(error);
+const onRegistClick = async () => {
+  console.log(JSON.stringify(user.value));
+
+  const formData = new FormData();
+  const blob = new Blob([JSON.stringify(user.value)], { type: "application/json" });
+  formData.append("user", blob); 
+  
+  const result = await axios({
+    method: "POST",
+    url: "http://localhost:8080/user/regist",
+    mode: "cors",
+    headers : {
+      "Content-Type": "multipart/form-data",
+    },
+    data: formData
   })
+  console.log(result);
+  console.log(result.data.status);
+  if (result.data.status === 201) {
+    alert("회원가입이 완료되었습니다.");
+    router.push({ name: 'main' });
+  }  
 }
 
 </script>
