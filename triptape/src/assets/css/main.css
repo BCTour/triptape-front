@@ -39,7 +39,9 @@ body {
 }
 
 .scroll-view-container {
-  height: 700px; /* 원하는 높이로 설정 */
+  box-sizing: border-box;
+  /* height: 700px; */
+  height: calc(100vh - 200px);
   overflow-y: auto; /* 스크롤을 활성화합니다. */
   overflow-x: visible;
   padding: 0px 10px 0px 10px;
@@ -140,4 +142,15 @@ h4 {
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 8px;
+}
+
+.caption {
+  font-size: 14px;
+  color: var(--caption-color);
+  margin-bottom: 4px;
+}
+
+input[type="radio"] {
+  width: 20px;
+  height: 20px;
 }

@@ -1,10 +1,18 @@
 <script setup>
+defineProps({
+  commentKey: Number,
+  userKey: Number,
+  attractionKey: Number,
+  content: String,
+  createtime: String
+})
 
 </script>
 
 <template>
-  <div class="comment-container">
-    댓글 내용
+  <div class="comment-container reactive">
+    <div class="caption">@{{ userKey }} / {{ createtime }}</div>
+    <div>{{ content }}</div>
   </div>
 </template>
 

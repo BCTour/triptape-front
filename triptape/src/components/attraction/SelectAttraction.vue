@@ -56,7 +56,10 @@ const toggleModal = () => {
 .contents > div {
   width: calc(50% - 16px);
 }
-
+.map-container {
+  display: flex;
+  flex-direction: column;
+}
 .btn-box {
   margin-top: 8px;
   display: flex;

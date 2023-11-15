@@ -30,7 +30,6 @@ onMounted(() => {
     }&libraries=services,clusterer`;
     /* global kakao */
     script.onload = () => kakao.maps.load(() => initMap());
-    console.log(script);
     document.head.appendChild(script);
   }
 });
@@ -109,7 +108,8 @@ const deleteMarkers = () => {
 <style>
 #map {
   width: 100%;
-  height: 700px;
+  height: 100%;
   border-radius: 12px;
+  flex: 1;
 }
 </style>

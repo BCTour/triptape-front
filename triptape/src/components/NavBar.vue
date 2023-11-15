@@ -15,12 +15,12 @@ const test = ref(false)
 			<router-link @click="selectedMenu='attractionMap'" :to="{name: 'attractionMap'}" class="nav-item" :class="{selected: selectedMenu==='attractionMap'? true : false}">관광지</router-link>
 		</div>
 		<template v-if="!auth.isLogined" >
-			<router-link :to="{name: 'login'}" class="nav-item">로그인</router-link>
+			<router-link :to="{name: 'login'}" class="">로그인</router-link>
 		</template>
 		<template v-else>
 			<div>
-				<router-link :to="{name: 'login'}" class="nav-item">{{auth.user.name}}</router-link>
-				<div class="nav-item" @click="auth.logout()">
+				<router-link :to="{name: 'userInfo'}" class="">{{auth.user.name}}</router-link>
+				<div class="" @click="auth.logout()">
 					로그아웃
 				</div>
 			</div>

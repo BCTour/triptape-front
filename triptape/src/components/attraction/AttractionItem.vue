@@ -12,8 +12,8 @@ defineProps({
   <div class="card reactive">
     <img src="https://images.dog.ceo/breeds/sheepdog-shetland/n02105855_3672.jpg"/>
     <div class="content">
+      <p class="caption">{{type_code}}</p>
       <h3>장소 이름</h3>
-      <p class="category">{{type_code}}</p>
       <p class="description">{{description}}</p>
       <p class="address">{{address}}</p>
     </div>
