@@ -1,14 +1,36 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from "axios";
 
 const router = useRouter();
 
 const email = ref("");
 const code = ref("");
 
-const onRegistClick = () => {
-  
+const onClickReset = async () => {
+  if (email.value === "") {
+    // 에러 처리
+    alert("이메일을 입력해주세요");
+    return;
+  }
+
+  try {
+    const result = await axios({
+      method: "GET",
+      url: `http://localhost:8080/user/findpw?email=${email.value}`,
+      header: {
+        mode: "cors",
+      },
+      data: {
+
+      }
+    })
+
+    console.log(result);
+  } catch (error) {
+    
+  }
 }
 
 </script>
@@ -27,7 +49,7 @@ const onRegistClick = () => {
     </div>
     <div class="btn-box">
       <button class="primary-outline-btn">돌아가기</button>
-      <button class="primary-btn">확인</button>
+      <button class="primary-btn" @click="onClickReset">확인</button>
     </div>
   </div>
 </template>

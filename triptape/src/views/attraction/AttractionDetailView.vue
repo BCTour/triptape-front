@@ -1,10 +1,23 @@
 <script setup>
+import { onMounted } from 'vue';
 import CommentList from '@/components/common/CommentList.vue';
 import CreateComment from '@/components/common/CreateComment.vue';
 import SubHeading from "@/components/common/SubHeading.vue";
 import TapeList from "@/components/tape/TapeList.vue";
 import KakaoMap from "@/components/map/KakaoMap.vue";
+import axios from "axios";
+
+onMounted(async () => {
+  try {
+    const result = await axios({
+      url: "http://localhost:8080/attraction/info/{key}"
+    });
+  } catch (error) {
+
+  }
+});
 </script>
+
 
 <template>
   <div class="sub-heading-container">

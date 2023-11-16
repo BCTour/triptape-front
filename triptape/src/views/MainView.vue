@@ -1,9 +1,5 @@
 <script setup>
 import SubHeading from "@/components/common/SubHeading.vue";
-import Modal from "@/components/common/Modal.vue";
-
-// test
-import SelectAttraction from "@/components/attraction/SelectAttraction.vue";
 
 </script>
 
@@ -20,3 +16,4 @@ import SelectAttraction from "@/components/attraction/SelectAttraction.vue";
 		</div>
 	</main>
 </template>
+	

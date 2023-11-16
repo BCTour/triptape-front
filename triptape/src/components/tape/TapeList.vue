@@ -4,9 +4,9 @@ import TapeListItem from '@/components/tape/TapeListItem.vue';
 
 const tapes = ref([
   {
-    title: "Title",
+    title: "대전 빵 여행",
     tapeKey: 5,
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nunc leo, finibus nec auctor vel, pharetra quis lectus. Phasellus aliquam massa eget neque porttitor, eu finibus enim vulputate. Nulla facilisi. Morbi euismod purus enim. Phasellus congue mauris a sapien fermentum tristique. Donec lorem dolor, egestas in magna sed",
+    description: "대전하면 흔히들 성심당 생각하시는데, 사실 빵향평준화가 이루어져서 일반 빵집들도 되게 맛있는 곳들이 많데요! 그런고로 좋은 빵집들 함께 공유해요 여러분",
     img: "https://images.dog.ceo/breeds/appenzeller/n02107908_599.jpg",
   },
   {

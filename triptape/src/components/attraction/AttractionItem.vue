@@ -10,10 +10,10 @@ defineProps({
 
 <template>
   <div class="card reactive">
-    <img src="https://images.dog.ceo/breeds/sheepdog-shetland/n02105855_3672.jpg"/>
+    <img v-if="!img.saveFile" src="../../assets/img/no_image.png">
+    <img v-else :src="img.saveFile"/>
     <div class="content">
-      <p class="caption">{{type_code}}</p>
-      <h3>장소 이름</h3>
+      <h3>{{name}}</h3>
       <p class="description">{{description}}</p>
       <p class="address">{{address}}</p>
     </div>
@@ -31,6 +31,7 @@ defineProps({
 img {
   height: 100%;
   width: 150px;
+  min-width: 150px;
   object-fit: cover;
   border-radius: 12px;
 }
@@ -40,15 +41,21 @@ img {
 }
 
 .description {
-  font-size: medium;
+  width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+	line-height: 140%;
+  font-size: smaller;
+  margin-bottom: 8px;
 }
-
 .address {
   color: var(--caption-color);
   font-size: small;
 }
 
 .content {
-  padding: 8px;
+  padding: 0px 8px;
 }
 </style>

@@ -1,17 +1,47 @@
 <script setup>
+import { ref, onMounted } from 'vue';
 import KakaoMap from "@/components/map/KakaoMap.vue";
 import AttractionItemList from "@/components/attraction/AttractionItemList.vue";
 import SubHeading from "@/components/common/SubHeading.vue";
 import SearchBar from "@/components/common/SearchBar.vue";
+import axios from "axios";
+
+const attractions = ref([]);
+const page = ref(1);
+
+const loadAttractions = async () => {
+  try {
+    const result = await axios({
+      url: "http://localhost:8080/attraction/search?" + "currentPage="+page.value++,
+      method: "GET",
+      header: {
+
+      }
+    })
+    // console.log(result.data.attraction)
+    attractions.value.push(...result.data.attraction);
+    console.log(attractions.value);
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+onMounted(() => {
+  loadAttractions();
+});
+
 </script>
+
+
 
 <template>
   <div class="attraction-map-view">
     <div class="col card">
-      <KakaoMap/>
+      <KakaoMap :attractions="attractions"/>
     </div>
     <div class="col">
-      <AttractionItemList />
+      <AttractionItemList :attractions="attractions" @on-load-more="loadAttractions"/>
     </div>
   </div>
 </template>

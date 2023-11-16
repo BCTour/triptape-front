@@ -90,6 +90,11 @@ const router = createRouter({
 					component: () => import("@/views/user/UserInfoView.vue")
 				}
 			]
+		},
+		{
+			path: '/test',
+			name: "testInfiniteScroll",
+			component: () => import("@/views/test.vue")
 		}
 		// {
 		//   path: '/about',
@@ -101,5 +106,12 @@ const router = createRouter({
 		// }
 	]
 })
+
+// router.beforeEach(async (to, from) => {
+// 	if (to.name === "attractionMap") {
+// 		loadAttractions();
+// 	}
+// 	next();
+// })
 
 export default router
