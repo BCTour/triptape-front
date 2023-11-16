@@ -3,15 +3,17 @@ import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth.js';
 import { useRouter } from 'vue-router';
 
+
 const auth = useAuthStore();
 const router = useRouter();
+
+
 const id = ref("");
 const pw = ref("");
 
 const onLoginClick = async () => {
   console.log(auth)
   if (await auth.login(id.value, pw.value)) {
-    console.log('뭐야 시발')
     alert("로그인 성공!");
     router.push({name: 'main'});
   } else {

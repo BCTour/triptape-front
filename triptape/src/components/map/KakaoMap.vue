@@ -13,10 +13,10 @@ const props = defineProps({
 //   () => props.selectStation.value,
 //   () => {
 //     // 이동할 위도 경도 위치를 생성합니다
-//     var moveLatLon = new kakao.maps.LatLng(props.selectStation.lat, props.selectStation.lng);
 
 //     // 지도 중심을 부드럽게 이동시킵니다
 //     // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+//     var moveLatLon = new kakao.maps.LatLng(props.selectStation.lat, props.selectStation.lng);
 //     map.panTo(moveLatLon);
 //   },
 //   { deep: true }
@@ -112,9 +112,13 @@ const loadMarkers = () => {
       clickable: true, // // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
       // image: markerImage, // 마커의 이미지
     });
+    console.log(position.latlng);
+
     kakao.maps.event.addListener(marker, 'click', () => {
-      console.log('클릭')
-    })
+      console.log('클릭');
+      var moveLatLon = new kakao.maps.LatLng(position.latlng.Ma, position.latlng.La);
+      map.panTo(moveLatLon);
+    });
     markers.value.push(marker);
   });
 

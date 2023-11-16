@@ -5,55 +5,80 @@ import axios from "axios";
 
 export const useAuthStore = defineStore('auth', () => {
   const isLogined = ref(false);
+
   const user = ref({
     id : null,
-    token: null,
     name: null,
   });
 
+  const refreshToken = async () => {
+    try {
+      const result = await axios({
+        method: "POST",
+        url: "http://localhost:8080/user/refresh",
+        mode: "cors",
+        header: {
+          refreshToken : user.value.refreshToken,
+        }
+      })
+    } catch (error) {
+      
+    }
+  }
+
   const login = async (id, pw) => {
-    const testId = "ssafy";
-    const testPw = "ssafy";
-    const testToken = "aaaa";
     /**
      * TO-DO : axios.post로 로그인 수행
      * 지금은 test용으로 ssafy만 입력하면 로그인 성공하게 해두었음
      */
     try {
-      const result = await axios({
+      const result = await http({
         method: "POST",
-        url: "http://localhost:8080/user/login",
+        url: "/user/login",
         mode: "cors",
         data: {
           userId: id,
           userPw: pw,
         }
       });
-      console.log(result);
+      isLogined.value = true;
+      user.value.id = id;
+      
+      localStorage.setItem("access-token", result.data["access-token"]);
+      localStorage.setItem("refresh-token", result.data["refresh-token"]);
+      
+      await getUserInfo();
+
       return true;
     } catch (error) {
       console.log(error);
+      isLogined.value = false;
       return false;
     }
-    
-    // if (result.data.status){
-    //   user.value.id = id;
-    //   user.value.token = testToken;
-    //   user.value.name = "김싸피";
-
-    //   isLogined.value = true;
-    //   return true;
-    // } else {
-    //   return false;
-    // }
   }
 
   function logout() {
     user.value.id = null;
-    user.value.token = null;
     user.value.name = null;
 
     isLogined.value = false;
+  }
+
+  const getUserInfo = async () => {
+    try {
+      const accessToken = localStorage.getItem("access-token");
+      const result = await axios({
+        method: 'GET',
+        url : `http://localhost:8080/user/info/${user.value.id}`,
+        mode: "cors",
+        headers : {
+          Authorization : accessToken,
+        }
+      });
+      console.log(result);
+    } catch (error){
+      console.log(error);
+    }
   }
 
   return {
