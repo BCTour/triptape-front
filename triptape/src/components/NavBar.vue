@@ -4,7 +4,7 @@ import {useAuthStore} from "@/stores/auth.js";
 import { storeToRefs } from 'pinia';
 
 const auth = useAuthStore();
-const { isLogined } = storeToRefs(auth);
+const { isLogined, user } = storeToRefs(auth);
 
 const selectedMenu = ref("asdf");
 
@@ -22,7 +22,7 @@ const selectedMenu = ref("asdf");
 		</template>
 		<template v-else>
 			<div>
-				<router-link :to="{name: 'userInfo'}" class="">{{auth.user.name}}</router-link>
+				<router-link :to="{name: 'userInfo'}" class="">{{user.name}}</router-link>
 				<div class="" @click="auth.logout()">
 					로그아웃
 				</div>

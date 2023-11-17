@@ -67,8 +67,8 @@ const onRegistClick = async () => {
 
   const formData = new FormData();
   const blob = new Blob([JSON.stringify(user.value)], { type: "application/json" });
-  formData.append("user", blob); 
-
+  formData.append("user", blob);
+  console.log(formData);
   try {
     const result = await axios({
       method: "POST",

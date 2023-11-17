@@ -1,11 +1,30 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router'; 
 import TapeGridItem from "@/components/tape/TapeGridItem.vue";
 import SearchBar from "@/components/common/SearchBar.vue";
 import SubHeading from "@/components/common/SubHeading.vue";
+import { connect } from "@/util/access";
 
 const router = useRouter();
+const currentPage = ref(1);
+
+onMounted( async () => {
+  // await getTapes();  
+});
+
+const getTapes = async () => {
+  try {
+    const result = await connect({
+      method: "GET",
+      // url: `/tape/search?keyword=${""}&word=${""}&currentPage="${currentPage.value++}"`,
+      url: `/tape/search`,
+    });
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 const tapes = ref([
   {
@@ -27,6 +46,7 @@ const searchOptions = ref([
   { name: "설명", value: "description" },
   { name: "작성자", value: "userId" },  
 ])
+
 const onClickSearch = (category, text) => {
   console.log(category + " " + text)
 }
@@ -39,6 +59,7 @@ const onClickSearch = (category, text) => {
     <SubHeading v-bind="{title: '테이프', description: '현재 진행중인 테이프입니다'}"/>
     <SearchBar :options="searchOptions" @on-click-search="onClickSearch"/>
   </div>
+  <button class="primary-btn" @click="$router.push({name: 'createTape'})">+ 새로운 테이프 만들기</button>
   <div class="grid-wrap">
     <TapeGridItem v-for="tape in tapes" :key="tape.tapeKey" v-bind="tape" @click="router.push({name: 'tapeDetail', params: {id: tape.tapeKey}})"/> 
   </div>

@@ -61,6 +61,11 @@ const router = createRouter({
 					path: '/tape/detail/contained/:id',
 					name: 'attractionContainedTape',
 					component: () => import("@/views/attraction/AttractionContainedTapeView.vue")
+				},
+				{
+					path: '/tape/create',
+					name: 'createTape',
+					component: () => import("@/views/tape/CreateTapeView.vue")
 				}
 			]
 		},

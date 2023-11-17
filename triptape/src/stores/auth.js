@@ -2,7 +2,6 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import http from "@/util/http-commons.js";
 import { connect } from "../util/access.js";
-import axios from "axios";
 
 export const useAuthStore = defineStore('auth', () => {
   const isLogined = ref(false);
@@ -34,9 +33,9 @@ export const useAuthStore = defineStore('auth', () => {
       localStorage.setItem("access-token", result.data["access-token"]);
       localStorage.setItem("refresh-token", result.data["refresh-token"]);
 
-      await setTimeout(async () => { console.log("6초 지남!"); await getUserInfo(); }, 6000);
-      // await getUserInfo();
-
+      const userInfo = await getUserInfo();
+      console.log(userInfo);
+      user.value.name = userInfo.data.userInfo.userName;
       return true;
     } catch (error) {
       console.log(error);
@@ -49,26 +48,24 @@ export const useAuthStore = defineStore('auth', () => {
     user.value.id = null;
     user.value.name = null;
 
+    localStorage.removeItem("access-token");
+    localStorage.removeItem("refresh-token");
+    localStorage.removeItem("userId");
+
     isLogined.value = false;
   }
 
   const getUserInfo = async () => {
     try {
-      // const result = await axios({
-      //   method: 'GET',
-      //   url : `http://localhost:8080/user/info/${user.value.id}`,
-      //   mode: "cors",
-      //   headers : {
-      //     Authorization : accessToken,
-      //   }
-      // });
       const result = await connect({
         method: "GET",
         url: `/user/info/${user.value.id}`,
       })
-      console.log(result);
-    } catch (error){
-      console.log(error);
+      return result;
+    } catch (error) {
+      if (error.code === "REFRESH_TOKEN_EXPIRED") {
+
+      }
     }
   }
 
@@ -77,13 +74,3 @@ export const useAuthStore = defineStore('auth', () => {
     login, logout,
   }
 })
-
-// export const useCounterStore = defineStore('counter', () => {
-//   const count = ref(0)
-//   const doubleCount = computed(() => count.value * 2)
-//   function increment() {
-//     count.value++
-//   }
-
-//   return { count, doubleCount, increment }
-// })
