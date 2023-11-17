@@ -12,7 +12,6 @@ const id = ref("");
 const pw = ref("");
 
 const onLoginClick = async () => {
-  console.log(auth)
   if (await auth.login(id.value, pw.value)) {
     alert("로그인 성공!");
     router.push({name: 'main'});

@@ -20,15 +20,13 @@ const loadAttractions = async () => {
     })
     // console.log(result.data.attraction)
     attractions.value.push(...result.data.attraction);
-    console.log(attractions.value);
-
   } catch (error) {
     console.log(error);
   }
 }
 
 onMounted(() => {
-  loadAttractions();
+  // loadAttractions();
 });
 
 </script>

@@ -1,16 +1,21 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import AttractionItem from "@/components/attraction/AttractionItem.vue";
+import Observer from "../common/Observer.vue";
 
-defineProps({
+const props = defineProps({
   attractions: Array,
 })
+
+onMounted(() => {
+  console.log(props.attractions)
+});
 </script>
 
 <template>
   <div class="list scroll-view-container">
     <AttractionItem v-for="attraction in attractions" :key="attraction.attractionKey" v-bind="attraction" @click="$router.push({name: 'attractionDetail', params:{id: attraction.attractionKey}})"/>
-    <button class="primary-btn" @click="$emit('onLoadMore')">추가로 로딩하기</button>
+    <Observer @on-observed="$emit('onLoadMore')"/>
   </div>
 </template>
 

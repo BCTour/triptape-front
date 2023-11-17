@@ -1,6 +1,18 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted} from 'vue';
 import TapeListItem from '@/components/tape/TapeListItem.vue';
+
+defineProps({
+  attractionId: Number,
+})
+
+onMounted( async () => {
+  try {
+
+  } catch (error) {
+    
+  }
+})
 
 const tapes = ref([
   {

@@ -53,8 +53,6 @@ onMounted(() => {
 // );
 
 watch(props.attractions, () => {
-  console.log("추가되었다!");
-
   positions.value = [];
   props.attractions.forEach((attraction) => {
     let obj = {};
@@ -93,7 +91,6 @@ const loadMarkers = () => {
 
   positions.value = [];
   if (!props.attractions) return;
-  console.log(props.attractions);
   props.attractions.forEach((attraction) => {
     let obj = {};
     obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
@@ -112,10 +109,8 @@ const loadMarkers = () => {
       clickable: true, // // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
       // image: markerImage, // 마커의 이미지
     });
-    console.log(position.latlng);
 
     kakao.maps.event.addListener(marker, 'click', () => {
-      console.log('클릭');
       var moveLatLon = new kakao.maps.LatLng(position.latlng.Ma, position.latlng.La);
       map.panTo(moveLatLon);
     });
@@ -130,7 +125,6 @@ const loadMarkers = () => {
   );
 
   map.setBounds(bounds);
-  console.log(map);
 };
 
 const deleteMarkers = () => {

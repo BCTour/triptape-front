@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import CommentList from '@/components/common/CommentList.vue';
 import CreateComment from '@/components/common/CreateComment.vue';
 import SubHeading from "@/components/common/SubHeading.vue";
@@ -7,13 +8,30 @@ import TapeList from "@/components/tape/TapeList.vue";
 import KakaoMap from "@/components/map/KakaoMap.vue";
 import axios from "axios";
 
+const route = useRoute();
+
+const imgSrc = ref("");
+const address = ref("");
+const typeName = ref("");
+const title = ref("");
+const description = ref("");
+
 onMounted(async () => {
   try {
     const result = await axios({
-      url: "http://localhost:8080/attraction/info/{key}"
+      url: `http://localhost:8080/attraction/info/${route.params.id}`,
+      headers: {
+        Authorization: localStorage.getItem("accessToken"),
+      }
     });
+    console.log(result);
+    address.value = result.data.address;
+    typeName.value = result.data.attractionType.typeName;
+    title.value = result.data.name;
+    description.value = result.data.description;
+    imgSrc.value = result.data.img.saveFile;
   } catch (error) {
-
+    console.log(error);
   }
 });
 </script>
@@ -25,11 +43,11 @@ onMounted(async () => {
   </div>
   <div class="detail-container">
     <div class="card info-container">
-      <img src="../../assets/img/logo.png">
-      <p class="caption">카테고리</p>
-      <h2>장소 이름</h2>
-      <p>주소</p>
-      <p>설명</p>
+      <img class="attraction-img" :src="imgSrc">
+      <p class="caption">{{ typeName }}</p>
+      <h2>{{title}}</h2>
+      <p class="address">{{address}}</p>
+      <p class="description">{{description}}</p>
       <KakaoMap/>
     </div>
     <div class="card tape-container">
@@ -63,5 +81,17 @@ onMounted(async () => {
 
 p {
   margin-bottom: 8px;
+}
+
+.attraction-img {
+  height: 200px;
+  object-fit: cover;
+}
+.address {
+  font-size: 14px;
+}
+
+.description {
+  line-height: 150%;
 }
 </style>

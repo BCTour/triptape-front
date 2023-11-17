@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import http from "@/util/http-commons.js";
+import { connect } from "../util/access.js";
 import axios from "axios";
 
 export const useAuthStore = defineStore('auth', () => {
@@ -10,21 +11,6 @@ export const useAuthStore = defineStore('auth', () => {
     id : null,
     name: null,
   });
-
-  const refreshToken = async () => {
-    try {
-      const result = await axios({
-        method: "POST",
-        url: "http://localhost:8080/user/refresh",
-        mode: "cors",
-        header: {
-          refreshToken : user.value.refreshToken,
-        }
-      })
-    } catch (error) {
-      
-    }
-  }
 
   const login = async (id, pw) => {
     /**
@@ -44,10 +30,12 @@ export const useAuthStore = defineStore('auth', () => {
       isLogined.value = true;
       user.value.id = id;
       
+      localStorage.setItem("userId", id);
       localStorage.setItem("access-token", result.data["access-token"]);
       localStorage.setItem("refresh-token", result.data["refresh-token"]);
-      
-      await getUserInfo();
+
+      await setTimeout(async () => { console.log("6초 지남!"); await getUserInfo(); }, 6000);
+      // await getUserInfo();
 
       return true;
     } catch (error) {
@@ -66,15 +54,18 @@ export const useAuthStore = defineStore('auth', () => {
 
   const getUserInfo = async () => {
     try {
-      const accessToken = localStorage.getItem("access-token");
-      const result = await axios({
-        method: 'GET',
-        url : `http://localhost:8080/user/info/${user.value.id}`,
-        mode: "cors",
-        headers : {
-          Authorization : accessToken,
-        }
-      });
+      // const result = await axios({
+      //   method: 'GET',
+      //   url : `http://localhost:8080/user/info/${user.value.id}`,
+      //   mode: "cors",
+      //   headers : {
+      //     Authorization : accessToken,
+      //   }
+      // });
+      const result = await connect({
+        method: "GET",
+        url: `/user/info/${user.value.id}`,
+      })
       console.log(result);
     } catch (error){
       console.log(error);
