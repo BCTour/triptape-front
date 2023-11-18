@@ -149,6 +149,12 @@ h4 {
   margin-bottom: 8px;
 }
 
+h5 {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
 .caption {
   font-size: 14px;
   color: var(--caption-color);

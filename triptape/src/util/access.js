@@ -7,7 +7,6 @@ const connect = async ({ method, url, data, headers }) => {
   return new Promise(async (resolve, reject) => {
     for (var i = 0; i < attempts; i++) {
       try {
-        console.log(data);
         const result = await axios({
           method: method,
           url: root + url,
@@ -15,15 +14,14 @@ const connect = async ({ method, url, data, headers }) => {
             Authorization: localStorage.getItem("access-token"),
             ...headers
           },
-          data: {
-            ...data
-          },
+          data,
         });
+        console.log(result);
         resolve(result); // 성공시 결과 resolve
         return;
       } catch (error) {
         console.log(error);
-        if (error.request.status === 401) { // accessToken 만료
+        if (error.request !== undefined && error.request.status === 401) { // accessToken 만료
           console.log("액세스 토큰 만료");
           const refreshResult = await refreshToken();
           if (refreshResult) { // 토큰 갱신 성공

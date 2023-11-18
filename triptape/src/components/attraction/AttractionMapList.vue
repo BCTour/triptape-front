@@ -1,37 +1,23 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted} from 'vue';
 import KakaoMap from "@/components/map/KakaoMap.vue";
 import AttractionItemList from "@/components/attraction/AttractionItemList.vue";
-import SubHeading from "@/components/common/SubHeading.vue";
-import SearchBar from "@/components/common/SearchBar.vue";
-import axios from "axios";
 
-const attractions = ref([]);
-const page = ref(1);
 
-const loadAttractions = async () => {
-  try {
-    const result = await axios({
-      url: "http://localhost:8080/attraction/search?" + "currentPage="+page.value++,
-      method: "GET",
-      header: {
+const props = defineProps({
+  attractions: Array,
+})
 
-      }
-    })
-    // console.log(result.data.attraction)
-    attractions.value.push(...result.data.attraction);
-  } catch (error) {
-    console.log(error);
-  }
-}
+const emit = defineEmits(["onLoadMore", "onClickItem"])
 
 onMounted(() => {
-  // loadAttractions();
+
 });
 
+const onClickItem = async (attractionInfo) => {
+  emit("onClickItem", attractionInfo);
+}
 </script>
-
-
 
 <template>
   <div class="attraction-map-view">
@@ -39,7 +25,11 @@ onMounted(() => {
       <KakaoMap :attractions="attractions"/>
     </div>
     <div class="col">
-      <AttractionItemList :attractions="attractions" @on-load-more="loadAttractions"/>
+      <AttractionItemList
+        :attractions="attractions"
+        @on-load-more="$emit('onLoadMore')"
+        @on-click-item="onClickItem"
+      />
     </div>
   </div>
 </template>

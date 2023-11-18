@@ -53,6 +53,7 @@ onMounted(() => {
 // );
 
 watch(props.attractions, () => {
+  console.log(props.attractions);
   positions.value = [];
   props.attractions.forEach((attraction) => {
     let obj = {};
@@ -119,12 +120,13 @@ const loadMarkers = () => {
 
   // 4. 지도를 이동시켜주기
   // 배열.reduce( (누적값, 현재값, 인덱스, 요소)=>{ return 결과값}, 초기값);
-  const bounds = positions.value.reduce(
-    (bounds, position) => bounds.extend(position.latlng),
-    new kakao.maps.LatLngBounds()
-  );
-
-  map.setBounds(bounds);
+  if (positions.value.length > 0){
+    const bounds = positions.value.reduce(
+      (bounds, position) => bounds.extend(position.latlng),
+      new kakao.maps.LatLngBounds()
+    );
+    map.setBounds(bounds);
+  }
 };
 
 const deleteMarkers = () => {

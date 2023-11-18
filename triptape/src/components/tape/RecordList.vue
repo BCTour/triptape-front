@@ -1,100 +1,36 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Record from "@/components/tape/Record.vue";
+import {connect} from '@/util/access.js';
 
-defineProps({
-
+const props = defineProps({
+  id: Number,
 })
 
-const records = ref([
-  {
-    recordKey: "1",
-    createtime: "2023-01-01 00:00:00",
-    content: "안녕하세요????? 안녕하십니까?????",
-    img: "dog.png",
-    attractionKey: "1",
-    userKey: "1",
-    parentRecordKey: "13",
-  },
-  {
-    recordKey: "2",
-    createtime: "2023-01-01 00:00:00",
-    content: "안녕하세요????? 안녕하십니까?????",
-    img: "dog.png",
-    attractionKey: "1",
-    userKey: "1",
-    parentRecordKey: "13",
-  },
-  {
-    recordKey: "3",
-    createtime: "2023-01-01 00:00:00",
-    content: "안녕하세요????? 안녕하십니까?????",
-    img: "dog.png",
-    attractionKey: "1",
-    userKey: "1",
-    parentRecordKey: "13",
-  },
-  {
-    recordKey: "4",
-    createtime: "2023-01-01 00:00:00",
-    content: "안녕하세요????? 안녕하십니까?????",
-    img: "dog.png",
-    attractionKey: "1",
-    userKey: "1",
-    parentRecordKey: "13",
-  },
-  {
-    recordKey: "5",
-    createtime: "2023-01-01 00:00:00",
-    content: "안녕하세요????? 안녕하십니까?????",
-    img: "dog.png",
-    attractionKey: "1",
-    userKey: "1",
-    parentRecordKey: "13",
-  },
-  {
-    recordKey: "6",
-    createtime: "2023-01-01 00:00:00",
-    content: "안녕하세요????? 안녕하십니까?????",
-    img: "dog.png",
-    attractionKey: "1",
-    userKey: "1",
-    parentRecordKey: "13",
-  },
-  {
-    recordKey: "7",
-    createtime: "2023-01-01 00:00:00",
-    content: "안녕하세요????? 안녕하십니까?????",
-    img: "dog.png",
-    attractionKey: "1",
-    userKey: "1",
-    parentRecordKey: "13",
-  },
-  {
-    recordKey: "8",
-    createtime: "2023-01-01 00:00:00",
-    content: "안녕하세요????? 안녕하십니까?????",
-    img: "dog.png",
-    attractionKey: "1",
-    userKey: "1",
-    parentRecordKey: "13",
-  },
-  {
-    recordKey: "9",
-    createtime: "2023-01-01 00:00:00",
-    content: "안녕하세요????? 안녕하십니까?????",
-    img: "dog.png",
-    attractionKey: "1",
-    userKey: "1",
-    parentRecordKey: "13",
-  },
-])
+onMounted( async ()=>{
+  await loadMoreRecord();
+});
 
+const records = ref([]);
+const currentPage = ref(1);
+
+const loadMoreRecord = async () => {
+  try {
+    const result = await connect({
+      method: "GET",
+      url: `/record/search/${props.id}?currentPage=${currentPage.value++}`,
+    })
+    console.log(result);
+    records.value.push(...result.data.attraction);
+  } catch (error) {
+    console.log(error);
+  }  
+}
 </script>
 
 <template>
   <div class="list scroll-view-container">
-    <Record v-for="record in records" :key="record.recordKey" v-bind="record"/>
+    <Record v-for="record in records" :key="record.recordKey" v-bind="record" @click="$emit('onSelectRecord', record.recordKey)"/>
   </div>
 </template>
 

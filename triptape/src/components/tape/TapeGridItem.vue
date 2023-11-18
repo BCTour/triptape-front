@@ -9,7 +9,8 @@ defineProps({
 
 <template>
   <div class="card reactive">
-		<img :src="img">
+		<img v-if="img" :src="img">
+    <img v-else src="@/assets/img/no_image.png">
 		<div class="content">
 			<h3>{{ title }}</h3>
 			<div class="text-box">

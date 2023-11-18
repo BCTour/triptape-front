@@ -1,4 +1,30 @@
 <script setup>
+import { ref, onMounted, computed } from 'vue';
+import {connect} from '@/util/access.js';
+
+const props = defineProps({
+  createtime: String,
+  description: String,
+  img: String,
+  joinNum: Number,
+  popular: String,
+  title: String,
+  user: Object,
+})
+
+// const userInfo = ref({
+//   userId: "",
+//   userName: "",
+// })
+
+// onMounted(()=>{
+//   userInfo.value.userId = props.user.userId;
+//   userInfo.value.userName = props.user.userName;
+// })
+
+const userInfo = computed(()=>{
+  return props.user ? {userId: props.user.userId, userName: props.user.userName} : {userId: "", userName: ""};
+})
 
 </script>
 
@@ -6,9 +32,9 @@
   <div class="card">
     <img src="https://images.dog.ceo/breeds/terrier-wheaten/n02098105_2456.jpg">
     <div>
-      <h2>테이프 이름</h2>
-      <p>테이프 설명</p>
-      <p>테이프 작성자 | 테이프 생성일</p>
+      <h2>{{ props.title }}</h2>
+      <p>{{ description }}</p>
+      <p>@{{userInfo.userName}} | {{ createtime }}</p>
     </div>
   </div>
 </template>

@@ -1,6 +1,10 @@
 <script setup>
 import { ref, onMounted} from 'vue';
 import TapeListItem from '@/components/tape/TapeListItem.vue';
+import { connect } from '@/util/access.js';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 defineProps({
   attractionId: Number,
@@ -8,9 +12,13 @@ defineProps({
 
 onMounted( async () => {
   try {
-
+    const result = await connect({
+      method: "GET",
+      url: `/tape/include/attraction?attractionKey=${route.params.id}`,
+    })
+    console.log("result");
   } catch (error) {
-    
+    console.log(error);
   }
 })
 

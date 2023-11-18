@@ -14,7 +14,13 @@ onMounted(() => {
 
 <template>
   <div class="list scroll-view-container">
-    <AttractionItem v-for="attraction in attractions" :key="attraction.attractionKey" v-bind="attraction" @click="$router.push({name: 'attractionDetail', params:{id: attraction.attractionKey}})"/>
+    <AttractionItem
+      v-for="attraction in attractions" :key="attraction.attractionKey"
+      v-bind="attraction"
+      @click="$emit('onClickItem', attraction)"
+    />
+    <!-- @click="$router.push({name: 'attractionDetail', params:{id: attraction.attractionKey}})" -->
+
     <Observer @on-observed="$emit('onLoadMore')"/>
   </div>
 </template>

@@ -63,12 +63,10 @@ const onRegistClick = async () => {
   // 입력 필드 유효성 확인
   if (!checkValidation()) return;
 
-  console.log(JSON.stringify(user.value));
-
   const formData = new FormData();
   const blob = new Blob([JSON.stringify(user.value)], { type: "application/json" });
   formData.append("user", blob);
-  console.log(formData);
+  
   try {
     const result = await axios({
       method: "POST",

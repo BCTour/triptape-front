@@ -2,6 +2,10 @@
 import { ref, onMounted } from 'vue';
 import SubHeading from "@/components/common/SubHeading.vue";
 import { connect } from "@/util/access.js";
+import { useRouter } from 'vue-router';
+import axios from 'axios';
+
+const router = useRouter();
 
 const tape = ref({
   title: "",
@@ -15,8 +19,6 @@ onMounted(() => {
   tape.value.user.userId = localStorage.getItem("userId");
 })
 
-const title = ref("");
-const description = ref("");
 
 const onClickRegist = async () => {
   const formData = new FormData();
@@ -24,17 +26,19 @@ const onClickRegist = async () => {
   formData.append("tape", blob);
 
   try {
-    const result = connect({
+    const result = await connect({
       method: "POST",
       url: `/tape/regist`,
       data: formData,
       headers: {
-        "Content-Type": "multipart/form-data",
+        'Content-Type': "multipart/form-data",
       },
     })
     console.log(result);
+    router.push({name: "tapeList"});
   } catch (error) {
     console.log(error);
+    alert("테이프 생성에 실패했습니다. 잠시 후 다시 시도해주세요.");
   }
 }
 

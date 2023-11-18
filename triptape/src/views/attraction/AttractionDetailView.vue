@@ -1,8 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import CommentList from '@/components/common/CommentList.vue';
-import CreateComment from '@/components/common/CreateComment.vue';
+import CommentContainer from '@/components/common/CommentContainer.vue';
 import SubHeading from "@/components/common/SubHeading.vue";
 import TapeList from "@/components/tape/TapeList.vue";
 import KakaoMap from "@/components/map/KakaoMap.vue";
@@ -39,11 +38,12 @@ onMounted(async () => {
 
 <template>
   <div class="sub-heading-container">
-    <SubHeading v-bind="{title: '장소 상세', description: '장소 이름', isEnableBack: true}"/>
+    <SubHeading v-bind="{title: '장소 상세', description: title, isEnableBack: true}"/>
   </div>
   <div class="detail-container">
     <div class="card info-container">
-      <img class="attraction-img" :src="imgSrc">
+      <img v-if="imgSrc" class="attraction-img" :src="imgSrc">
+      <img v-else class="attraction-img" src="@/assets/img/no_image.png">
       <p class="caption">{{ typeName }}</p>
       <h2>{{title}}</h2>
       <p class="address">{{address}}</p>
@@ -53,10 +53,7 @@ onMounted(async () => {
     <div class="card tape-container">
       <TapeList/>
     </div>
-    <div class="card comment-container">
-      <CommentList/>
-      <CreateComment/>
-    </div>
+    <CommentContainer />
   </div>
 </template>
 
