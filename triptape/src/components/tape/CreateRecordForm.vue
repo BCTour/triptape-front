@@ -51,6 +51,9 @@ const onClickCreateRecord = async () => {
 			method: "POST",
 			url: `/record/regist`,
 			data: formData,
+			headers : {
+				"Content-Type": "multipart/form-data",
+			}
 		});
 		console.log(result);
 	} catch (error) {
