@@ -19,7 +19,7 @@ const onClickDelete = async () => {
   try {
     const result = await connect({
       method: "DELETE",
-      url: `/attraction/comment/delete/${props.commentKey}`,
+      url: `/attraction/comment/delete/${props.commentKey}/${loginUserId}`,
     })
     console.log(result);
     emit("onClickDelete");
@@ -32,7 +32,7 @@ const onClickDelete = async () => {
 <template>
   <div class="comment-container reactive">
     <div class="meta-container">
-      <div class="caption">@{{ user.userName }} / {{ createtime }}</div>
+      <div class="caption">@{{ user.userId }} / {{ createtime }}</div>
       <CloseIcon v-if="loginUserId==user.userId" @click="onClickDelete" class="delete-icon"/>
     </div>
     <div>{{ content }}</div>

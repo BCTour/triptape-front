@@ -52,19 +52,18 @@ onMounted(() => {
 //   { deep: true }
 // );
 
-watch(props.attractions, () => {
+watch(() => props.attractions, () => {
   console.log(props.attractions);
   positions.value = [];
   props.attractions.forEach((attraction) => {
     let obj = {};
     obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
     obj.title = attraction.name;
-
     positions.value.push(obj);
   });
   loadMarkers();
   
-});
+}, {deep: true});
 
 const initMap = () => {
   const container = document.getElementById("map");

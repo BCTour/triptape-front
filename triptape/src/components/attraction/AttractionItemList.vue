@@ -14,6 +14,7 @@ onMounted(() => {
 
 <template>
   <div class="list scroll-view-container">
+    <div v-if="attractions.length == 0" class="no-content">등록된 장소가 없습니다.</div>
     <AttractionItem
       v-for="attraction in attractions" :key="attraction.attractionKey"
       v-bind="attraction"
@@ -26,6 +27,14 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
-
+.no-content {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	/* text-align: center; */
+	align-items: center;
+	justify-content: center;
+  font-size: 14px;
+  color: var(--caption-color);
+}
 </style>

@@ -13,11 +13,10 @@ const props = defineProps({
 	selectedRecord: Number,
 })
 
-const tapeKey = ref(0);
+const emit = defineEmits(["onWriteRecord", "onUnselectRecord"])
+
 const content = ref("");
-const img = ref("");
-const attractionKey = ref(0);
-const userKey = ref(0);
+
 
 /* 모달 관련 */
 const isModalOpen = ref(false);
@@ -25,6 +24,18 @@ const selectedAttraction = ref(null);
 
 const toggleModal = () => {
   isModalOpen.value = isModalOpen.value ? false : true;
+}
+
+let imgFile = null;
+const onFileChange = (event) => {
+	imgFile = event.target.files[0];
+}
+
+const resetInput = () => {
+	imgFile = null;
+	emit("onUnselectRecord");
+	content.value = "";
+	selectedAttraction.value = null;
 }
 
 const onClickCreateRecord = async () => {
@@ -46,6 +57,7 @@ const onClickCreateRecord = async () => {
 		const formData = new FormData();
 		const blob = new Blob([JSON.stringify(recordData)], { type: "application/json" });
 		formData.append("record", blob);
+		if (imgFile) formData.append("file", imgFile);
 
 		const result = await connect({
 			method: "POST",
@@ -55,7 +67,9 @@ const onClickCreateRecord = async () => {
 				"Content-Type": "multipart/form-data",
 			}
 		});
+		emit("onWriteRecord");
 		console.log(result);
+		resetInput();
 	} catch (error) {
 		console.log(error);
 	}
@@ -83,6 +97,9 @@ const onAddAttraction = async (attraction) => {
 			<h4>선택된 장소</h4>
 			<p v-if="selectedAttraction">{{selectedAttraction.name}}</p>
 			<p v-else>선택된 장소가 없습니다.</p>
+		</div>
+		<div class="input-box">
+			<span>이미지</span> <input type="file" @change="onFileChange"/>
 		</div>
 		<button class="primary-btn" @click="onClickCreateRecord">작성하기</button>
 	</div>
@@ -116,7 +133,8 @@ const onAddAttraction = async (attraction) => {
 	fill: red;
 }
 input{
-	width: calc(100% - 108px);
+	flex: 1;
+	/* width: calc(100% - 108px); */
 	margin-right: 8px;
 }
 .add-file-btn {
@@ -124,7 +142,14 @@ input{
 }
 
 .input-box {
+	display: flex;
+	flex-direction: row;
 	width: 100%;
 	margin: 8px 0px;
+	align-items: center;
+}
+
+.input-box > span {
+	margin-right: 8px;
 }
 </style>

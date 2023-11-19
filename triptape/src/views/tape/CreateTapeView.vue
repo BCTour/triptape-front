@@ -15,16 +15,21 @@ const tape = ref({
   }
 });
 
+let imgFile = null;
+
 onMounted(() => {
   tape.value.user.userId = localStorage.getItem("userId");
 })
 
+const onFileChange = (event) => {
+  imgFile = event.target.files[0];
+}
 
 const onClickRegist = async () => {
   const formData = new FormData();
   const blob = new Blob([JSON.stringify(tape.value)], { type: "application/json" });
   formData.append("tape", blob);
-
+  if (imgFile) formData.append("file", imgFile);
   try {
     const result = await connect({
       method: "POST",
@@ -56,6 +61,10 @@ const onClickRegist = async () => {
     <div class="input-box">
       <label>테이프 소개</label>
       <textarea v-model="tape.description" placeholder="테이프 소개를 입력해주세요."></textarea>
+    </div>
+    <div class="input-box">
+      <label>대표 이미지</label>
+      <input type="file" @change="onFileChange"/>
     </div>
     <div class="input-box">
       <button class="primary-btn" @click="onClickRegist">등록하기</button>

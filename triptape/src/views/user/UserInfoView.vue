@@ -1,18 +1,37 @@
 <script setup>
-import { ref } from 'vue';
-import CommentList from '@/components/common/CommentList.vue';
-import CreateComment from '@/components/common/CreateComment.vue';
-import SubHeading from "@/components/common/SubHeading.vue";
-import TapeList from "@/components/tape/TapeList.vue";
 
-const user = ref({
-  id: "ssafy",
+import { ref, onMounted } from 'vue';
+import SubHeading from "@/components/common/SubHeading.vue";
+import { connect } from "@/util/access.js";
+import { useAuthStore } from "@/stores/auth.js";
+
+const auth = useAuthStore();
+
+const userInfo = ref({
+  userId: "ssafy",
   name: "김싸피",
-  nickname: "빠삐빠삐",
   email: "ssafy@ssafy.com",
-  tel: "010-1111-1111",
+  tel: "010-1234-1234",
   birthday: "2023-04-26",
+  profileImg: {
+    saveFile: "",
+  },
 })
+
+onMounted(async () => {
+  try {
+    const result = await connect({
+      method: 'GET',
+      url: `/user/info/${auth.user.id}`
+    });
+    console.log(result);
+    userInfo.value = result.data.userInfo;
+    userInfo.value.birthday = userInfo.value.birthday.split(' ')[0];
+  } catch (error) {
+    console.log(error);
+  }
+})
+
 </script>
 
 <template>
@@ -21,32 +40,29 @@ const user = ref({
   </div>
   <div class="detail-container">
     <div class="card info-container">
-      <img class="profile-img" src="../../assets/img/profile.jpg">
-      <p class="caption">@{{user.id}}</p>
-      <h2>{{user.name}}</h2>
-      <div class="input-box">
-        <label>별명</label>
-        <input type="text" v-model="user.nickname" disabled/>
-      </div>
+      <img v-if="!userInfo.profileImg" class="profile-img" src="@/assets/img/profile.jpg">
+      <img v-else class="profile-img" :src="userInfo.profileImg.saveFile">
+      <p class="caption">@{{userInfo.userId}}</p>
+      <h2>{{userInfo.userName}}</h2>
+
       <div class="input-box">
         <label>이메일</label>
-        <input type="email" v-model="user.email" disabled/>
+        <input type="email" v-model="userInfo.email" disabled/>
       </div>
       <div class="input-box">
         <label>전화번호</label>
-        <input type="tel" v-model="user.tel" disabled/>
+        <input type="tel" v-model="userInfo.tel" disabled/>
       </div>
       <div class="input-box">
         <label>생일</label>
-        <input type="date" v-model="user.birthday" disabled/>
+        <input type="date" v-model="userInfo.birthday" disabled/>
       </div>
     </div>
     <div class="card tape-container">
-      <TapeList/>
+      
     </div>
     <div class="card comment-container">
-      <CommentList/>
-      <CreateComment/>
+      
     </div>
   </div>
 </template>

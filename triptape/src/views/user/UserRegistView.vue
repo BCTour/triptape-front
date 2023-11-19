@@ -16,6 +16,8 @@ const user = ref({
   isAdmin: 0,
 })
 
+let imgFile = null;
+
 const confirmPw = ref("");
 
 const isSameConfirmPw = computed(()=>{
@@ -59,6 +61,11 @@ const checkValidation = () => {
 
   return isValid ? true : false;
 }
+
+const onFileChange = (event) => {
+  imgFile = event.target.files[0];
+}
+
 const onRegistClick = async () => {
   // 입력 필드 유효성 확인
   if (!checkValidation()) return;
@@ -66,7 +73,7 @@ const onRegistClick = async () => {
   const formData = new FormData();
   const blob = new Blob([JSON.stringify(user.value)], { type: "application/json" });
   formData.append("user", blob);
-  
+  if (imgFile) formData.append("file", imgFile);
   try {
     const result = await axios({
       method: "POST",
@@ -132,6 +139,10 @@ const onRegistClick = async () => {
     <div class="input-box">
       <label for="tel">전화번호</label>
       <input type="tel" name="tel" v-model="user.tel">
+    </div>
+    <div class="input-box">
+      <label for="img">전화번호</label>
+      <input type="file" name="img" @change="onFileChange">
     </div>
     <div class="btn-box">
       <button class="primary-outline-btn" @click="router.go(-1)">취소</button>

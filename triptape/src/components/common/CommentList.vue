@@ -14,7 +14,5 @@ const props = defineProps({
 </template>
 
 <style scoped>
-.comment-list-container {
-  
-}
+
 </style>

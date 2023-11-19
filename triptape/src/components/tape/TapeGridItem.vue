@@ -3,13 +3,13 @@ defineProps({
   title: String,
   tapeKey: Number,
   description: String,
-  img: String,
+  img: Object,
 })
 </script>
 
 <template>
   <div class="card reactive">
-		<img v-if="img" :src="img">
+		<img v-if="img" :src="img.saveFile">
     <img v-else src="@/assets/img/no_image.png">
 		<div class="content">
 			<h3>{{ title }}</h3>

@@ -24,8 +24,8 @@ const onLoadMore = async () => {
 	try {
 		const result = await connect({
 			url: `/attraction/comment/search/${route.params.id}?currentPage=${currentPage.value++}`,
-      method: "GET",
-    })
+		method: "GET",
+		})
     console.log(result);
     comments.value.push(...result.data.comment);
 		console.log(comments.value);

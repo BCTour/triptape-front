@@ -18,7 +18,7 @@ onMounted(() => {
 
 <template>
   <div class="observer" ref="observe">
-    <DownIcon class="icon"/>
+    <DownIcon class="down-icon"/>
   </div>
 </template>
 
@@ -29,7 +29,7 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
 }
-.icon {
+.down-icon {
   fill: #00000000
 }
 </style>

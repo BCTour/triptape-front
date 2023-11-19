@@ -2,35 +2,37 @@
 import { ref, onMounted } from 'vue';
 import Record from "@/components/tape/Record.vue";
 import {connect} from '@/util/access.js';
+import Observer from '@/components/common/Observer.vue';
 
 const props = defineProps({
-  id: Number,
+  // id: Number,
+  records: Array,
 })
 
 onMounted( async ()=>{
-  await loadMoreRecord();
+  // await loadMoreRecord();
 });
 
-const records = ref([]);
 const currentPage = ref(1);
 
-const loadMoreRecord = async () => {
-  try {
-    const result = await connect({
-      method: "GET",
-      url: `/record/search/${props.id}?currentPage=${currentPage.value++}`,
-    })
-    console.log(result);
-    records.value.push(...result.data.attraction);
-  } catch (error) {
-    console.log(error);
-  }  
-}
+// const loadMoreRecord = async () => {
+//   try {
+//     const result = await connect({
+//       method: "GET",
+//       url: `/record/search/${props.id}?currentPage=${currentPage.value++}`,
+//     })
+//     console.log(result);
+//     records.value.push(...result.data.attraction);
+//   } catch (error) {
+//     console.log(error);
+//   }  
+// }
 </script>
 
 <template>
   <div class="list scroll-view-container">
     <Record v-for="record in records" :key="record.recordKey" v-bind="record" @click="$emit('onSelectRecord', record.recordKey)"/>
+    <Observer @onObserved="$emit('onLoadMore')"/>
   </div>
 </template>
 

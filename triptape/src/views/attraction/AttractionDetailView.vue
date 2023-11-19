@@ -1,4 +1,5 @@
 <script setup>
+
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import CommentContainer from '@/components/common/CommentContainer.vue';
@@ -6,6 +7,7 @@ import SubHeading from "@/components/common/SubHeading.vue";
 import TapeList from "@/components/tape/TapeList.vue";
 import KakaoMap from "@/components/map/KakaoMap.vue";
 import axios from "axios";
+import {connect} from "@/util/access.js";
 
 const route = useRoute();
 
@@ -15,20 +17,31 @@ const typeName = ref("");
 const title = ref("");
 const description = ref("");
 
+const tapes = ref([]);
 onMounted(async () => {
+  // 장소 상세 정보 조회
   try {
-    const result = await axios({
-      url: `http://localhost:8080/attraction/info/${route.params.id}`,
-      headers: {
-        Authorization: localStorage.getItem("accessToken"),
-      }
-    });
+    const result = await connect({
+      url: `/attraction/info/${route.params.id}`
+    })
     console.log(result);
     address.value = result.data.address;
     typeName.value = result.data.attractionType.typeName;
     title.value = result.data.name;
     description.value = result.data.description;
     imgSrc.value = result.data.img.saveFile;
+  } catch (error) {
+    console.log(error);
+  }
+
+  // 테이프 리스트 조회
+  try {
+    const result = await connect({
+      method: 'GET',
+      url: `/tape/include/attraction?attractionKey=${route.params.id}`,
+    })
+    console.log(result);
+    if (result.data) tapes.value = result.data.tape;
   } catch (error) {
     console.log(error);
   }
@@ -51,7 +64,7 @@ onMounted(async () => {
       <KakaoMap/>
     </div>
     <div class="card tape-container">
-      <TapeList/>
+      <TapeList :tapes="tapes"/>
     </div>
     <CommentContainer />
   </div>

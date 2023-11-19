@@ -22,7 +22,7 @@ const onClickItem = async (attractionInfo) => {
 <template>
   <div class="attraction-map-view">
     <div class="col card">
-      <KakaoMap :attractions="attractions"/>
+      <KakaoMap :attractions="attractions" :coord="coord"/>
     </div>
     <div class="col">
       <AttractionItemList

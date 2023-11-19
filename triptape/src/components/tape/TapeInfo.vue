@@ -1,26 +1,20 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import {connect} from '@/util/access.js';
+import EditIcon from "@/assets/icons/EditIcon.vue";
+import CloseIcon from "@/assets/icons/CloseIcon.vue";
+import { useAuthStore } from "@/stores/auth.js";
 
+const auth = useAuthStore();
 const props = defineProps({
   createtime: String,
   description: String,
-  img: String,
+  img: Object,
   joinNum: Number,
   popular: String,
   title: String,
   user: Object,
 })
-
-// const userInfo = ref({
-//   userId: "",
-//   userName: "",
-// })
-
-// onMounted(()=>{
-//   userInfo.value.userId = props.user.userId;
-//   userInfo.value.userName = props.user.userName;
-// })
 
 const userInfo = computed(()=>{
   return props.user ? {userId: props.user.userId, userName: props.user.userName} : {userId: "", userName: ""};
@@ -30,16 +24,31 @@ const userInfo = computed(()=>{
 
 <template>
   <div class="card">
-    <img src="https://images.dog.ceo/breeds/terrier-wheaten/n02098105_2456.jpg">
+    <img v-if="!img" src="@/assets/img/no_image.png" >
+    <img v-else :src="img.saveFile">
+    
     <div>
-      <h2>{{ props.title }}</h2>
+      <div class="title-container">
+        <h2>{{ props.title }}</h2>
+        <div v-if="auth.user.id==userInfo.userId">
+          <EditIcon class="icon"/>
+          <CloseIcon class="icon"/>
+        </div>
+      </div>
       <p>{{ description }}</p>
-      <p>@{{userInfo.userName}} | {{ createtime }}</p>
+      <p>@{{userInfo.userId}} | {{ createtime }}</p>
     </div>
   </div>
 </template>
 
 <style scoped>
+
+.title-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 img {
   width: 100%;
   height: 300px;

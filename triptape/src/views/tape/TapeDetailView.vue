@@ -10,6 +10,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 const selectedRecord = ref(null);
 
+
 onMounted(async () => {
   try {
     const result = await connect({
@@ -21,9 +22,28 @@ onMounted(async () => {
   } catch (error){
     console.log(error);
   }
+
+  await onLoadMoreRecord();
 })
 
 const tape = ref({});
+
+const records = ref([]);
+const recordPage = ref(1);
+
+const onLoadMoreRecord = async () => {
+  try {
+    const result = await connect({
+      method: "GET",
+      url: `/record/search/${route.params.id}?currentPage=${recordPage.value++}`,
+    })
+    console.log(result);
+    if (result.data) records.value.push(...result.data.attraction);
+    console.log(records.value);
+  } catch (error) {
+    console.log(error);
+  } 
+}
 
 const onSelectRecord = (recordNum) => {
   selectedRecord.value = recordNum;
@@ -32,7 +52,15 @@ const onSelectRecord = (recordNum) => {
 const onUnselectRecord = () => {
   selectedRecord.value = null;
 }
+
+const reloadRecord = async () => {
+  recordPage.value = 1;
+  records.value = [];
+  await onLoadMoreRecord();
+}
+
 </script>
+
 
 
 <template>
@@ -41,12 +69,21 @@ const onUnselectRecord = () => {
   </div>
   <div class="tape-detail">
     <div class="col">
-      <RecordList :id="$route.params.id" @on-select-record="onSelectRecord"/>
+      <RecordList
+        :id="$route.params.id"
+        :records="records"
+        @on-select-record="onSelectRecord"
+        @on-load-more="onLoadMoreRecord"
+      />
     </div>
     <div class="col">
       <button class="primary-btn" @click="$router.push({name: 'attractionContainedTape'})">테이프에 포함된 장소 모아보기</button>
       <TapeInfo class="tape-info" v-bind="tape"/>
-      <CreateRecordForm :selectedRecord="selectedRecord" @on-unselect-record="onUnselectRecord"/>
+      <CreateRecordForm 
+        :selectedRecord="selectedRecord"
+        @on-unselect-record="onUnselectRecord"
+        @on-write-record="reloadRecord"
+      />
     </div>
   </div>
 </template>

@@ -11,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-	<div class="item reactive">
+	<div class="item reactive" @click="$router.push({name: 'tapeDetail', params: {id: tapeKey}})">
 		<h3>{{ title }}</h3>
 		<p>{{ description }}</p>
 	</div>

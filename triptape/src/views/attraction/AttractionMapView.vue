@@ -2,7 +2,7 @@
 import AttractionMapList from "@/components/attraction/AttractionMapList.vue";
 import SubHeading from "@/components/common/SubHeading.vue";
 import SearchBar from "@/components/common/SearchBar.vue";
-import {ref} from 'vue';
+import {ref, onMounted} from 'vue';
 import {connect} from '@/util/access.js';
 import { useRouter } from "vue-router";
 
@@ -20,6 +20,18 @@ const typeOptions = ref([
 
 ]);
 
+
+onMounted(()=>{
+  getCurCoordinate();
+})
+
+const getCurCoordinate = () => {
+  navigator.geolocation.getCurrentPosition((position)=>{
+    coord.value.lat = position.coords.latitude;
+    coord.value.lon = position.coords.longitude;
+  })
+}
+
 const options = ref([
   {name: "이름", value: "name"},
   {name: "주소", value: "address"},
@@ -28,12 +40,16 @@ const options = ref([
 
 const page = ref(1);
 const attractions = ref([]);
+const coord = ref({
+  latitude: 37.501328668708,
+  longitude: 127.03953821497
+})
 
 const onLoadMore = async () => {
   const category = searchCondition.value.category;
   const word = searchCondition.value.word;
   try {
-    const url = `/attraction/search?currentPage=${page.value++}&${category}=${word}`;
+    let url = `/attraction/search?currentPage=${page.value++}&${category}=${word}`;
     const result = await connect({
       method: "GET",
       url: url,
@@ -59,9 +75,10 @@ const onClickSearch = async (category, word) => {
 }
 
 const onClickItem = async (attraction) => {
-  // console.log(attractionId);
   router.push({name: 'attractionDetail', params:{id: attraction.attractionKey}})
 }
+
+
 
 </script>
 
