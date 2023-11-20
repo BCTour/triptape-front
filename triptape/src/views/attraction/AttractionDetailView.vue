@@ -46,6 +46,10 @@ onMounted(async () => {
     console.log(error);
   }
 });
+
+const onClickTapeItem = (key) => {
+  console.log("key : " + key) 
+}
 </script>
 
 
@@ -64,7 +68,7 @@ onMounted(async () => {
       <KakaoMap/>
     </div>
     <div class="card tape-container">
-      <TapeList :tapes="tapes"/>
+      <TapeList :tapes="tapes" @on-click-item="onClickTapeItem"/>
     </div>
     <CommentContainer />
   </div>

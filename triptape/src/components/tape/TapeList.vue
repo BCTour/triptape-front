@@ -25,11 +25,15 @@ defineProps({
 // })
 
 // const tapes = ref([])
+const emit = defineEmits(["onClickItem"]);
+const onClickItem = (key) => {
+  emit("onClickItem", key);
+}
 </script>
 
 <template>
   <div class="list scroll-view-container">
-    <TapeListItem v-for="tape in tapes" :key="tapeKey" v-bind="tape" />
+    <TapeListItem v-for="tape in tapes" :key="tapeKey" v-bind="tape" @on-click-item="onClickItem"/>
   </div>
 </template>
 
