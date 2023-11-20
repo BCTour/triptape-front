@@ -3,8 +3,11 @@ import { ref, onMounted } from 'vue';
 import SubHeading from "@/components/common/SubHeading.vue";
 import TapeHorizontalList from "@/components/tape/TapeHorizontalList.vue";
 import { connect } from "@/util/access.js";
-import axios from 'axios';
+import { useAuthStore } from "@/stores/auth.js";
+import { useLikeStore } from "@/stores/like.js";
 
+const auth = useAuthStore();
+const like = useLikeStore();
 
 const poplularTapes = ref([]);
 const recentTapes = ref([]);
@@ -37,14 +40,9 @@ const loadRecentTapes = async () => {
 
 onMounted(async () => {
 	await [loadPopularTapes(), loadRecentTapes()];
-	try {
-		const result = await axios({
-			method: "GET",
-			url: "http://localhost:8080/img/nineHeart.jpg"
-		});
-		console.log(result);
-	} catch (error) {
-		
+
+	if (localStorage.getItem("userId")) {
+		await like.loadAll();
 	}
 });
 

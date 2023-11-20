@@ -54,9 +54,6 @@ onMounted(async () => {
   } catch (error) {
     console.log(error);
   }
-
-  // 테이프 좋아요 여부 검색
-
 });
 
 const onClickTapeItem = (tapeKey) => {
