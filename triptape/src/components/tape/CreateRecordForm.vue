@@ -94,18 +94,26 @@ const onAddAttraction = async (attraction) => {
 			<button class="primary-outline-btn add-file-btn" @click="toggleModal">장소 추가</button>
 		</div>
 		<div class="card selected-attraction">
-			<h4>선택된 장소</h4>
+			<div class="row"><h4>선택된 장소</h4> <CloseIcon class="close-btn" @click="selectedAttraction = null" /></div>
 			<p v-if="selectedAttraction">{{selectedAttraction.name}}</p>
 			<p v-else>선택된 장소가 없습니다.</p>
 		</div>
 		<div class="input-box">
-			<span>이미지</span> <input type="file" @change="onFileChange"/>
+			<span>이미지</span>
+			<input type="file" @change="onFileChange"/>
+			<button class="primary-outline-btn" @click="imgFile = null">취소</button>
 		</div>
 		<button class="primary-btn" @click="onClickCreateRecord">작성하기</button>
 	</div>
 </template>
 
 <style scoped>
+.row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
 .card {
 	padding: 16px;
 }
@@ -126,7 +134,6 @@ const onAddAttraction = async (attraction) => {
 
 .close-btn {
 	width: 18px;
-	/* padding: 2px; */
 	fill: var(--caption-color)
 }
 .close-btn:hover {

@@ -1,20 +1,22 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import {connect} from '@/util/access.js';
 import EditIcon from "@/assets/icons/EditIcon.vue";
 import LikeIcon from "@/assets/icons/LikeIcon.vue";
 import CloseIcon from "@/assets/icons/CloseIcon.vue";
 import { useAuthStore } from "@/stores/auth.js";
-import { useLikeStore } from "@/stores/like";
+import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router';
+import { isLikeTape, checkLikeTape, uncheckLikeTape } from '@/util/like';
 
 const route = useRoute();
-const like = useLikeStore();
-
 const auth = useAuthStore();
+const {isLogined} = storeToRefs(auth);
+
+
 const isLikeCurTape = ref(false);
+const tapeKey = ref(null);
+
 const props = defineProps({
-  tapeKey: Number,
   createtime: String,
   description: String,
   img: Object,
@@ -27,8 +29,9 @@ const props = defineProps({
   viewNum: Number,
 })
 
-onMounted(() => {
-  isLikeCurTape.value = like.isLikeTape(route.params.id);
+onMounted(async () => {
+  tapeKey.value = route.params.id;
+  isLikeCurTape.value = await isLikeTape(tapeKey.value);
 })
 
 const userInfo = computed(() => {
@@ -36,14 +39,14 @@ const userInfo = computed(() => {
 })
 
 const onClickLike = async () => {
-  if (isLikeCurTape.value) {
-    await like.uncheckLikeTape(route.params.id);
+  if (isLikeCurTape.value){ // 좋아요 -> 안 좋아요
+    const result = await uncheckLikeTape(tapeKey.value);
+    isLikeCurTape.value = result ? false : true; 
   } else {
-    await like.checkLikeTape(route.params.id);
+    const result = await checkLikeTape(tapeKey.value);
+    isLikeCurTape.value = result ? true : false;
   }
-  isLikeCurTape.value = like.isLikeTape(route.params.id);
 }
-
 </script>
 
 <template>
@@ -56,13 +59,17 @@ const onClickLike = async () => {
           <h2>{{ props.title }}</h2>
           <div class="caption info">조회수 {{ viewNum }} | 좋아요 {{ popular }}</div>
         </div>
-        <div v-if="auth.user.id==userInfo.userId">
+        <div >
           <LikeIcon
             class="icon" :class="{'like-btn-unselected': !isLikeCurTape, 'like-btn-selected': isLikeCurTape}"
             @click="onClickLike"
+            v-if="isLogined"
           />
-          <EditIcon class="icon"/>
-          <CloseIcon class="icon"/>
+          <EditIcon class="icon" 
+            v-if="auth.user.id==userInfo.userId"
+            @click="$router.push({name: 'modifyTape', params:{id: $route.params.id}})"
+          />
+          <CloseIcon class="icon" v-if="auth.user.id==userInfo.userId"/>
         </div>
       </div>
       <p class="description">{{ description }}</p>

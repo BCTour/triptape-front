@@ -66,6 +66,11 @@ const router = createRouter({
 					path: '/tape/create',
 					name: 'createTape',
 					component: () => import("@/views/tape/CreateTapeView.vue")
+				},
+				{
+					path: '/tape/modify/:id',
+					name: 'modifyTape',
+					component: () => import("@/views/tape/ModifyTapeView.vue")
 				}
 			]
 		},
@@ -93,7 +98,7 @@ const router = createRouter({
 					path: '/user/detail',
 					name: 'userInfo',
 					component: () => import("@/views/user/UserInfoView.vue")
-				}
+				},
 			]
 		},
 		{
