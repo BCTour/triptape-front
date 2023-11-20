@@ -38,7 +38,7 @@ const onLoadMoreRecord = async () => {
       url: `/record/search/${route.params.id}?currentPage=${recordPage.value++}`,
     })
     console.log(result);
-    if (result.data) records.value.push(...result.data.attraction);
+    if (result.data) records.value.push(...result.data.record);
     console.log(records.value);
   } catch (error) {
     console.log(error);
