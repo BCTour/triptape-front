@@ -56,8 +56,8 @@ onMounted(async () => {
 	<main>
 		<div class="section">
 			<div class="card reactive">
-				<h1>나 빵먹고 싶나봐</h1>
-				<p>자꾸 빵얘기만 하네</p>
+				<h1>관리자가 지정할 수 있는 테이프 추천</h1>
+				<p>테이프 추천이 들어가는 공간입니다.</p>
 			</div>
 		</div>
 		<div class="section">
@@ -69,6 +69,12 @@ onMounted(async () => {
 		<div style="margin-bottom: 32px;">
 			<div class="sub-heading-container">
 				<SubHeading v-bind="{title: '최신 테이프', description: '방금 시작된 따끈따끈한 테이프들이에요.'}"/>
+			</div>
+			<TapeHorizontalList :tapes="recentTapes"/>
+		</div>
+		<div style="margin-bottom: 32px;">
+			<div class="sub-heading-container">
+				<SubHeading v-bind="{title: '핫 플레이스', description: '많은 사람이 좋아하는 장소예요.'}"/>
 			</div>
 			<TapeHorizontalList :tapes="recentTapes"/>
 		</div>
