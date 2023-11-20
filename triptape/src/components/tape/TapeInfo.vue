@@ -18,6 +18,7 @@ const props = defineProps({
   user: Object,
   joinNum: Number,
   popular: Number,
+  viewNum: Number,
 })
 
 const userInfo = computed(()=>{
@@ -34,7 +35,7 @@ const userInfo = computed(()=>{
       <div class="title-container">
         <div style="display: flex; flex-direction: row; align-items: baseline;">
           <h2>{{ props.title }}</h2>
-          <div class="caption info">조회수 {{ joinNum }} | 좋아요 {{ popular }}</div>
+          <div class="caption info">조회수 {{ viewNum }} | 좋아요 {{ popular }}</div>
         </div>
         <div v-if="auth.user.id==userInfo.userId">
           <LikeIcon class="icon like-btn-unselected"/>
