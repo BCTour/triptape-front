@@ -1,7 +1,7 @@
 <script setup>
 
 import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import CommentContainer from '@/components/common/CommentContainer.vue';
 import SubHeading from "@/components/common/SubHeading.vue";
 import TapeList from "@/components/tape/TapeList.vue";
@@ -10,12 +10,14 @@ import axios from "axios";
 import {connect} from "@/util/access.js";
 
 const route = useRoute();
+const router = useRouter();
 
 const imgSrc = ref("");
 const address = ref("");
 const typeName = ref("");
 const title = ref("");
 const description = ref("");
+const attraction = ref({});
 
 const tapes = ref([]);
 onMounted(async () => {
@@ -25,6 +27,7 @@ onMounted(async () => {
       url: `/attraction/info/${route.params.id}`
     })
     console.log(result);
+    attraction.value = result.data;
     address.value = result.data.address;
     typeName.value = result.data.attractionType.typeName;
     title.value = result.data.name;
@@ -47,8 +50,8 @@ onMounted(async () => {
   }
 });
 
-const onClickTapeItem = (key) => {
-  console.log("key : " + key) 
+const onClickTapeItem = (tapeKey) => {
+  router.push({name: 'tapeDetail', params: {id: tapeKey}})
 }
 </script>
 
@@ -65,7 +68,7 @@ const onClickTapeItem = (key) => {
       <h2>{{title}}</h2>
       <p class="address">{{address}}</p>
       <p class="description">{{description}}</p>
-      <KakaoMap/>
+      <KakaoMap :attractions="[attraction]"/>
     </div>
     <div class="card tape-container">
       <TapeList :tapes="tapes" @on-click-item="onClickTapeItem"/>
@@ -107,5 +110,7 @@ p {
 
 .description {
   line-height: 150%;
+  overflow-y: auto;
+  height: 200px;
 }
 </style>
