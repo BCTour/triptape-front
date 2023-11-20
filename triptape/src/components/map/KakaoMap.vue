@@ -55,14 +55,17 @@ onMounted(() => {
 watch(() => props.attractions, () => {
   console.log(props.attractions);
   positions.value = [];
-  props.attractions.forEach((attraction) => {
-    let obj = {};
-    obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
-    obj.title = attraction.name;
-    positions.value.push(obj);
-  });
-  loadMarkers();
-  
+  try {
+    props.attractions.forEach((attraction) => {
+      let obj = {};
+      obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
+      obj.title = attraction.name;
+      positions.value.push(obj);
+    });
+    loadMarkers();
+  } catch (error) {
+    
+  }
 }, {deep: true});
 
 const initMap = () => {
