@@ -59,6 +59,14 @@ const reloadRecord = async () => {
   await onLoadMoreRecord();
 }
 
+const onClickLike = async () => {
+  try {
+    
+  } catch (error) {
+    console.log(error);
+  }  
+}
+
 </script>
 
 

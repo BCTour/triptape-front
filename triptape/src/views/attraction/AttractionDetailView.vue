@@ -20,6 +20,7 @@ const description = ref("");
 const attraction = ref({});
 
 const tapes = ref([]);
+
 onMounted(async () => {
   // 장소 상세 정보 조회
   try {
@@ -43,8 +44,9 @@ onMounted(async () => {
       method: 'GET',
       url: `/tape/include/attraction?attractionKey=${route.params.id}`,
     })
-    console.log(result);
-    if (result.data) tapes.value = result.data.tape;
+    tapes.value = result.data.tape;
+    console.log(result.data.tape);
+    console.log(tapes.value);
   } catch (error) {
     console.log(error);
   }
@@ -74,7 +76,7 @@ const onClickTapeItem = (tapeKey) => {
       <h3>이 장소가 포함되어있는 테이프</h3>
       <TapeList v-if="tapes.length > 0" :tapes="tapes" @on-click-item="onClickTapeItem"/>
       <div v-else class="caption no-content">포함된 테이프가 없습니다.</div>
-      </div>
+    </div>
     <CommentContainer />
   </div>
 </template>

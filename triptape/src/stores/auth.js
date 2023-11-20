@@ -69,6 +69,10 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const getLikedTapes = async () => {
+
+  }
+
   return {
     isLogined, user,
     login, logout,
