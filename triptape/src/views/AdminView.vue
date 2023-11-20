@@ -17,7 +17,7 @@ const banner = ref({
         tapeKey: ""
     }
 })
-
+const selectedTape = ref(null);
 
 onMounted(async () => {
     await getReport();
@@ -105,67 +105,74 @@ const deleteBanner = async (bannerKey) => {
     }
 }
 
+const onClickTape = (tapeKey) => {
+    for (let i in tapes.value) {
+        if (tapes.value[i].tapeKey == tapeKey) {
+            selectedTape.value = tapes.value[i];
+        }
+    }
+    console.log(selectedTape.value)
+}
+
 </script>
 
 <template>
     <h2>관리자 관리 화면</h2>
     <div class="admin">
         <div class="card banner">
-            <div>
-                <div>
-                    <h2>배너 등록</h2>
-                    <div class="input-box">
-                        <label>제목</label>
-                        <input v-model="banner.title" type="text" placeholder="배너에 들어갈 제목을 입력해주세요." />
-                    </div>
-                    <div class="input-box">
-                        <label>설명</label>
-                        <input v-model="banner.description" placeholder="배너에 들어갈 소개를 입력해주세요." />
-                    </div>
-                    <button>배너 등록</button>
+            <div class="bannerInput">
+                <h2>배너 등록</h2>
+                <div class="input-box">
+                    <label>제목</label>
+                    <input v-model="banner.title" type="text" placeholder="배너에 들어갈 제목을 입력해주세요." />
                 </div>
-
-                <TapeList :tapes="tapes">
-
-                </TapeList>
+                <div class="input-box">
+                    <label>설명</label>
+                    <input v-model="banner.description" placeholder="배너에 들어갈 소개를 입력해주세요." />
+                </div>
+                <div>
+                    등록할 테이프명:<p v-if="selectedTape != null">{{ selectedTape.title }} </p>
+                </div>
+                <button>배너 등록</button>
+                <div v-for="banner in banners" :key="banner.bannerKey">
+                    <div>
+                        <h3>{{ banner.title }}</h3>
+                        <p class="description">{{ banner.description }}</p>
+                    </div>
+                    <h3>테이프 정보</h3>
+                    <div>
+                        <div class="content">
+                            <h3>{{ banner.tape.title }} </h3>
+                            <p class="description">{{ banner.tape.description }}</p>
+                        </div>
+                    </div>
+                    <button @click="modifyBanner(banner)">배너 수정</button>
+                    <button @click="deleteBanner(banner.bannerKey)">배너 삭제</button>
+                </div>
             </div>
 
-            <div class="card" v-for="banner in banners" :key="banner.bannerKey">
-                <div>
-                    <h3>{{ banner.title }}</h3>
-                    <p class="description">{{ banner.description }}</p>
-                </div>
-                <h3>테이프 정보</h3>
-                <div>
-                    <img v-if="!banner.tape.img.saveFile" src="../../assets/img/no_image.png">
-                    <img v-else :src="banner.tape.img.saveFile" />
-                    <div class="content">
-                        <h3>{{ banner.tape.title }} </h3>
-                        <p class="description">{{ banner.tape.description }}</p>
-                    </div>
-                </div>
-                <button @click="modifyBanner(banner)">배너 수정</button>
-                <button @click="deleteBanner(banner.bannerKey)">배너 삭제</button>
-            </div>
-        </div>
-        <div class="card attraction">
-            <h2>신고된 장소들</h2>
-            <div class="card" v-for="attraction in attractions" :key="attraction.attractionKey">
-                <div @click="onClickAttraction(attraction)">
-                    <img v-if="!attraction.img.saveFile" src="../../assets/img/no_image.png">
-                    <img v-else :src="attraction.img.saveFile" />
-                    <div class="content">
-                        <h3>{{ attraction.name }} </h3>
-                        <p class="report">신고 횟수 : {{ attraction.report }}</p>
-                        <p class="description">{{ attraction.description }}</p>
-                    </div>
-                </div>
-                <button @click="modifyAttraction(attraction)">수정</button> <button
-                    @click="deleteAttraction(attraction.attractionKey)">삭제</button>
+
+            <div class="bannerTape">
+                <TapeList :tapes="tapes" @on-click-item="onClickTape"></TapeList>
             </div>
         </div>
 
-
+    </div>
+    <div class="card attraction">
+        <h2>신고된 장소들</h2>
+        <div class="card" v-for="attraction in attractions" :key="attraction.attractionKey">
+            <div @click="onClickAttraction(attraction)">
+                <img v-if="!attraction.img.saveFile" src="../../assets/img/no_image.png">
+                <img v-else :src="attraction.img.saveFile" />
+                <div class="content">
+                    <h3>{{ attraction.name }} </h3>
+                    <p class="report">신고 횟수 : {{ attraction.report }}</p>
+                    <p class="description">{{ attraction.description }}</p>
+                </div>
+            </div>
+            <button @click="modifyAttraction(attraction)">수정</button> <button
+                @click="deleteAttraction(attraction.attractionKey)">삭제</button>
+        </div>
     </div>
 </template>
 
@@ -174,6 +181,18 @@ const deleteBanner = async (bannerKey) => {
     display: flex;
     flex-direction: column;
     height: 100%;
+}
+
+.banner {
+    flex-direction: row;
+}
+
+.bannerInput {
+    width: 50%;
+}
+
+.bannerTape {
+    width: 50%;
 }
 
 .card {
