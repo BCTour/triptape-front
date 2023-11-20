@@ -141,7 +141,7 @@ const onRegistClick = async () => {
       <input type="tel" name="tel" v-model="user.tel">
     </div>
     <div class="input-box">
-      <label for="img">전화번호</label>
+      <label for="img">프로필 이미지</label>
       <input type="file" name="img" @change="onFileChange">
     </div>
     <div class="btn-box">

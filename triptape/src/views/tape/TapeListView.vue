@@ -5,12 +5,18 @@ import TapeGridItem from "@/components/tape/TapeGridItem.vue";
 import SearchBar from "@/components/common/SearchBar.vue";
 import SubHeading from "@/components/common/SubHeading.vue";
 import { connect } from "@/util/access";
+import { storeToRefs } from 'pinia';
+import { useLikeStore } from "@/stores/like";
 
+const like = useLikeStore();
+const { likeAttractions, likeTapes, likeRecords } = storeToRefs(like);
 const router = useRouter();
 const currentPage = ref(1);
 
 onMounted( async () => {
-  await getTapes();  
+  await getTapes();
+  like.loadLikedRecord();
+  like.loadLikedTape();
 });
 
 const getTapes = async (keyword, word) => {
