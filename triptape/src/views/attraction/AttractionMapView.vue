@@ -27,8 +27,10 @@ onMounted(()=>{
 
 const getCurCoordinate = () => {
   navigator.geolocation.getCurrentPosition((position)=>{
-    coord.value.lat = position.coords.latitude;
-    coord.value.lon = position.coords.longitude;
+    coord.value.latitude = position.coords.latitude;
+    coord.value.longitude = position.coords.longitude;
+    console.log("coord : ");
+    console.log(coord.value);
   })
 }
 
@@ -49,7 +51,7 @@ const onLoadMore = async () => {
   const category = searchCondition.value.category;
   const word = searchCondition.value.word;
   try {
-    let url = `/attraction/search?currentPage=${page.value++}&${category}=${word}`;
+    let url = `/attraction/search?currentPage=${page.value++}&${category}=${word}&latitude=${coord.value.latitude}&longitude=${coord.value.longitude}`;
     const result = await connect({
       method: "GET",
       url: url,
