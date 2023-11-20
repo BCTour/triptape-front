@@ -3,10 +3,12 @@ import { ref, onMounted } from 'vue';
 import { connect } from '@/util/access.js';
 import { useRouter } from "vue-router";
 import TapeList from "@/components/tape/TapeList.vue"
+import AttractionItemList from "@/components/attraction/attractionItemList.vue"
+import BannerItemList from "@/components/banner/BannerItemList.vue";
 
 const router = useRouter();
 const userId = ref(localStorage.getItem("userId"));
-const countReport = ref(1);
+const countReport = ref(5);
 const attractions = ref([]);
 const banners = ref([]);
 const tapes = ref([]);
@@ -18,25 +20,15 @@ const banner = ref({
     }
 })
 const selectedTape = ref(null);
+const isModify = ref();
 
 onMounted(async () => {
     await getReport();
-    await getBanner();
+    // await getBanner();
     await getPopularTape();
 });
 
-const getBanner = async () => {
-    let url = `/banner/search`;
-    try {
-        const result = await connect({
-            method: "GET",
-            url: url,
-        });
-        banners.value = result.data.banner;
-    } catch (error) {
-        console.log(error);
-    }
-}
+
 
 const getPopularTape = async () => {
     let url = `/tape/search/recent/10`;
@@ -59,7 +51,7 @@ const getReport = async () => {
             method: "GET",
             url: url,
         });
-        banners.value = result.data.attraction;
+        attractions.value = result.data.attraction;
     } catch (error) {
         console.log(error);
     }
@@ -69,41 +61,75 @@ const onClickAttraction = async (attraction) => {
     router.push({ name: 'attractionDetail', params: { id: attraction.attractionKey } })
 }
 
-const modifyAttraction = async (attraction) => {
-    // 수정화면으로 넘어가게
-}
-
-const deleteAttraction = async (attractionKey) => {
-    let url = `/attraction/delete/${attractionKey}/${userId.value}`;
+const registBanner = async () => {
+    let url = `/banner/regist/${userId.value}`;
+    if (selectedTape.value == null) {
+        alert("테이프를 선택해주세요");
+        return;
+    }
     try {
         const result = await connect({
-            method: "DELETE",
+            method: "POST",
             url: url,
+            data: {
+                title: banner.value.title,
+                description: banner.value.description,
+                tape: {
+                    tapeKey: selectedTape.value.tapeKey
+                }
+            }
         });
+        await getBanner();
     } catch (error) {
+        if (error.request !== undefined && error.request.status === 409) {
+            alert("이미 배너로 등록된 테이프입니다.")
+        }
         console.log(error);
     }
 }
 
-const registBanner = async (banner) => {
-    // 등록화면으로 넘어가게
-}
-
-const modifyBanner = async (banner) => {
-    // 수정화면으로 넘어가게
-}
-
-const deleteBanner = async (bannerKey) => {
-    let url = `/banner/delete/${userId.value}?bannerKey=${bannerKey}`;
+const modifyBanner = async () => {
+    let url = `/banner/modify/${userId.value}`;
+    console.log(banner);
+    if (selectedTape.value == null) {
+        alert("테이프를 선택해주세요");
+        return;
+    }
     try {
         const result = await connect({
-            method: "DELETE",
+            method: "PUT",
             url: url,
+            data: {
+                bannerKey: isModify.value,
+                title: banner.value.title,
+                description: banner.value.description,
+                tape: {
+                    tapeKey: selectedTape.value.tapeKey
+                }
+            }
         });
+        await getBanner();
+        banner.value.title = null;
+        banner.value.description = null;
+        selectedTape.value = null;
+        isModify.value = 0;
     } catch (error) {
+        if (error.request !== undefined && error.request.status === 409) {
+            alert("이미 배너로 등록된 테이프입니다.")
+        }
         console.log(error);
     }
 }
+
+const onClickBanner = async (data, idx) => {
+    isModify.value = idx;
+    if (isModify) {
+        banner.value = data;
+        selectedTape.value = data.tape;
+    }
+}
+
+
 
 const onClickTape = (tapeKey) => {
     for (let i in tapes.value) {
@@ -114,6 +140,7 @@ const onClickTape = (tapeKey) => {
     console.log(selectedTape.value)
 }
 
+
 </script>
 
 <template>
@@ -121,7 +148,8 @@ const onClickTape = (tapeKey) => {
     <div class="admin">
         <div class="card banner">
             <div class="bannerInput">
-                <h2>배너 등록</h2>
+                <h2>메인 화면을 등록합니다.</h2>
+                <h4 v-if="isModify">#{{ isModify }}</h4>
                 <div class="input-box">
                     <label>제목</label>
                     <input v-model="banner.title" type="text" placeholder="배너에 들어갈 제목을 입력해주세요." />
@@ -131,27 +159,17 @@ const onClickTape = (tapeKey) => {
                     <input v-model="banner.description" placeholder="배너에 들어갈 소개를 입력해주세요." />
                 </div>
                 <div>
-                    등록할 테이프명:<p v-if="selectedTape != null">{{ selectedTape.title }} </p>
+                    <p v-if="selectedTape != null">
+                        등록할 테이프명:{{ selectedTape.title }}
+                    </p>
                 </div>
-                <button>배너 등록</button>
-                <div v-for="banner in banners" :key="banner.bannerKey">
-                    <div>
-                        <h3>{{ banner.title }}</h3>
-                        <p class="description">{{ banner.description }}</p>
-                    </div>
-                    <h3>테이프 정보</h3>
-                    <div>
-                        <div class="content">
-                            <h3>{{ banner.tape.title }} </h3>
-                            <p class="description">{{ banner.tape.description }}</p>
-                        </div>
-                    </div>
-                    <button @click="modifyBanner(banner)">배너 수정</button>
-                    <button @click="deleteBanner(banner.bannerKey)">배너 삭제</button>
-                </div>
+                <button v-if="!isModify" @click="registBanner">배너 등록</button>
+                <button v-if="isModify" @click="modifyBanner">배너 수정</button>
+                <button v-if="isModify" @click="onClickBanner">등록으로 전환</button>
+                <hr>
+                <h2>배너 목록</h2>
+                <BannerItemList></BannerItemList>
             </div>
-
-
             <div class="bannerTape">
                 <TapeList :tapes="tapes" @on-click-item="onClickTape"></TapeList>
             </div>
@@ -160,19 +178,8 @@ const onClickTape = (tapeKey) => {
     </div>
     <div class="card attraction">
         <h2>신고된 장소들</h2>
-        <div class="card" v-for="attraction in attractions" :key="attraction.attractionKey">
-            <div @click="onClickAttraction(attraction)">
-                <img v-if="!attraction.img.saveFile" src="../../assets/img/no_image.png">
-                <img v-else :src="attraction.img.saveFile" />
-                <div class="content">
-                    <h3>{{ attraction.name }} </h3>
-                    <p class="report">신고 횟수 : {{ attraction.report }}</p>
-                    <p class="description">{{ attraction.description }}</p>
-                </div>
-            </div>
-            <button @click="modifyAttraction(attraction)">수정</button> <button
-                @click="deleteAttraction(attraction.attractionKey)">삭제</button>
-        </div>
+        <AttractionItemList :attractions="attractions" @on-click-item="onClickAttraction" />
+        <!-- </div> -->
     </div>
 </template>
 
