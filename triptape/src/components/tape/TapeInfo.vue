@@ -6,6 +6,7 @@ import CloseIcon from "@/assets/icons/CloseIcon.vue";
 import { useAuthStore } from "@/stores/auth.js";
 
 const auth = useAuthStore();
+
 const props = defineProps({
   createtime: String,
   description: String,
@@ -35,8 +36,8 @@ const userInfo = computed(()=>{
           <CloseIcon class="icon"/>
         </div>
       </div>
-      <p>{{ description }}</p>
-      <p>@{{userInfo.userId}} | {{ createtime }}</p>
+      <p class="description">{{ description }}</p>
+      <p class="caption">@{{userInfo.userId}} | {{ createtime }}</p>
     </div>
   </div>
 </template>
@@ -48,7 +49,9 @@ const userInfo = computed(()=>{
   flex-direction: row;
   justify-content: space-between;
 }
-
+.description {
+  margin-bottom: 8px;
+}
 img {
   width: 100%;
   height: 300px;

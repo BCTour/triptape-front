@@ -71,8 +71,10 @@ const onClickTapeItem = (tapeKey) => {
       <KakaoMap :attractions="[attraction]"/>
     </div>
     <div class="card tape-container">
-      <TapeList :tapes="tapes" @on-click-item="onClickTapeItem"/>
-    </div>
+      <h3>이 장소가 포함되어있는 테이프</h3>
+      <TapeList v-if="tapes.length > 0" :tapes="tapes" @on-click-item="onClickTapeItem"/>
+      <div v-else class="caption no-content">포함된 테이프가 없습니다.</div>
+      </div>
     <CommentContainer />
   </div>
 </template>
@@ -112,5 +114,18 @@ p {
   line-height: 150%;
   overflow-y: auto;
   height: 200px;
+}
+
+.no-content {
+  display: flex;
+	width: 100%;
+	height: 100%;
+	/* text-align: center; */
+	align-items: center;
+	justify-content: center;
+}
+
+h3 {
+  margin: 16px 16px 8px 16px;
 }
 </style>
