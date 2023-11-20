@@ -60,7 +60,8 @@ body {
 }
 .icon:hover {
   cursor: pointer;
-  background-color: #BBBBBB;
+  /* background-color: #BBBBBB; */
+  transform: scale(1.05);
   border-radius: 12px;
 }
 /* form */
@@ -175,3 +176,12 @@ label.danger {
   margin-top: 4px;
 }
 
+.like-btn-unselected {
+  fill: #00000000;
+  stroke: #de3142;
+  stroke-width: 10%;
+}
+
+.like-btn-selected {
+  fill: #de3142;
+}

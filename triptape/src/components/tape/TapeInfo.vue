@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue';
 import {connect} from '@/util/access.js';
 import EditIcon from "@/assets/icons/EditIcon.vue";
+import LikeIcon from "@/assets/icons/LikeIcon.vue";
 import CloseIcon from "@/assets/icons/CloseIcon.vue";
 import { useAuthStore } from "@/stores/auth.js";
 
@@ -15,6 +16,8 @@ const props = defineProps({
   popular: String,
   title: String,
   user: Object,
+  joinNum: Number,
+  popular: Number,
 })
 
 const userInfo = computed(()=>{
@@ -27,11 +30,14 @@ const userInfo = computed(()=>{
   <div class="card">
     <img v-if="!img" src="@/assets/img/no_image.png" >
     <img v-else :src="img.saveFile">
-    
     <div>
       <div class="title-container">
-        <h2>{{ props.title }}</h2>
+        <div style="display: flex; flex-direction: row; align-items: baseline;">
+          <h2>{{ props.title }}</h2>
+          <div class="caption info">조회수 {{ joinNum }} | 좋아요 {{ popular }}</div>
+        </div>
         <div v-if="auth.user.id==userInfo.userId">
+          <LikeIcon class="icon like-btn-unselected"/>
           <EditIcon class="icon"/>
           <CloseIcon class="icon"/>
         </div>
@@ -43,7 +49,9 @@ const userInfo = computed(()=>{
 </template>
 
 <style scoped>
-
+.caption.info {
+  margin-left: 8px;
+}
 .title-container {
   display: flex;
   flex-direction: row;

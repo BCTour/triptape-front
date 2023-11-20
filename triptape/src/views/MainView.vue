@@ -26,7 +26,7 @@ const loadRecentTapes = async () => {
 	try {
 		const result = await connect({
 			method: "GET",
-			url: `/tape/search/popular/4`,
+			url: `/tape/search/recent/4`,
 		});
 		console.log(result);
 		recentTapes.value = result.data.tape;
