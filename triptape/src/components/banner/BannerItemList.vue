@@ -20,8 +20,6 @@ const getBanner = async () => {
         console.log(error);
     }
 }
-
-
 </script>
 
 <template>
