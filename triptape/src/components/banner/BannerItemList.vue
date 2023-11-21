@@ -26,7 +26,10 @@ const onDeleteBanner = async (bannerKey) => {
         console.log(error);
     }
 }
+<<<<<<< HEAD
+=======
 
+>>>>>>> 4c3d2eaae0b7509abc16beeb7930fb081be6fd1e
 </script>
 
 <template>
