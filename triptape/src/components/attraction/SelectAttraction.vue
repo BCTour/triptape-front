@@ -5,7 +5,8 @@ import CloseIcon from "@/assets/icons/CloseIcon.vue";
 import KakaoMap from "@/components/map/KakaoMap.vue";
 import AttractionItemList from "@/components/attraction/AttractionItemList.vue";
 import Modal from "@/components/common/Modal.vue";
-import CreateAttraction from "@/components/attraction/CreateAttraction.vue";
+import RegistAttraction from '@/components/attraction/RegistAttraction.vue';
+
 import SearchBar from "@/components/common/SearchBar.vue";
 import { connect } from '@/util/access.js';
 import { useRouter } from 'vue-router';
@@ -103,7 +104,7 @@ const onClickItem = async (attraction) => {
     </div>
   </div>
   <Modal v-if="isModalOpen" @close-modal="toggleModal">
-    <CreateAttraction @close-modal="toggleModal"/>
+    <RegistAttraction @close-modal="toggleModal"/>
   </Modal>
 </template>
 
