@@ -1,6 +1,8 @@
 <script setup>
 import { ref, watch, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 var map;
 const positions = ref([]);
 const markers = ref([]);
@@ -51,6 +53,35 @@ onMounted(() => {
 //   { deep: true }
 // );
 
+const makeInfo = (markerInfo) => {
+
+  const card = document.createElement("div");
+  card.classList.add("card");
+  card.classList.add("marker-info");
+
+  const markerHeader = document.createElement("div");
+  markerHeader.classList.add("marker-header");
+  markerHeader.innerHTML = markerInfo.title;
+
+  const markerBody = document.createElement("div");
+
+  const onClickDetail = async (attractionKey) => {
+    await router.push({name: 'attractionDetail', params:{id: attractionKey}})
+  }
+  const btn = document.createElement("button");
+  btn.type ="button";
+  btn.innerHTML = "자세히";
+  btn.classList.add("primary-btn");
+  btn.classList.add("marker-btn")
+  btn.addEventListener("click", () => onClickDetail(markerInfo.attractionKey)); 
+
+  card.appendChild(markerHeader);
+  card.appendChild(markerBody);
+  markerBody.appendChild(btn);
+
+  return card;
+}
+
 watch(() => props.attractions, () => {
   console.log(props.attractions);
   positions.value = [];
@@ -59,6 +90,7 @@ watch(() => props.attractions, () => {
       let obj = {};
       obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
       obj.title = attraction.name;
+      obj.key = attraction.attractionKey;
       positions.value.push(obj);
     });
     loadMarkers();
@@ -81,6 +113,8 @@ const panTo = (latitude, longitude) => {
   var moveLatLon = new kakao.maps.LatLng(latitude, longitude);
   map.panTo(moveLatLon);
 }
+
+
 const loadMarkers = () => {
   // 현재 표시되어있는 marker들이 있다면 map에 등록된 marker를 제거한다.
   deleteMarkers();
@@ -97,7 +131,7 @@ const loadMarkers = () => {
     let obj = {};
     obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
     obj.title = attraction.name;
-
+    obj.attractionKey = attraction.attractionKey;
     positions.value.push(obj);
   });
 
@@ -105,6 +139,9 @@ const loadMarkers = () => {
   markers.value = [];
 
   var overlay = null;
+
+ 
+
   positions.value.forEach((position) => {
     const marker = new kakao.maps.Marker({
       map: map, // 마커를 표시할 지도
@@ -112,9 +149,8 @@ const loadMarkers = () => {
       title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됨.
       clickable: true, // // 마커를 클릭했을 때 지도의 클릭 이벤트가 발생하지 않도록 설정합니다
       // image: markerImage, // 마커의 이미지
+      attractionKey: position.attractionKey
     });
-
-
 
     kakao.maps.event.addListener(marker, 'click', () => {
 
@@ -122,22 +158,13 @@ const loadMarkers = () => {
 
       var moveLatLon = new kakao.maps.LatLng(position.latlng.Ma, position.latlng.La);
       map.panTo(moveLatLon);
-      var content = `<div class="card">      
-                        <div class="info" style="margin:20px">
-                          <div class="title">
-                            ${marker.Gb}
-                          </div>
-                          <div class="body">
-                            <button class="primary-btn">버튼</button>
-                          </div>
-                        </div>
-                      </div>`;
+
 
       overlay = new kakao.maps.CustomOverlay({
-        content: content,
+        content: makeInfo(position),
         map: map,
         position: marker.getPosition(),
-        xAnchor: 1,
+        xAnchor: 0.5,
         yAnchor: 1.5
       });
 
@@ -154,7 +181,6 @@ const loadMarkers = () => {
       new kakao.maps.LatLngBounds()
     );
     map.setBounds(bounds);
-
   }
 };
 
@@ -163,7 +189,6 @@ const deleteMarkers = () => {
     markers.value.forEach((marker) => marker.setMap(null));
   }
 };
-
 
 
 </script>
@@ -178,5 +203,25 @@ const deleteMarkers = () => {
   height: 100%;
   border-radius: 12px;
   flex: 1;
+}
+
+.marker-info {
+  width: 150px; 
+  text-align:center;
+}
+
+.marker-header{
+  white-space: normal; 
+  padding:5px;
+  font-weight: 500;
+  margin:5px;
+}
+
+.marker-btn{
+  width:100%; 
+  height:30px; 
+  padding:3px; 
+  border-top-left-radius:0px;
+  border-top-right-radius:0px;
 }
 </style>
