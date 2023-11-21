@@ -7,8 +7,11 @@ import RegistAttraction from '@/components/attraction/RegistAttraction.vue';
 import { ref, onMounted } from 'vue';
 import { connect } from '@/util/access.js';
 import { useRouter } from "vue-router";
+import {useAuthStore} from '@/stores/auth.js'
+
 
 const router = useRouter();
+const store = useAuthStore();
 
 const isModalOpen = ref(false);
 const toggleModal = () => {
@@ -26,7 +29,6 @@ const typeOptions = ref([
   {name: "음식점", value: 7},
 
 ]);
-
 
 onMounted(()=>{
   getCurCoordinate();
@@ -105,7 +107,7 @@ const onClickItem = async (attraction) => {
     <SubHeading v-bind="{title: '관광지 목록 조회', description: '등록된 관광지 목록을 지도에 표시합니다.'}"/>
     <SearchBar :options="options" :isEnableType="true" @on-click-search="onClickSearch"/>
   </div>
-  <button class="primary-btn" @click="toggleModal">+ 새로운 관광지 추가</button>
+  <button v-if="store.isLogined" class="primary-btn" @click="toggleModal">+ 새로운 관광지 추가</button>
   <AttractionMapList 
     v-if="!isModalOpen"
     :attractions="attractions"
@@ -131,4 +133,5 @@ const onClickItem = async (attraction) => {
   /* flex-direction: column; */
   
 }
+
 </style>
