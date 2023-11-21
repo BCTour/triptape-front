@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import SubHeading from "@/components/common/SubHeading.vue";
 import TapeHorizontalList from "@/components/tape/TapeHorizontalList.vue";
+import BannerSlider from "@/components/banner/BannerSlider.vue";
 import { connect } from "@/util/access.js";
 
 
@@ -87,13 +88,8 @@ const onClickRight = () => {
 
 <template>
 	<main>
-		<div class="section slide">
-			<div class="card slide-item">
-				<div class="slide-img">
-					<img class="slide-img" v-if="bannerTapes[0].tape.img" :src="bannerTapes[0].tape.img.saveFile">
-					<img class="slide-img" v-else src="@/assets/img/no_image.png">
-				</div>
-			</div>
+		<div class="section">
+			<BannerSlider/>
 		</div>
 		<div class="section">
 			<div class="sub-heading-container">
@@ -101,13 +97,13 @@ const onClickRight = () => {
 			</div>
 			<TapeHorizontalList :tapes="poplularTapes" />
 		</div>
-		<div style="margin-bottom: 32px;">
+		<div class="section">
 			<div class="sub-heading-container">
 				<SubHeading v-bind="{ title: '최신 테이프', description: '방금 시작된 따끈따끈한 테이프들이에요.' }" />
 			</div>
 			<TapeHorizontalList :tapes="recentTapes" />
 		</div>
-		<div style="margin-bottom: 32px;">
+		<div class="section">
 			<div class="sub-heading-container">
 				<SubHeading v-bind="{ title: '핫 플레이스', description: '많은 사람이 좋아하는 장소예요.' }" />
 			</div>
@@ -125,63 +121,5 @@ const onClickRight = () => {
 	justify-content: end;
 	height: 350px;
 	border-radius: 10px;
-}
-
-.slide-img {
-	width: 100%;
-	height: 350px;
-	border-radius: 10px;
-}
-
-.slide-item {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
-	position: relative;
-	left: 0px;
-
-	width: 100%;
-	flex-shrink: 0;
-
-	transition: left 0.15s;
-}
-
-.slide_button {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	position: absolute;
-	top: calc(50% - 16px);
-
-	width: 32px;
-	height: 32px;
-
-	border-radius: 100%;
-	background-color: #cccc;
-	cursor: pointer;
-}
-
-.slide_pagination {
-	/* layout */
-	display: flex;
-	gap: 5px;
-
-	/* position */
-	position: absolute;
-	bottom: 0;
-	/* left:50%, translateX(-50%)를 하면 가로 가운데로 위치시킬 수 있다. */
-	left: 50%;
-	transform: translateX(-50%);
-	z-index: 1;
-}
-
-.slide_prev_button {
-	left: 10px;
-}
-
-.slide_next_button {
-	right: 10px;
 }
 </style>

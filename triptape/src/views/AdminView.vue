@@ -20,7 +20,9 @@ const banner = ref({
         tapeKey: ""
     }
 })
-const selectedTape = ref(null);
+const selectedTape = ref({
+    title: "",
+});
 const isModify = ref();
 
 onMounted(async () => {
@@ -79,7 +81,7 @@ const onClickAttraction = async (attraction) => {
 
 const registBanner = async () => {
     let url = `/banner/regist/${userId.value}`;
-    if (selectedTape.value == null) {
+    if (selectedTape.title == "") {
         alert("테이프를 선택해주세요");
         return;
     }
@@ -177,9 +179,7 @@ const onClickTape = (tapeKey) => {
                 </div>
                 <div class="input-box">
                     <label>등록할 테이프명</label>
-                    <div v-if="selectedTape != null">
-                        <input v-model="selectedTape.title" />
-                    </div>
+                    <input v-model="selectedTape.title" />
                 </div>
                 <button class="primary-btn" v-if="!isModify" @click="registBanner">배너 등록</button>
                 <button class="primary-btn" v-if="isModify" @click="modifyBanner">배너 수정</button>
@@ -206,7 +206,6 @@ const onClickTape = (tapeKey) => {
 .card {
     padding: 15px;
     margin-bottom: 12px;
-    height: 100%;
 }
 
 .input-box {

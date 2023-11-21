@@ -2,7 +2,12 @@
 
 import { ref, onMounted } from "vue";
 import { isLikeAttraction, checkLikeAttraction, uncheckLikeAttraction } from "@/util/like.js"
+import { useAuthStore } from "@/stores/auth.js";
+import { storeToRefs } from 'pinia';
 import LikeIcon from "@/assets/icons/LikeIcon.vue";
+
+const auth = useAuthStore();
+const { isLogined } = storeToRefs(auth);
 
 const props = defineProps({
   attractionKey: Number,
@@ -26,7 +31,7 @@ const onClickLike = async () => {
 
 onMounted(async () => {
   console.log(props);
-  isLike.value = await isLikeAttraction(props.attractionKey);
+  if (isLogined.value) isLike.value = await isLikeAttraction(props.attractionKey);
 })
 </script>
 
@@ -37,7 +42,7 @@ onMounted(async () => {
     <div class="content">
       <div class="row">
         <h3>{{name}}</h3>
-        <LikeIcon @click.stop="onClickLike" class="icon" :class="{'like-btn-unselected' : !isLike, 'like-btn-selected': isLike}"/>
+        <LikeIcon v-if="isLogined" @click.stop="onClickLike" class="icon" :class="{'like-btn-unselected' : !isLike, 'like-btn-selected': isLike}"/>
       </div>
       <p class="description">{{description}}</p>
       <p class="address">{{address}}</p>

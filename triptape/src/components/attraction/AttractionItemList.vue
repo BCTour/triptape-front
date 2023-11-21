@@ -14,7 +14,7 @@ onMounted(() => {
 
 <template>
   <div class="list scroll-view-container">
-    <div v-if="attractions.length == 0" class="no-content">등록된 장소가 없습니다.</div>
+    <div v-if="attractions && attractions.length == 0" class="no-content">등록된 장소가 없습니다.</div>
     <AttractionItem
       v-for="attraction in attractions" :key="attraction.attractionKey"
       v-bind="attraction"

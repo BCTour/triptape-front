@@ -4,7 +4,11 @@ import LikeIcon from "@/assets/icons/LikeIcon.vue";
 
 import { ref, onMounted } from 'vue';
 import { isLikeRecord, uncheckLikeRecord, checkLikeRecord } from '@/util/like';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth.js';
 
+const auth = useAuthStore();
+const { isLogined } = storeToRefs(auth);
 const props = defineProps({
   tapeKey: Number,
   recordKey: Number,
@@ -20,7 +24,7 @@ const props = defineProps({
 const isLikeCurRecord = ref(false);
 
 onMounted(async () => {
-  isLikeCurRecord.value = await isLikeRecord(props.tapeKey, props.recordKey);
+  if (isLogined.value) isLikeCurRecord.value = await isLikeRecord(props.tapeKey, props.recordKey);
 })
 
 const onClickLike = async () => {

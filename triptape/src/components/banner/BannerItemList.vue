@@ -11,7 +11,7 @@ const userId = ref(localStorage.getItem("userId"));
 const emit = defineEmits(['onClickItem', 'deleteBanner']);
 
 const onClickItem = async (banner, idx) => {
-    await emit('onClickItem', banner, idx + 1);
+    emit('onClickItem', banner, idx + 1);
 }
 
 const onDeleteBanner = async (bannerKey) => {
@@ -21,7 +21,7 @@ const onDeleteBanner = async (bannerKey) => {
             method: "DELETE",
             url: url,
         });
-        await emit('deleteBanner');
+        emit('deleteBanner');
     } catch (error) {
         console.log(error);
     }
@@ -34,7 +34,7 @@ const onDeleteBanner = async (bannerKey) => {
         <div v-if="banners == null || banners.length == 0" class="no-content">등록된 배너가 없습니다.</div>
         <div v-for="(banner, idx) in banners" :key="banner.bannerKey">
             <BannerItem :="banner" :idx="idx" @click="onClickItem(banner, idx)" />
-            <button @click="onDeleteBanner(banner.bannerKey)">배너 삭제</button>
+            <button class="primary-outline-btn" @click="onDeleteBanner(banner.bannerKey)">배너 삭제</button>
         </div>
 
     </div>

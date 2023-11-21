@@ -2,11 +2,11 @@
 import AttractionMapList from "@/components/attraction/AttractionMapList.vue";
 import SubHeading from "@/components/common/SubHeading.vue";
 import SearchBar from "@/components/common/SearchBar.vue";
-import {ref, onMounted} from 'vue';
-import {connect} from '@/util/access.js';
-import { useRouter } from "vue-router";
 import Modal from "@/components/common/Modal.vue";
 import RegistAttraction from '@/components/attraction/RegistAttraction.vue';
+import { ref, onMounted } from 'vue';
+import { connect } from '@/util/access.js';
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 

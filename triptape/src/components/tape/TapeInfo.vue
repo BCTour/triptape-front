@@ -10,7 +10,7 @@ import { isLikeTape, checkLikeTape, uncheckLikeTape } from '@/util/like';
 
 const route = useRoute();
 const auth = useAuthStore();
-const {isLogined} = storeToRefs(auth);
+const { isLogined } = storeToRefs(auth);
 
 
 const isLikeCurTape = ref(false);
@@ -31,7 +31,7 @@ const props = defineProps({
 
 onMounted(async () => {
   tapeKey.value = route.params.id;
-  isLikeCurTape.value = await isLikeTape(tapeKey.value);
+  if (isLogined.value) isLikeCurTape.value = await isLikeTape(tapeKey.value);
 })
 
 const userInfo = computed(() => {
