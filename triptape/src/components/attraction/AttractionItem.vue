@@ -15,12 +15,12 @@ const props = defineProps({
 const isLike = ref(true);
 
 const onClickLike = async () => {
-  if (isLike.value) {
+  if (isLike.value) { // 좋아요 -> 싫어요
     const result = await uncheckLikeAttraction(props.attractionKey);
-    isLike.value = result ? false : true; 
-  } else {
-    const result = await checkLikeAttraction(props.attractionKey);
     isLike.value = result ? false : true;
+  } else { // 싫어요 -> 좋아요
+    const result = await checkLikeAttraction(props.attractionKey);
+    isLike.value = result ? true : false;
   }
 }
 
@@ -32,7 +32,7 @@ onMounted(async () => {
 
 <template>
   <div class="card reactive">
-    <img v-if="!img.saveFile" src="../../assets/img/no_image.png">
+    <img v-if="!img || !img.saveFile" src="../../assets/img/no_image.png">
     <img v-else :src="img.saveFile"/>
     <div class="content">
       <div class="row">
@@ -92,5 +92,6 @@ img {
 
 .content {
   padding: 0px 8px;
+  flex: 1;
 }
 </style>

@@ -40,7 +40,6 @@ const onClickItem = async (attractionInfo) => {
   flex-direction: row;
   justify-content: space-between;
 }
-
 .col {
   box-sizing: border-box;
   width: calc(50% - 8px);

@@ -50,16 +50,63 @@ const searchDetailAddrFromCoords = (coords, callback) => {
     geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
 }
 
+const searchingAddress = ref("");
+
+const onClickAddressSearch = () => {
+  geocoder.addressSearch(searchingAddress.value, (result, status) => {
+    // 정상적으로 검색이 완료됐으면 
+    if (status === kakao.maps.services.Status.OK) {
+      var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+      if (marker) marker.setMap(null);
+      emit("onClickPoint", { latitude: result[0].y, longitude: result[0].x, address: searchingAddress.value});
+      // 결과값으로 받은 위치를 마커로 표시합니다
+      marker = new kakao.maps.Marker({
+        map: map,
+        position: coords
+      });
+
+      // 인포윈도우로 장소에 대한 설명을 표시합니다
+      // var infowindow = new kakao.maps.InfoWindow({
+      //   content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+      // });
+      // infowindow.open(map, marker);
+
+      // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+      map.setCenter(coords);
+    } 
+  });    
+}
+
 </script>
 
 <template>
-  <div id="map"></div>
+  <div class="card row">
+    <input type="text" v-model="searchingAddress"/>
+    <button class="primary-btn" @click="onClickAddressSearch">주소 검색</button>
+  </div>
+  <div id="map"> </div>
 </template>
 
-<style>
+<style scoped>
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.row > input {
+  flex: 1;
+  margin-right: 8px;
+}
+
+.card {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
 #map {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 90px);
   border-radius: 12px;
   flex: 1;
 }

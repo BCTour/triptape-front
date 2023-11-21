@@ -5,8 +5,15 @@ import SearchBar from "@/components/common/SearchBar.vue";
 import {ref, onMounted} from 'vue';
 import {connect} from '@/util/access.js';
 import { useRouter } from "vue-router";
+import Modal from "@/components/common/Modal.vue";
+import RegistAttraction from '@/components/attraction/RegistAttraction.vue';
 
 const router = useRouter();
+
+const isModalOpen = ref(false);
+const toggleModal = () => {
+  isModalOpen.value = isModalOpen.value ? false : true;
+}
 
 const typeOptions = ref([
   {name: "모두", value: null},
@@ -54,7 +61,7 @@ const onLoadMore = async () => {
 
   try {
     let url = `/attraction/search?currentPage=${page.value++}&latitude=${coord.value.latitude}&longitude=${coord.value.longitude}`;
-    if (category) url += "&${category}=${word}";
+    if (category) url += `&${category}=${word}`;
     if (type) url += `&typeCode=${type}`;
     console.log("검색 url :" + url);
 
@@ -98,12 +105,16 @@ const onClickItem = async (attraction) => {
     <SubHeading v-bind="{title: '관광지 목록 조회', description: '등록된 관광지 목록을 지도에 표시합니다.'}"/>
     <SearchBar :options="options" :isEnableType="true" @on-click-search="onClickSearch"/>
   </div>
-  <button class="primary-btn" @click="$router.push({name: 'registAttraction'})">+ 새로운 관광지 추가</button>
+  <button class="primary-btn" @click="toggleModal">+ 새로운 관광지 추가</button>
   <AttractionMapList 
+    v-if="!isModalOpen"
     :attractions="attractions"
     @on-load-more="onLoadMore"
     @on-click-item="onClickItem"
   />
+  <Modal v-if="isModalOpen" @close-modal="toggleModal">
+    <RegistAttraction @close-modal="toggleModal"/>
+  </Modal>
 </template>
 
 <style scoped>

@@ -43,14 +43,25 @@ const checkLikeAttraction = async (attractionKey) => {
 			method: 'POST',
 			url: `/attraction/like/${attractionKey}/${localStorage.getItem("userId")}`,
 		});
-
+		return true;
 	} catch (error) {
 		console.log(error);
+		if (error.request.status === 409) return true; 
+		return false;
 	}
 }
 
 const uncheckLikeAttraction = async (attractionKey) => {
-
+	try {
+		const result = await connect({
+			method: 'DELETE',
+			url: `/attraction/dislike/${attractionKey}/${localStorage.getItem("userId")}`,
+		});
+		return true;
+	} catch (error) {
+		console.log(error);
+		return false;
+	}
 }
 
 const checkLikeRecord = async (tapeKey, recordKey) => {

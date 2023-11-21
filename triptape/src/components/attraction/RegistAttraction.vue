@@ -6,6 +6,7 @@ import KakaoMapGeocoder from "@/components/map/KakaoMapGeocoder.vue";
 import SubHeading from "@/components/common/SubHeading.vue";
 import { connect } from "@/util/access.js";
 
+const emit = defineEmits("closeModal");
 
 const attractionInfo = ref({
   attractionType: {
@@ -55,6 +56,8 @@ const onClickRegist = async () => {
       data: formData,
     });
     console.log(result);
+    alert("장소 등록이 완료되었습니다.");
+    emit("closeModal");
   } catch (error) {
     console.log(error);
   }
@@ -64,9 +67,12 @@ const onClickRegist = async () => {
 <template>
   <div class="">
     <div class="sub-heading-container">
-      <SubHeading v-bind="{title: '새로운 장소 등록', description: 'asdf', isEnableBack: true}"/>
+      <SubHeading v-bind="{title: '새로운 장소 등록', description: 'asdf', isEnableBack: false}"/>
     </div>
     <div class="row">
+      <div class="col">
+        <KakaoMapGeocoder @on-click-point="onClickPoint"/>
+      </div>
       <div class="col card">
         <div class="input-box">
           <label>장소 이름</label>
@@ -81,8 +87,7 @@ const onClickRegist = async () => {
         <div class="input-box">
           <label>주소</label>
           <div class="row">
-            <input type="text" style="flex: 1" v-model="attractionInfo.address"/>
-            <button class="primary-btn" @click="">주소 검색</button>
+            <input type="text" style="flex: 1" disabled v-model="attractionInfo.address"/>
           </div>
         </div>
         <div class="input-box">
@@ -94,9 +99,6 @@ const onClickRegist = async () => {
           <input type="file" @change="(event)=>{imgFile = event.target.files[0]}"  />
         </div>
         <button class="primary-btn" @click="onClickRegist">등록</button>
-      </div>
-      <div class="col">
-        <KakaoMapGeocoder @on-click-point="onClickPoint"/>
       </div>
     </div>
   </div>
