@@ -3,6 +3,7 @@ import MainView from '@/views/MainView.vue'
 import AttractionMainView from "@/views/AttractionMainView.vue";
 import TapeMainView from "@/views/TapeMainView.vue";
 import UserMainView from "@/views/UserMainView.vue";
+import { useAuthStore } from '@/stores/auth.js';
 
 // const modalRouter = ([
 // 	{
@@ -43,7 +44,7 @@ const router = createRouter({
 				{
 					path: '/attraction/regist',
 					name: "registAttraction",
-					component: () => import("@/views/attraction/RegistAttractionView.vue")
+					component: () => import("@/views/attraction/RegistAttractionView.vue"),
 				}
 			]
 		},
@@ -70,7 +71,13 @@ const router = createRouter({
 				{
 					path: '/tape/create',
 					name: 'createTape',
-					component: () => import("@/views/tape/CreateTapeView.vue")
+					component: () => import("@/views/tape/CreateTapeView.vue"),
+					beforeEnter: (to, from) => {
+						if (!useAuthStore().isLogined) {
+							alert("로그인 후 이용가능합니다.");
+							return { name: 'login' }
+						}
+					}
 				},
 				{
 					path: '/tape/modify/:id',
@@ -83,7 +90,7 @@ const router = createRouter({
 			path: '/user',
 			name: "user",
 			component: UserMainView,
-			children : [
+			children: [
 				{
 					path: '/user/login',
 					name: "login",
@@ -102,7 +109,13 @@ const router = createRouter({
 				{
 					path: '/user/detail',
 					name: 'userInfo',
-					component: () => import("@/views/user/UserInfoView.vue")
+					component: () => import("@/views/user/UserInfoView.vue"),
+					beforeEnter: (to, from) => {
+						if (!useAuthStore().isLogined) {
+							alert("로그인 후 이용가능합니다.");
+							return { name: 'login' }
+						}
+					}
 				},
 			]
 		},
