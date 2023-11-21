@@ -2,7 +2,7 @@
 
 import { ref, onMounted } from 'vue';
 
-import KakaoMapGeocoder from "../components/map/KakaoMapGeocoder.vue";
+import KakaoMapGeocoder from "@/components/map/KakaoMapGeocoder.vue";
 import SubHeading from "@/components/common/SubHeading.vue";
 import { connect } from "@/util/access.js";
 

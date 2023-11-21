@@ -16,7 +16,7 @@ onMounted( async () => {
 
 const getTapes = async (keyword, word) => {
   let url = "/tape/search?currentPage=1";
-  if (keyword !== undefined) url += `&keyword=${keyword}&word=${word}`;
+  if (keyword) url += `&keyword=${keyword}&word=${word}`;
   try {
     const result = await connect({
       method: "GET",

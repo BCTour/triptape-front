@@ -50,8 +50,14 @@ const coord = ref({
 const onLoadMore = async () => {
   const category = searchCondition.value.category;
   const word = searchCondition.value.word;
+  const type = searchCondition.value.type;
+
   try {
-    let url = `/attraction/search?currentPage=${page.value++}&${category}=${word}&latitude=${coord.value.latitude}&longitude=${coord.value.longitude}`;
+    let url = `/attraction/search?currentPage=${page.value++}&latitude=${coord.value.latitude}&longitude=${coord.value.longitude}`;
+    if (category) url += "&${category}=${word}";
+    if (type) url += `&typeCode=${type}`;
+    console.log("검색 url :" + url);
+
     const result = await connect({
       method: "GET",
       url: url,
@@ -66,11 +72,14 @@ const onLoadMore = async () => {
 const searchCondition = ref({
   category: "",
   word: "",
+  type: "",
 })
 
-const onClickSearch = async (category, word) => {
+const onClickSearch = async (category, word, typeCode) => {
   searchCondition.value.category = category;
   searchCondition.value.word = word;
+  searchCondition.value.type = typeCode;
+
   attractions.value = [];
   page.value = 1;
   await onLoadMore();
@@ -87,8 +96,9 @@ const onClickItem = async (attraction) => {
 <template>
   <div class="sub-heading-container">
     <SubHeading v-bind="{title: '관광지 목록 조회', description: '등록된 관광지 목록을 지도에 표시합니다.'}"/>
-    <SearchBar :options="options" @on-click-search="onClickSearch"/>
+    <SearchBar :options="options" :isEnableType="true" @on-click-search="onClickSearch"/>
   </div>
+  <button class="primary-btn" @click="$router.push({name: 'registAttraction'})">+ 새로운 관광지 추가</button>
   <AttractionMapList 
     :attractions="attractions"
     @on-load-more="onLoadMore"

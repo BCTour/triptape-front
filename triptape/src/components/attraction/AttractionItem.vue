@@ -1,10 +1,32 @@
 <script setup>
-defineProps({
-  type_code: Number,
+
+import { ref, onMounted } from "vue";
+import { isLikeAttraction, checkLikeAttraction, uncheckLikeAttraction } from "@/util/like.js"
+import LikeIcon from "@/assets/icons/LikeIcon.vue";
+
+const props = defineProps({
+  attractionKey: Number,
   name: String,
   description: String,
   address: String,
   img: String,
+})
+
+const isLike = ref(true);
+
+const onClickLike = async () => {
+  if (isLike.value) {
+    const result = await uncheckLikeAttraction(props.attractionKey);
+    isLike.value = result ? false : true; 
+  } else {
+    const result = await checkLikeAttraction(props.attractionKey);
+    isLike.value = result ? false : true;
+  }
+}
+
+onMounted(async () => {
+  console.log(props);
+  isLike.value = await isLikeAttraction(props.attractionKey);
 })
 </script>
 
@@ -13,14 +35,27 @@ defineProps({
     <img v-if="!img.saveFile" src="../../assets/img/no_image.png">
     <img v-else :src="img.saveFile"/>
     <div class="content">
-      <h3>{{name}}</h3>
+      <div class="row">
+        <h3>{{name}}</h3>
+        <LikeIcon @click.stop="onClickLike" class="icon" :class="{'like-btn-unselected' : !isLike, 'like-btn-selected': isLike}"/>
+      </div>
       <p class="description">{{description}}</p>
       <p class="address">{{address}}</p>
     </div>
+    
   </div>
 </template>
 
 <style scoped>
+.icon {
+  width: 18px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 .card {
   padding: 8px;
   margin-bottom: 12px;
