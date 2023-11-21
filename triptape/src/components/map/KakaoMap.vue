@@ -27,9 +27,8 @@ onMounted(() => {
     initMap();
   } else {
     const script = document.createElement("script");
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
-      import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
-    }&libraries=services,clusterer`;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
+      }&libraries=services,clusterer`;
     /* global kakao */
     script.onload = () => kakao.maps.load(() => initMap());
     document.head.appendChild(script);
@@ -64,9 +63,9 @@ watch(() => props.attractions, () => {
     });
     loadMarkers();
   } catch (error) {
-    
+
   }
-}, {deep: true});
+}, { deep: true });
 
 const initMap = () => {
   const container = document.getElementById("map");
@@ -104,6 +103,8 @@ const loadMarkers = () => {
 
   // 마커를 생성합니다
   markers.value = [];
+
+  var overlay = null;
   positions.value.forEach((position) => {
     const marker = new kakao.maps.Marker({
       map: map, // 마커를 표시할 지도
@@ -113,21 +114,47 @@ const loadMarkers = () => {
       // image: markerImage, // 마커의 이미지
     });
 
+
+
     kakao.maps.event.addListener(marker, 'click', () => {
+
+      if (overlay) overlay.setMap(null);
+
       var moveLatLon = new kakao.maps.LatLng(position.latlng.Ma, position.latlng.La);
       map.panTo(moveLatLon);
+      var content = `<div class="card">      
+                        <div class="info" style="margin:20px">
+                          <div class="title">
+                            ${marker.Gb}
+                          </div>
+                          <div class="body">
+                            <button class="primary-btn">버튼</button>
+                          </div>
+                        </div>
+                      </div>`;
+
+      overlay = new kakao.maps.CustomOverlay({
+        content: content,
+        map: map,
+        position: marker.getPosition(),
+        xAnchor: 1,
+        yAnchor: 1.5
+      });
+
+      overlay.setMap(map);
     });
     markers.value.push(marker);
   });
 
   // 4. 지도를 이동시켜주기
   // 배열.reduce( (누적값, 현재값, 인덱스, 요소)=>{ return 결과값}, 초기값);
-  if (positions.value.length > 0){
+  if (positions.value.length > 0) {
     const bounds = positions.value.reduce(
       (bounds, position) => bounds.extend(position.latlng),
       new kakao.maps.LatLngBounds()
     );
     map.setBounds(bounds);
+
   }
 };
 
@@ -136,6 +163,9 @@ const deleteMarkers = () => {
     markers.value.forEach((marker) => marker.setMap(null));
   }
 };
+
+
+
 </script>
 
 <template>
