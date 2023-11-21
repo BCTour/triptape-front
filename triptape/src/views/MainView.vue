@@ -3,11 +3,7 @@ import { ref, onMounted } from 'vue';
 import SubHeading from "@/components/common/SubHeading.vue";
 import TapeHorizontalList from "@/components/tape/TapeHorizontalList.vue";
 import { connect } from "@/util/access.js";
-import { useAuthStore } from "@/stores/auth.js";
-import { useLikeStore } from "@/stores/like.js";
 
-const auth = useAuthStore();
-const like = useLikeStore();
 
 const poplularTapes = ref([]);
 const recentTapes = ref([]);
@@ -40,10 +36,6 @@ const loadRecentTapes = async () => {
 
 onMounted(async () => {
 	await [loadPopularTapes(), loadRecentTapes()];
-
-	if (localStorage.getItem("userId")) {
-		await like.loadAll();
-	}
 });
 
 </script>
