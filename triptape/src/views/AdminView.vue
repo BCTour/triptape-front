@@ -128,7 +128,7 @@ const modifyBanner = async () => {
         banner.value.title = null;
         banner.value.description = null;
         banner.value.bannerKey = null;
-        banner.value.tape=null;
+        banner.value.tape = null;
 
         selectedTape.value = null;
         isModify.value = 0;
@@ -183,10 +183,12 @@ const onClickTape = (tapeKey) => {
                 </div>
                 <button class="primary-btn" v-if="!isModify" @click="registBanner">배너 등록</button>
                 <button class="primary-btn" v-if="isModify" @click="modifyBanner">배너 수정</button>
-                <button class="primary-btn" style="margin-left: 5px;" v-if="isModify" @click="onClickBanner">등록으로 전환</button>
+                <button class="primary-btn" style="margin-left: 5px;" v-if="isModify" @click="onClickBanner">등록으로
+                    전환</button>
                 <hr>
                 <h3>배너 목록</h3>
-                <BannerItemList :banners="banners" @onClickItem="onClickBanner" @deleteBanner="deleteBanner"></BannerItemList>
+                <BannerItemList :banners="banners" @onClickItem="onClickBanner" @deleteBanner="deleteBanner">
+                </BannerItemList>
             </div>
             <div class="bannerTape">
                 <TapeList :tapes="tapes" @on-click-item="onClickTape"></TapeList>
@@ -196,7 +198,6 @@ const onClickTape = (tapeKey) => {
         <div class="card attraction">
             <h3>신고된 장소들</h3>
             <AttractionItemList :attractions="attractions" @on-click-item="onClickAttraction" />
-            <!-- </div> -->
         </div>
     </div>
 </template>
@@ -232,6 +233,4 @@ const onClickTape = (tapeKey) => {
 .bannerTape {
     width: 50%;
 }
-
-
 </style>
