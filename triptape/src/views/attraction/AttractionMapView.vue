@@ -6,12 +6,6 @@ import {ref, onMounted} from 'vue';
 import {connect} from '@/util/access.js';
 import { useRouter } from "vue-router";
 
-import { storeToRefs } from 'pinia';
-import { useLikeStore } from "@/stores/like";
-
-const like = useLikeStore();
-const { likeAttractions, likeTapes, likeRecords } = storeToRefs(like);
-
 const router = useRouter();
 
 const typeOptions = ref([

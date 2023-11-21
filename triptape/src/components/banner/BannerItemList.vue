@@ -1,33 +1,48 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import BannerItem from "./BannerItem.vue";
+import {ref} from 'vue'
 import { connect } from '@/util/access.js';
-const banners = ref([]);
+import BannerItem from "./BannerItem.vue";
 
-onMounted(async () => {
-    await getBanner();
+defineProps({
+    banners: Array       
 });
 
-const getBanner = async () => {
-    let url = `/banner/search`;
+const userId = ref(localStorage.getItem("userId"));
+const emit = defineEmits(['onClickItem', 'deleteBanner']);
+
+const onClickItem = async (banner, idx) => {
+    await emit('onClickItem', banner, idx+1);
+}
+
+const onDeleteBanner = async (bannerKey) => {
+    let url = `/banner/delete/${userId.value}?bannerKey=${bannerKey}`;
     try {
         const result = await connect({
-            method: "GET",
+            method: "DELETE",
             url: url,
         });
-        banners.value = result.data.banner;
+        await emit('deleteBanner');
     } catch (error) {
         console.log(error);
     }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4c3d2eaae0b7509abc16beeb7930fb081be6fd1e
 </script>
 
 <template>
     <div class="list">
-        <div v-if="banners.length == 0" class="no-content">등록된 배너가 없습니다.</div>
-        <BannerItem v-for="banner, idx in banners" :key="banner.bannerKey" :="banner" :idx="idx"
-            @click="$emit('onClickBanner', banner, idx + 1)">
-        </BannerItem>
+        <div v-if="banners == null || banners.length== 0" class="no-content">등록된 배너가 없습니다.</div>
+        <div v-for="(banner, idx) in banners" :key="banner.bannerKey" >
+            <BannerItem 
+                :="banner" :idx="idx"
+                @click="onClickItem(banner, idx)"
+            />
+            <button @click="onDeleteBanner(banner.bannerKey)">배너 삭제</button>
+        </div>
+        
     </div>
 </template>
 

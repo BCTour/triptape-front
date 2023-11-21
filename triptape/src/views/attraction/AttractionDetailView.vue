@@ -6,13 +6,8 @@ import CommentContainer from '@/components/common/CommentContainer.vue';
 import SubHeading from "@/components/common/SubHeading.vue";
 import TapeList from "@/components/tape/TapeList.vue";
 import KakaoMap from "@/components/map/KakaoMap.vue";
-import axios from "axios";
 import {connect} from "@/util/access.js";
-import { storeToRefs } from 'pinia';
-import { useLikeStore } from "@/stores/like";
 
-const like = useLikeStore();
-const { likeAttractions, likeTapes, likeRecords } = storeToRefs(like);
 const route = useRoute();
 const router = useRouter();
 
@@ -48,15 +43,10 @@ onMounted(async () => {
       method: 'GET',
       url: `/tape/include/attraction?attractionKey=${route.params.id}`,
     })
-    tapes.value = result.data.tape;
-    console.log(result.data.tape);
-    console.log(tapes.value);
+    if (result.data && result.data.tape) tapes.value = result.data.tape;
   } catch (error) {
     console.log(error);
   }
-
-  // 테이프 좋아요 여부 검색
-
 });
 
 const onClickTapeItem = (tapeKey) => {

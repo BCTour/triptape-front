@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue';
 import SubHeading from "@/components/common/SubHeading.vue";
 import TapeHorizontalList from "@/components/tape/TapeHorizontalList.vue";
 import { connect } from "@/util/access.js";
-import axios from 'axios';
 
 
 const poplularTapes = ref([]);
@@ -37,15 +36,6 @@ const loadRecentTapes = async () => {
 
 onMounted(async () => {
 	await [loadPopularTapes(), loadRecentTapes()];
-	try {
-		const result = await axios({
-			method: "GET",
-			url: "http://localhost:8080/img/nineHeart.jpg"
-		});
-		console.log(result);
-	} catch (error) {
-		
-	}
 });
 
 </script>

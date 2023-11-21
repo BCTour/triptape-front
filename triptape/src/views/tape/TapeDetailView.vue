@@ -24,6 +24,7 @@ onMounted(async () => {
   }
 
   await onLoadMoreRecord();
+  
 })
 
 const tape = ref({});

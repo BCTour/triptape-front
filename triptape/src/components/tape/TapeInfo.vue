@@ -1,12 +1,20 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import {connect} from '@/util/access.js';
 import EditIcon from "@/assets/icons/EditIcon.vue";
 import LikeIcon from "@/assets/icons/LikeIcon.vue";
 import CloseIcon from "@/assets/icons/CloseIcon.vue";
 import { useAuthStore } from "@/stores/auth.js";
+import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
+import { isLikeTape, checkLikeTape, uncheckLikeTape } from '@/util/like';
 
+const route = useRoute();
 const auth = useAuthStore();
+const {isLogined} = storeToRefs(auth);
+
+
+const isLikeCurTape = ref(false);
+const tapeKey = ref(null);
 
 const props = defineProps({
   createtime: String,
@@ -21,10 +29,24 @@ const props = defineProps({
   viewNum: Number,
 })
 
-const userInfo = computed(()=>{
+onMounted(async () => {
+  tapeKey.value = route.params.id;
+  isLikeCurTape.value = await isLikeTape(tapeKey.value);
+})
+
+const userInfo = computed(() => {
   return props.user ? {userId: props.user.userId, userName: props.user.userName} : {userId: "", userName: ""};
 })
 
+const onClickLike = async () => {
+  if (isLikeCurTape.value){ // 좋아요 -> 안 좋아요
+    const result = await uncheckLikeTape(tapeKey.value);
+    isLikeCurTape.value = result ? false : true; 
+  } else {
+    const result = await checkLikeTape(tapeKey.value);
+    isLikeCurTape.value = result ? true : false;
+  }
+}
 </script>
 
 <template>
@@ -37,10 +59,17 @@ const userInfo = computed(()=>{
           <h2>{{ props.title }}</h2>
           <div class="caption info">조회수 {{ viewNum }} | 좋아요 {{ popular }}</div>
         </div>
-        <div v-if="auth.user.id==userInfo.userId">
-          <LikeIcon class="icon like-btn-unselected"/>
-          <EditIcon class="icon"/>
-          <CloseIcon class="icon"/>
+        <div >
+          <LikeIcon
+            class="icon" :class="{'like-btn-unselected': !isLikeCurTape, 'like-btn-selected': isLikeCurTape}"
+            @click="onClickLike"
+            v-if="isLogined"
+          />
+          <EditIcon class="icon" 
+            v-if="auth.user.id==userInfo.userId"
+            @click="$router.push({name: 'modifyTape', params:{id: $route.params.id}})"
+          />
+          <CloseIcon class="icon" v-if="auth.user.id==userInfo.userId"/>
         </div>
       </div>
       <p class="description">{{ description }}</p>
