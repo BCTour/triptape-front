@@ -72,33 +72,26 @@ const slideCoord = ref(-300);
 
 
 const onClickRight = () => {
-	console.log(current);
-	current += 1;
-	setTransition('transform 0.3s linear');
-	setTranslate({ index: current });
-	if (current > lastIndex) {
-		current = 0;
-		setTimeout(() => {
-			setTransition('');
-			setTranslate({ index: current });
-		}, 300);
-	}
-	if (current <= lastIndex) activePagination(current);
+	slideCoord = this.slideCoord - 300
+
+	// transitionOn은 true로 
+	this.transitionOn = true
+
+	// 0.5초 뒤에 배열의 순서를 바꾸고 slideCoord값을 다시 초기 값으로 설정
+	// 이때만 transition을 off하여 움직이지 않는 것 처럼 눈속임한다.
+	// 여기 setTimeout의 delay 시간은 css의 transition의 duration과 같게 설정해야한다.
+	setTimeout(this.resetCardArrayToRight, 500)
 };
 </script>
-
 
 
 <template>
 	<main>
 		<div class="section slide">
 			<div class="card slide-item">
-				<div class="slide" :class="{ 'slide- active': transitionOn }"
-					:style="{ transform: 'translate3d(' + slideCoord + 'px, 0, 0)', }">
-					<div v-for="bannerTape in bannerTapes" :key="bannerTape.bannerKey">
-						<img class="slide-img" v-if="bannerTape.tape.img" :src="bannerTape.tape.img.saveFile">
-						<img class="slide-img" v-else src="@/assets/img/no_image.png">
-					</div>
+				<div class="slide-img">
+					<img class="slide-img" v-if="bannerTapes[0].tape.img" :src="bannerTapes[0].tape.img.saveFile">
+					<img class="slide-img" v-else src="@/assets/img/no_image.png">
 				</div>
 			</div>
 		</div>
@@ -134,17 +127,9 @@ const onClickRight = () => {
 	border-radius: 10px;
 }
 
-.slide {
-	display: flex;
-	flex-wrap: nowrap;
-	overflow: hidden;
-	position: relative;
-}
-
 .slide-img {
 	width: 100%;
-	height: 100%;
-	object-fit: cover;
+	height: 350px;
 	border-radius: 10px;
 }
 
