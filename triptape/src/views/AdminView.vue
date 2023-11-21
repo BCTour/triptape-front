@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { connect } from '@/util/access.js';
 import { useRouter } from "vue-router";
-import TapeList from "@/components/tape/TapeList.vue"
+import TapeTable from "@/components/tape/TapeTable.vue"
 import AttractionItemList from "@/components/attraction/attractionItemList.vue"
 import BannerItemList from "@/components/banner/BannerItemList.vue";
 
@@ -127,12 +127,12 @@ const modifyBanner = async () => {
         });
         await getBanner();
 
-        banner.value.title = null;
-        banner.value.description = null;
-        banner.value.bannerKey = null;
-        banner.value.tape = null;
+        banner.value.title = "";
+        banner.value.description = "";
+        banner.value.bannerKey = "";
+        banner.value.tape = "";
 
-        selectedTape.value = null;
+        selectedTape.value.title = "";
         isModify.value = 0;
     } catch (error) {
         if (error.request !== undefined && error.request.status === 409) {
@@ -179,7 +179,8 @@ const onClickTape = (tapeKey) => {
                 </div>
                 <div class="input-box">
                     <label>등록할 테이프명</label>
-                    <input v-model="selectedTape.title" />
+                    <input v-if="selectedTape.title" v-model="selectedTape.title" />
+                    <input v-else disabled />
                 </div>
                 <button class="primary-btn" v-if="!isModify" @click="registBanner">배너 등록</button>
                 <button class="primary-btn" v-if="isModify" @click="modifyBanner">배너 수정</button>
@@ -191,7 +192,7 @@ const onClickTape = (tapeKey) => {
                 </BannerItemList>
             </div>
             <div class="bannerTape">
-                <TapeList :tapes="tapes" @on-click-item="onClickTape"></TapeList>
+                <TapeTable :tapes="tapes" @on-click-item="onClickTape"></TapeTable>
             </div>
         </div>
 

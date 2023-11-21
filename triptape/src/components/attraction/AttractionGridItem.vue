@@ -1,30 +1,24 @@
 <script setup>
 
 defineProps({
-  title: String,
-  tapeKey: Number,
+	name: String,
+  attractionKey: Number,
   description: String,
+  address: String,
   img: Object,
-  joinNum: Number,
-  viewNum: Number,
-  popular: Number,
-  user : {
-    userId: String,
-    userName: String,
-  }
 })
 </script>
 
 <template>
   <div class="card reactive">
-		<img v-if="img" :src="img.saveFile">
+    <img v-if="img" :src="img.saveFile">
     <img v-else src="@/assets/img/no_image.png">
 		<div class="content">
-			<h3>{{ title }}</h3>
-			<div class="text-box">
+			<h3>{{ name }}</h3>
+			<div class="description">
 				{{ description }}
 			</div>
-      <div class="caption">♥ {{ popular }} | 조회수 {{ viewNum }} | 레코드 {{ joinNum }}개</div>
+			<p class="caption">{{ address }}</p>
 		</div>
   </div>
 </template>
@@ -38,25 +32,27 @@ defineProps({
   padding: 8px;
 }
 
+.description {
+	display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+	line-height: 140%;
+}
 img {
   box-sizing: border-box;
   width: 100%;
   height: 200px;
   object-fit: cover;
   border-radius: 12px 12px 12px 12px;
-	margin-bottom: 8px;
+	margin-bottom: 16px;
 	
 }
 .content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
 	padding: 8px;
 }
 .text-box {
   width: 100%;
-  flex: 1;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;

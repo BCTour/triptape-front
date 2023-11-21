@@ -2,12 +2,14 @@
 import { ref, onMounted } from 'vue';
 import SubHeading from "@/components/common/SubHeading.vue";
 import TapeHorizontalList from "@/components/tape/TapeHorizontalList.vue";
+import AttractionHorizontalList from "@/components/attraction/AttractionHorizontalList.vue";
 import BannerSlider from "@/components/banner/BannerSlider.vue";
 import { connect } from "@/util/access.js";
 
 
 const poplularTapes = ref([]);
 const recentTapes = ref([]);
+const popularAttractions = ref([]);
 const bannerTapes = ref([
 	{
 		bannerKey: Number,
@@ -29,7 +31,7 @@ const loadPopularTapes = async () => {
 			url: `/tape/search/popular/4`,
 		});
 		console.log(result);
-		poplularTapes.value = result.data.tape;
+		if (result.data.tape)	poplularTapes.value = result.data.tape;
 	} catch (error) {
 		console.log(error);
 	}
@@ -42,7 +44,19 @@ const loadRecentTapes = async () => {
 			url: `/tape/search/recent/4`,
 		});
 		console.log(result);
-		recentTapes.value = result.data.tape;
+		if (result.data.tape) recentTapes.value = result.data.tape;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+const loadPopularAttractions = async () => {
+	try {
+		const result = await connect({
+			method: 'GET',
+			url: `/attraction/popular/4`,
+		});
+		if (result.data.attraction) popularAttractions.value = result.data.attraction;
 	} catch (error) {
 		console.log(error);
 	}
@@ -64,7 +78,7 @@ const loadBanner = async () => {
 
 
 onMounted(async () => {
-	await [loadPopularTapes(), loadRecentTapes(), loadBanner()];
+	await [loadPopularTapes(), loadRecentTapes(), loadBanner(), loadPopularAttractions()];
 });
 
 const current = ref(0);
@@ -107,7 +121,7 @@ const onClickRight = () => {
 			<div class="sub-heading-container">
 				<SubHeading v-bind="{ title: '핫 플레이스', description: '많은 사람이 좋아하는 장소예요.' }" />
 			</div>
-			<TapeHorizontalList :tapes="recentTapes" />
+			<AttractionHorizontalList :attractions="popularAttractions" />
 		</div>
 	</main>
 </template>

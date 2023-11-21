@@ -4,9 +4,11 @@ import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import CommentContainer from '@/components/common/CommentContainer.vue';
 import SubHeading from "@/components/common/SubHeading.vue";
-import TapeList from "@/components/tape/TapeList.vue";
+import TapeTable from "@/components/tape/TapeTable.vue";
 import KakaoMap from "@/components/map/KakaoMap.vue";
+import LikeIcon from "@/assets/icons/LikeIcon.vue";
 import {connect} from "@/util/access.js";
+import {isLikeAttraction, checkLikeAttraction, uncheckLikeAttraction} from "@/util/like.js";
 
 const route = useRoute();
 const router = useRouter();
@@ -19,9 +21,15 @@ const description = ref("");
 const attraction = ref({});
 
 const tapes = ref([]);
+const isLike = ref(false);
 
 onMounted(async () => {
-  // 장소 상세 정보 조회
+  loadAttractionInfo();
+  loadTapeLists();
+  isLike.value = await isLikeAttraction(route.params.id);
+});
+
+const loadAttractionInfo = async () => {
   try {
     const result = await connect({
       url: `/attraction/info/${route.params.id}`
@@ -36,8 +44,9 @@ onMounted(async () => {
   } catch (error) {
     console.log(error);
   }
+}
 
-  // 테이프 리스트 조회
+const loadTapeLists = async () => {
   try {
     const result = await connect({
       method: 'GET',
@@ -47,10 +56,20 @@ onMounted(async () => {
   } catch (error) {
     console.log(error);
   }
-});
+}
 
 const onClickTapeItem = (tapeKey) => {
   router.push({name: 'tapeDetail', params: {id: tapeKey}})
+}
+
+const onClickLike = async () => {
+  if (isLike.value) { // 좋아요 -> 취소
+    const result = await uncheckLikeAttraction(route.params.id);
+    isLike.value = result ? false : true;
+  } else {
+    const result = await checkLikeAttraction(route.params.id);
+    isLike.value = result ? true : false;
+  }
 }
 </script>
 
@@ -64,14 +83,21 @@ const onClickTapeItem = (tapeKey) => {
       <img v-if="imgSrc" class="attraction-img" :src="imgSrc">
       <img v-else class="attraction-img" src="@/assets/img/no_image.png">
       <p class="caption">{{ typeName }}</p>
-      <h2>{{title}}</h2>
+      <div class="row">
+        <h2>{{title}}</h2>
+        <LikeIcon
+          class="icon" :class="{'like-btn-unselected': !isLike, 'like-btn-selected': isLike}"
+          @click="onClickLike"
+        />
+          <!-- v-if="isLogined" -->
+      </div>
       <p class="address">{{address}}</p>
       <p class="description">{{description}}</p>
       <KakaoMap :attractions="[attraction]"/>
     </div>
     <div class="card tape-container">
       <h3>이 장소가 포함되어있는 테이프</h3>
-      <TapeList v-if="tapes.length > 0" :tapes="tapes" @on-click-item="onClickTapeItem"/>
+      <TapeTable v-if="tapes.length > 0" :tapes="tapes" @on-click-item="onClickTapeItem"/>
       <div v-else class="caption no-content">포함된 테이프가 없습니다.</div>
     </div>
     <CommentContainer />
@@ -79,6 +105,15 @@ const onClickTapeItem = (tapeKey) => {
 </template>
 
 <style scoped>
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+img {
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
 .detail-container {
   display: flex;
   flex-direction: row;

@@ -16,7 +16,6 @@ const connect = async ({ method, url, data, headers }) => {
           },
           data,
         });
-        console.log(result);
         resolve(result); // 성공시 결과 resolve
         return;
       } catch (error) {

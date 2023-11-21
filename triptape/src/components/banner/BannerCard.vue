@@ -1,7 +1,5 @@
 <script setup>
-
 const props = defineProps({
-  tape: Object,
   title: String,
   description: String,
   imgSrc: String,
@@ -11,7 +9,7 @@ const src = "https://images.dog.ceo/breeds/terrier-australian/n02096294_7317.jpg
 </script>
 
 <template>
-  <div class="card" :style="{'background-image': `url(${imgSrc})`}">
+  <div @click="console.log(imgSrc)" class="card" :style="{'background-image': `url(${imgSrc})`}">
     <h1 class="text">{{ title }}</h1>
     <p class="text">{{ description }}</p>
   </div>

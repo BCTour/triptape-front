@@ -13,14 +13,18 @@ defineProps({
 <template>
 	<!-- <div class="item reactive" @click="$router.push({name: 'tapeDetail', params: {id: tapeKey}})"> -->
 	<div class="item reactive" @click="$emit('onClickItem', tapeKey)">
-		<h3>{{ title }}</h3>
-		<p>{{ description }}</p>
+		<p class="title">{{ title }}</p>
+		<p class="caption">{{ description }}</p>
 	</div>
 </template>
 
 <style scoped>
+.title {
+	font-weight: 700;
+	margin-bottom: 8px;
+}
 .item {
 	border-bottom: 1px solid #DDDDDD;
-	padding: 16px;
+	padding: 8px;
 }
 </style>
