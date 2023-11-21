@@ -129,7 +129,7 @@ const loadMarkers = () => {
     obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
     obj.title = attraction.name;
     obj.attractionKey = attraction.attractionKey;
-    obj.type = attraction.attractionType.typeCode;
+    // obj.type = attraction.attractionType.typeCode;
     positions.value.push(obj);
   });
 

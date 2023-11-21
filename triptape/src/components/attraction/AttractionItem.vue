@@ -30,7 +30,6 @@ const onClickLike = async () => {
 }
 
 onMounted(async () => {
-  console.log(props);
   if (isLogined.value) isLike.value = await isLikeAttraction(props.attractionKey);
 })
 </script>
