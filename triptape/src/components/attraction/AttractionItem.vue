@@ -15,17 +15,21 @@ const props = defineProps({
   description: String,
   address: String,
   img: String,
+  popular: Number
 })
 
 const isLike = ref(true);
+const popularNum = ref(props.popular);
 
 const onClickLike = async () => {
   if (isLike.value) { // 좋아요 -> 싫어요
     const result = await uncheckLikeAttraction(props.attractionKey);
     isLike.value = result ? false : true;
+    popularNum.value -= 1;
   } else { // 싫어요 -> 좋아요
     const result = await checkLikeAttraction(props.attractionKey);
     isLike.value = result ? true : false;
+    popularNum.value += 1;
   }
 }
 
@@ -37,16 +41,20 @@ onMounted(async () => {
 <template>
   <div class="card reactive">
     <img v-if="!img || !img.saveFile" src="../../assets/img/no_image.png">
-    <img v-else :src="img.saveFile"/>
+    <img v-else :src="img.saveFile" />
     <div class="content">
       <div class="row">
-        <h3>{{name}}</h3>
-        <LikeIcon v-if="isLogined" @click.stop="onClickLike" class="icon" :class="{'like-btn-unselected' : !isLike, 'like-btn-selected': isLike}"/>
+        <h3>{{ name }}</h3>
+        <div style="display: flex;">
+          <LikeIcon v-if="isLogined" @click.stop="onClickLike" class="icon"
+            :class="{ 'like-btn-unselected': !isLike, 'like-btn-selected': isLike }" />
+          <p class="popular">{{ popularNum }}</p>
+        </div>
       </div>
-      <p class="description">{{description}}</p>
-      <p class="address">{{address}}</p>
+      <p class="description">{{ description }}</p>
+      <p class="address">{{ address }}</p>
     </div>
-    
+
   </div>
 </template>
 
@@ -54,12 +62,14 @@ onMounted(async () => {
 .icon {
   width: 18px;
 }
+
 .row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
+
 .card {
   padding: 8px;
   margin-bottom: 12px;
@@ -74,6 +84,7 @@ img {
   object-fit: cover;
   border-radius: 12px;
 }
+
 .category {
   color: var(--caption-color);
   font-size: small;
@@ -85,10 +96,11 @@ img {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-	line-height: 140%;
+  line-height: 140%;
   font-size: smaller;
   margin-bottom: 8px;
 }
+
 .address {
   color: var(--caption-color);
   font-size: small;
@@ -97,5 +109,11 @@ img {
 .content {
   padding: 0px 8px;
   flex: 1;
+}
+
+.popular {
+  line-height: 220%;
+  color: var(--caption-color);
+  font-size: smaller;
 }
 </style>

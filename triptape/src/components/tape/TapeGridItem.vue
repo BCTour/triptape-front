@@ -8,7 +8,7 @@ defineProps({
   joinNum: Number,
   viewNum: Number,
   popular: Number,
-  user : {
+  user: {
     userId: String,
     userName: String,
   }
@@ -17,23 +17,23 @@ defineProps({
 
 <template>
   <div class="card reactive">
-		<img v-if="img" :src="img.saveFile">
+    <img v-if="img" :src="img.saveFile">
     <img v-else src="@/assets/img/no_image.png">
-		<div class="content">
-			<h3>{{ title }}</h3>
-			<div class="text-box">
-				{{ description }}
-			</div>
+    <div class="content">
+      <h3>{{ title }}</h3>
+      <div class="text-box">
+        {{ description }}
+      </div>
       <div class="caption">♥ {{ popular }} | 조회수 {{ viewNum }} | 레코드 {{ joinNum }}개</div>
-		</div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .card {
   width: calc(25% - 48px);
-	/* width: 22.5%; */
-	height: 320px;
+  /* width: 22.5%; */
+  height: 320px;
   margin: 16px 32px 16px 0px;
   padding: 8px;
 }
@@ -44,16 +44,18 @@ img {
   height: 200px;
   object-fit: cover;
   border-radius: 12px 12px 12px 12px;
-	margin-bottom: 8px;
-	
+  margin-bottom: 8px;
+
 }
+
 .content {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: start;
-	padding: 8px;
+  padding: 8px;
 }
+
 .text-box {
   width: 100%;
   flex: 1;
@@ -61,7 +63,7 @@ img {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-	line-height: 140%;
+  line-height: 140%;
   color: var(--caption-color);
   font-size: smaller;
 }

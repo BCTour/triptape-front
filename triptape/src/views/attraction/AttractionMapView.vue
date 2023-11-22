@@ -7,7 +7,7 @@ import RegistAttraction from '@/components/attraction/RegistAttraction.vue';
 import { ref, onMounted } from 'vue';
 import { connect } from '@/util/access.js';
 import { useRouter } from "vue-router";
-import {useAuthStore} from '@/stores/auth.js'
+import { useAuthStore } from '@/stores/auth.js'
 
 
 const router = useRouter();
@@ -19,23 +19,23 @@ const toggleModal = () => {
 }
 
 const typeOptions = ref([
-  {name: "모두", value: null},
-  {name: "관광지", value: 1},
-  {name: "문화시설", value: 2},
-  {name: "여행코스", value: 3},
-  {name: "레포츠", value: 4},
-  {name: "숙박", value: 5},
-  {name: "쇼핑", value: 6},
-  {name: "음식점", value: 7},
+  { name: "모두", value: null },
+  { name: "관광지", value: 1 },
+  { name: "문화시설", value: 2 },
+  { name: "여행코스", value: 3 },
+  { name: "레포츠", value: 4 },
+  { name: "숙박", value: 5 },
+  { name: "쇼핑", value: 6 },
+  { name: "음식점", value: 7 },
 
 ]);
 
-onMounted(()=>{
+onMounted(() => {
   getCurCoordinate();
 })
 
 const getCurCoordinate = () => {
-  navigator.geolocation.getCurrentPosition((position)=>{
+  navigator.geolocation.getCurrentPosition((position) => {
     coord.value.latitude = position.coords.latitude;
     coord.value.longitude = position.coords.longitude;
     console.log("coord : ");
@@ -44,8 +44,8 @@ const getCurCoordinate = () => {
 }
 
 const options = ref([
-  {name: "이름", value: "name"},
-  {name: "주소", value: "address"},
+  { name: "이름", value: "name" },
+  { name: "주소", value: "address" },
   // {name: "설명", value: "description"},
 ]);
 
@@ -95,7 +95,7 @@ const onClickSearch = async (category, word, typeCode) => {
 }
 
 const onClickItem = async (attraction) => {
-  router.push({name: 'attractionDetail', params:{id: attraction.attractionKey}})
+  router.push({ name: 'attractionDetail', params: { id: attraction.attractionKey } })
 }
 
 
@@ -104,18 +104,14 @@ const onClickItem = async (attraction) => {
 
 <template>
   <div class="sub-heading-container">
-    <SubHeading v-bind="{title: '관광지 목록 조회', description: '등록된 관광지 목록을 지도에 표시합니다.'}"/>
-    <SearchBar :options="options" :isEnableType="true" @on-click-search="onClickSearch"/>
+    <SubHeading v-bind="{ title: '관광지 목록 조회', description: '등록된 관광지 목록을 지도에 표시합니다.' }" />
+    <SearchBar :options="options" :isEnableType="true" @on-click-search="onClickSearch" />
   </div>
   <button v-if="store.isLogined" class="primary-btn" @click="toggleModal">+ 새로운 관광지 추가</button>
-  <AttractionMapList 
-    v-if="!isModalOpen"
-    :attractions="attractions"
-    @on-load-more="onLoadMore"
-    @on-click-item="onClickItem"
-  />
+  <AttractionMapList v-if="!isModalOpen" :attractions="attractions" @on-load-more="onLoadMore"
+    @on-click-item="onClickItem" />
   <Modal v-if="isModalOpen" @close-modal="toggleModal">
-    <RegistAttraction @close-modal="toggleModal"/>
+    <RegistAttraction @close-modal="toggleModal" />
   </Modal>
 </template>
 
@@ -131,7 +127,6 @@ const onClickItem = async (attraction) => {
   width: calc(50% - 8px);
   /* display: flex; */
   /* flex-direction: column; */
-  
-}
 
+}
 </style>
