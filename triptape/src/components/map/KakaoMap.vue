@@ -62,6 +62,7 @@ const makeInfo = (markerInfo) => {
 
   const markerHeader = document.createElement("div");
   markerHeader.classList.add("marker-header");
+  const markerH3 = document.createElement("h3");
   markerHeader.innerHTML = markerInfo.title;
 
   const markerBody = document.createElement("div");

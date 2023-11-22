@@ -23,13 +23,13 @@ const attractionInfo = ref({
 let imgFile = null;
 
 const options = ref([
-  {name: "관광지",    value: 1 },
-  {name: "문화시설",  value: 2 },
-  {name: "여행코스",  value: 3 },
-  {name: "레포츠",    value: 4 },
-  {name: "숙박",      value: 5 },
-  {name: "쇼핑",      value: 6 },
-  {name: "음식점",    value: 7 },
+  { name: "관광지", value: 1 },
+  { name: "문화시설", value: 2 },
+  { name: "여행코스", value: 3 },
+  { name: "레포츠", value: 4 },
+  { name: "숙박", value: 5 },
+  { name: "쇼핑", value: 6 },
+  { name: "음식점", value: 7 },
 ])
 
 onMounted(() => {
@@ -67,16 +67,16 @@ const onClickRegist = async () => {
 <template>
   <div class="">
     <div class="sub-heading-container">
-      <SubHeading v-bind="{title: '새로운 장소 등록', description: 'asdf', isEnableBack: false}"/>
+      <SubHeading v-bind="{ title: '새로운 장소 등록', description: '소개하고 싶은 장소를 등록해주세요', isEnableBack: false }" />
     </div>
     <div class="row">
       <div class="col">
-        <KakaoMapGeocoder @on-click-point="onClickPoint"/>
+        <KakaoMapGeocoder @on-click-point="onClickPoint" />
       </div>
       <div class="col card">
         <div class="input-box">
           <label>장소 이름</label>
-          <input type="text" v-model="attractionInfo.name"/>
+          <input type="text" v-model="attractionInfo.name" />
         </div>
         <div class="input-box">
           <label>장소 종류</label>
@@ -87,7 +87,7 @@ const onClickRegist = async () => {
         <div class="input-box">
           <label>주소</label>
           <div class="row">
-            <input type="text" style="flex: 1" disabled v-model="attractionInfo.address"/>
+            <input type="text" style="flex: 1" disabled v-model="attractionInfo.address" />
           </div>
         </div>
         <div class="input-box">
@@ -96,7 +96,7 @@ const onClickRegist = async () => {
         </div>
         <div class="input-box">
           <label>이미지</label>
-          <input type="file" @change="(event)=>{imgFile = event.target.files[0]}"  />
+          <input type="file" @change="(event) => { imgFile = event.target.files[0] }" />
         </div>
         <button class="primary-btn" @click="onClickRegist">등록</button>
       </div>
@@ -112,13 +112,14 @@ textarea {
 .card {
   padding: 16px;
 }
+
 .row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.col{
+.col {
   box-sizing: border-box;
   width: calc(50% - 8px);
   height: 80vh;
