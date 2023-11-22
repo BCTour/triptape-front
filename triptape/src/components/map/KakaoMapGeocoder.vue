@@ -7,6 +7,12 @@ var marker; // 클릭한 위치를 표시
 var infowindow;
 
 const emit = defineEmits(["onClickPoint"])
+const props = defineProps({
+  address: String,
+  latitude: Number,
+  longitude: Number,
+})
+
 
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
@@ -18,9 +24,19 @@ onMounted(() => {
     }&libraries=services,clusterer`;
     /* global kakao */
     script.onload = () => kakao.maps.load(() => initMap());
-    document.head.appendChild(script);
+    document.head.appendChild(script);    
   }
 });
+
+watch(()=>props.latitude, ()=>{
+  try {
+    const pos = new kakao.maps.latLng(props.latitude, props.longitude);
+    if (!marker) marker = new kakao.maps.Marker();
+    marker.setPosition(pos);
+    marker.setMap(map);
+  } catch(error){}
+})
+
 
 const initMap = () => {
   const container = document.getElementById("map");
@@ -30,14 +46,11 @@ const initMap = () => {
   };
   map = new kakao.maps.Map(container, options);
   geocoder = new kakao.maps.services.Geocoder();
-  marker = new kakao.maps.Marker();
+  if (!marker) marker = new kakao.maps.Marker();
   infowindow = new kakao.maps.InfoWindow({ zindex: 1 });
-
   kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
     searchDetailAddrFromCoords(mouseEvent.latLng, (result, status) => {
-      // console.log(kakao)
       if (status === kakao.maps.services.Status.OK) {
-        // console.log(result[0].address)
         emit("onClickPoint", { latitude: mouseEvent.latLng.Ma, longitude: mouseEvent.latLng.La, address: result[0].address.address_name });
         marker.setPosition(mouseEvent.latLng);
         marker.setMap(map);
@@ -65,14 +78,6 @@ const onClickAddressSearch = () => {
         map: map,
         position: coords
       });
-
-      // 인포윈도우로 장소에 대한 설명을 표시합니다
-      // var infowindow = new kakao.maps.InfoWindow({
-      //   content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
-      // });
-      // infowindow.open(map, marker);
-
-      // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
       map.setCenter(coords);
     } 
   });    

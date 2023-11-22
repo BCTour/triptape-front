@@ -111,7 +111,6 @@ const onChangeCenter = (center) => {
 }
 
 const onClickSearchAgain = async () => {
-  console.log("============================================")
   coord.value.latitude = curCoord.value.latitude;
   coord.value.longitude = curCoord.value.longitude;
   await onClickSearch();
@@ -125,7 +124,7 @@ const onClickSearchAgain = async () => {
     <SearchBar :options="options" :isEnableType="true" @on-click-search="onClickSearch" />
   </div>
   <button v-if="store.isLogined" class="primary-btn" @click="toggleModal">+ 새로운 관광지 추가</button>
-  <button v-if="store.isLogined" class="primary-btn" @click="onClickSearchAgain">지도 위치 기준 재검색</button>
+  <button class="primary-btn" @click="onClickSearchAgain">지도 위치 기준 재검색</button>
   
   <AttractionMapList v-if="!isModalOpen" :attractions="attractions" @on-load-more="onLoadMore"
     @on-click-item="onClickItem" @on-change-center="onChangeCenter"/>

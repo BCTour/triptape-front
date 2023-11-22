@@ -34,7 +34,7 @@ const onClickLike = async () => {
 }
 
 onMounted(async () => {
-  if (isLogined.value) isLike.value = await isLikeAttraction(props.attractionKey);
+  // if (isLogined.value) isLike.value = await isLikeAttraction(props.attractionKey);
 })
 </script>
 
@@ -46,9 +46,9 @@ onMounted(async () => {
       <div class="row">
         <h3>{{ name }}</h3>
         <div style="display: flex;">
-          <LikeIcon v-if="isLogined" @click.stop="onClickLike" class="icon"
+          <!-- <LikeIcon v-if="isLogined" @click.stop="onClickLike" class="icon"
             :class="{ 'like-btn-unselected': !isLike, 'like-btn-selected': isLike }" />
-          <p class="popular">{{ popularNum }}</p>
+          <p class="popular">{{ popularNum }}</p> -->
         </div>
       </div>
       <p class="description">{{ description }}</p>

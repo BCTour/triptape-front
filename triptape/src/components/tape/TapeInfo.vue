@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import EditIcon from "@/assets/icons/EditIcon.vue";
 import LikeIcon from "@/assets/icons/LikeIcon.vue";
 import CloseIcon from "@/assets/icons/CloseIcon.vue";
@@ -30,6 +30,11 @@ const props = defineProps({
   viewNum: Number,
 })
 
+const curPopular = ref(0);
+
+watch(()=>props.popular, ()=>{
+  curPopular.value = props.popular;
+})
 onMounted(async () => {
   tapeKey.value = route.params.id;
   if (isLogined.value) isLikeCurTape.value = await isLikeTape(tapeKey.value);
@@ -43,9 +48,11 @@ const onClickLike = async () => {
   if (isLikeCurTape.value) { // 좋아요 -> 안 좋아요
     const result = await uncheckLikeTape(tapeKey.value);
     isLikeCurTape.value = result ? false : true;
+    curPopular.value--;
   } else {
     const result = await checkLikeTape(tapeKey.value);
     isLikeCurTape.value = result ? true : false;
+    curPopular.value++;
   }
 }
 
@@ -75,7 +82,7 @@ const onClickDelete = async () => {
       <div class="title-container">
         <div style="display: flex; flex-direction: row; align-items: baseline;">
           <h2>{{ props.title }}</h2>
-          <div class="caption info">조회수 {{ viewNum }} | 좋아요 {{ popular }}</div>
+          <div class="caption info">조회수 {{ viewNum }} | 좋아요 {{ curPopular }}</div>
         </div>
         <div>
           <LikeIcon class="icon" :class="{ 'like-btn-unselected': !isLikeCurTape, 'like-btn-selected': isLikeCurTape }"
