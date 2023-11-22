@@ -4,14 +4,20 @@ import { useRouter } from 'vue-router';
 import TapeGridItem from "@/components/tape/TapeGridItem.vue";
 import SearchBar from "@/components/common/SearchBar.vue";
 import SubHeading from "@/components/common/SubHeading.vue";
+import Observer from "@/components/common/Observer.vue";
 import { connect } from "@/util/access";
 import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const currentPage = ref(1);
 
-onMounted( async () => {
-  await getTapes();
+// 검색을 위한 옵션을 저장
+const keyword = ref(null);
+const word = ref(null);
+
+onMounted(async () => {
+  await loadTapes();
+  // await getTapes();
 });
 
 const getTapes = async (keyword, word) => {
@@ -29,6 +35,21 @@ const getTapes = async (keyword, word) => {
   }
 }
 
+const loadTapes = async () => {
+  let url = `/tape/search?currentPage=${currentPage.value++}`;
+  if (keyword.value) url += `&keyword=${keyword.value}&word=${word.value}`;
+  try {
+    const result = await connect({
+      method: "GET",
+      url: url,
+    });
+    // console.log(result);
+    if (result.data.tape) tapes.value.push(...result.data.tape);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 const tapes = ref([]);
 
 const searchOptions = ref([
@@ -38,7 +59,12 @@ const searchOptions = ref([
 ])
 
 const onClickSearch = async (category, text) => {
-  await getTapes(category, text);
+  currentPage.value = 1;
+  tapes.value = [];
+
+  keyword.value = category;
+  word.value = text;
+  // await getTapes(category, text);
 }
 
 </script>
@@ -52,6 +78,7 @@ const onClickSearch = async (category, text) => {
   <button class="primary-btn" @click="$router.push({name: 'createTape'})">+ 새로운 테이프 만들기</button>
   <div class="grid-wrap">
     <TapeGridItem v-for="tape in tapes" :key="tape.tapeKey" v-bind="tape" @click="router.push({name: 'tapeDetail', params: {id: tape.tapeKey}})"/> 
+    <Observer @on-observed="loadTapes"/>
   </div>
 </template>
 
