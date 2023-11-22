@@ -123,12 +123,13 @@ const router = createRouter({
 			path: `/admin`,
 			name: "admin",
 			component: () => import("@/views/AdminView.vue"),
+			beforeEnter: (to, from) => {
+				if (useAuthStore().user.role != 1) {
+					alert("접근 권한이 없습니다.");
+					return { name: 'main' }
+				}
+			}
 		},
-		{
-			path: '/test',
-			name: "testInfiniteScroll",
-			component: () => import("@/views/test.vue")
-		}
 	]
 })
 

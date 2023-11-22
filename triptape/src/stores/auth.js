@@ -7,8 +7,9 @@ export const useAuthStore = defineStore('auth', () => {
   const isLogined = ref(false);
 
   const user = ref({
-    id : null,
+    id: null,
     name: null,
+    role: null,
   });
 
   const login = async (id, pw) => {
@@ -28,14 +29,14 @@ export const useAuthStore = defineStore('auth', () => {
       });
       isLogined.value = true;
       user.value.id = id;
-      
+
       localStorage.setItem("userId", id);
       localStorage.setItem("access-token", result.data["access-token"]);
       localStorage.setItem("refresh-token", result.data["refresh-token"]);
 
       const userInfo = await getUserInfo();
-      console.log(userInfo);
       user.value.name = userInfo.data.userInfo.userName;
+      user.value.role = userInfo.data.userInfo.isAdmin;
       return true;
     } catch (error) {
       console.log(error);
@@ -47,6 +48,7 @@ export const useAuthStore = defineStore('auth', () => {
   function logout() {
     user.value.id = null;
     user.value.name = null;
+    user.value.role = null;
 
     localStorage.removeItem("access-token");
     localStorage.removeItem("refresh-token");
@@ -80,6 +82,6 @@ export const useAuthStore = defineStore('auth', () => {
 }, {
   persist: {
     enabled: true,
-    strategies: [{strage: localStorage}],
+    strategies: [{ strage: localStorage }],
   }
 })
