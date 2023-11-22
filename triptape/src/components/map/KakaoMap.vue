@@ -6,7 +6,7 @@ const router = useRouter();
 var map;
 const positions = ref([]);
 const markers = ref([]);
-
+var overlay = null;
 const props = defineProps({
   attractions: Array,
 });
@@ -27,6 +27,7 @@ const props = defineProps({
 onMounted(() => {
   if (window.kakao && window.kakao.maps) {
     initMap();
+    if (overlay) overlay.setMap(null);
   } else {
     const script = document.createElement("script");
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY
@@ -66,14 +67,14 @@ const makeInfo = (markerInfo) => {
   const markerBody = document.createElement("div");
 
   const onClickDetail = async (attractionKey) => {
-    await router.push({name: 'attractionDetail', params:{id: attractionKey}})
+    await router.push({ name: 'attractionDetail', params: { id: attractionKey } })
   }
   const btn = document.createElement("button");
-  btn.type ="button";
+  btn.type = "button";
   btn.innerHTML = "자세히";
   btn.classList.add("primary-btn");
   btn.classList.add("marker-btn")
-  btn.addEventListener("click", () => onClickDetail(markerInfo.attractionKey)); 
+  btn.addEventListener("click", () => onClickDetail(markerInfo.attractionKey));
 
   card.appendChild(markerHeader);
   card.appendChild(markerBody);
@@ -86,13 +87,11 @@ watch(() => props.attractions, () => {
   console.log(props.attractions);
   positions.value = [];
   try {
-    console.log(props.attractions);
     props.attractions.forEach((attraction) => {
       let obj = {};
       obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
       obj.title = attraction.name;
       obj.key = attraction.attractionKey;
-      obj.type = attraction.attractionType.TypeCode;
       positions.value.push(obj);
     });
     loadMarkers();
@@ -125,31 +124,37 @@ const loadMarkers = () => {
   positions.value = [];
   if (!props.attractions) return;
   props.attractions.forEach((attraction) => {
-    let obj = {};
+    let obj = {};;
     obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
     obj.title = attraction.name;
     obj.attractionKey = attraction.attractionKey;
-    // obj.type = attraction.attractionType.typeCode;
+    if (attraction.attractionType != null) obj.type = attraction.attractionType.typeCode;
     positions.value.push(obj);
   });
 
   // 마커를 생성합니다
   markers.value = [];
 
-  var overlay = null;
 
-   
+
+
 
   positions.value.forEach((position) => {
-     // 마커 이미지를 생성합니다
-    let imgSrc = "../src/assets/marker/trip.png";
+    // 마커 이미지를 생성합니다
 
-    if(position.type == 2) imgSrc = "../src/assets/marker/museum.png";
-    
+    let imgSrc = "/src/assets/marker/trip.png";
+
+    if (position.type == 2) imgSrc = "/src/assets/marker/museum.png";
+    else if (position.type == 3) imgSrc = "/src/assets/marker/load.png";
+    else if (position.type == 4) imgSrc = "/src/assets/marker/sports.png";
+    else if (position.type == 5) imgSrc = "/src/assets/marker/bed.png";
+    else if (position.type == 6) imgSrc = "/src/assets/marker/shop.png";
+    else if (position.type == 7) imgSrc = "/src/assets/marker/food.png";
+
     // 마커 이미지의 이미지 크기 입니다
     const imgSize = new kakao.maps.Size(40, 35);
     const markerImage = new kakao.maps.MarkerImage(imgSrc, imgSize);
-    
+
     const marker = new kakao.maps.Marker({
       map: map, // 마커를 표시할 지도
       position: position.latlng, // 마커를 표시할 위치
@@ -213,22 +218,22 @@ const deleteMarkers = () => {
 }
 
 .marker-info {
-  width: 150px; 
-  text-align:center;
+  width: 150px;
+  text-align: center;
 }
 
-.marker-header{
-  white-space: normal; 
-  padding:5px;
+.marker-header {
+  white-space: normal;
+  padding: 5px;
   font-weight: 500;
-  margin:5px;
+  margin: 5px;
 }
 
-.marker-btn{
-  width:100%; 
-  height:30px; 
-  padding:3px; 
-  border-top-left-radius:0px;
-  border-top-right-radius:0px;
+.marker-btn {
+  width: 100%;
+  height: 30px;
+  padding: 3px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
 }
 </style>
