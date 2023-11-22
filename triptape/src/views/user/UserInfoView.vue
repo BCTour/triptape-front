@@ -7,6 +7,7 @@ import { useAuthStore } from "@/stores/auth.js";
 import TapeTable from '@/components/tape/TapeTable.vue';
 import AttractionTable from '@/components/attraction/AttractionTable.vue';
 import RecordTable from '@/components/tape/RecordTable.vue';
+import { useRouter } from "vue-router";
 const auth = useAuthStore();
 const userJoinedTapes = ref([]);
 const userLikedTapes = ref([]);
@@ -16,6 +17,7 @@ const isDisabled = ref(true);
 let imgFile = null;
 const isValidName = ref(true);
 const isValidEmail = ref(true);
+const router = useRouter();
 
 const userInfo = ref({
   userId: String,
@@ -153,6 +155,19 @@ const clickModifyInfo = async () => {
   }
 }
 
+const onClickTape = (key) => {
+  router.push(`/tape/detail/${key}`)
+}
+
+const onClickAttraction = (key) => {
+  router.push(`/attraction/detail/${key}`)
+}
+
+const onClickRecord = (tapeKey, recordKey) => {
+  router.push(`/tape/detail/${tapeKey}`)
+}
+
+
 </script>
 
 <template>
@@ -204,19 +219,19 @@ const clickModifyInfo = async () => {
     </div>
     <div class="card">
       <h3>참여한 테이프</h3>
-      <TapeTable :tapes="userJoinedTapes" />
+      <TapeTable :tapes="userJoinedTapes" @on-click-item="onClickTape" />
     </div>
     <div class="card">
       <h3>좋아요를 누른 테이프</h3>
-      <TapeTable :tapes="userLikedTapes" />
+      <TapeTable :tapes="userLikedTapes" @on-click-item="onClickTape" />
     </div>
     <div class="card">
       <h3>좋아요를 누른 장소</h3>
-      <AttractionTable :attractions="userLikedAttraction" />
+      <AttractionTable :attractions="userLikedAttraction" @on-click-item="onClickAttraction" />
     </div>
     <div class="card">
       <h3>좋아요를 누른 레코드</h3>
-      <RecordTable :records="userLikedRecord" />
+      <RecordTable :records="userLikedRecord" @on-click-item="onClickRecord" />
     </div>
   </div>
 </template>

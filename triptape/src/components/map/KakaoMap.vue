@@ -226,7 +226,7 @@ const deleteMarkers = () => {
 .marker-header {
   white-space: normal;
   padding: 5px;
-  font-weight: 500;
+  font-weight: 600;
   margin: 5px;
 }
 
