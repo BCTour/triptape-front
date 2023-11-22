@@ -26,11 +26,15 @@ const attraction = ref({});
 const popular = ref(0);
 const tapes = ref([]);
 const isLike = ref(false);
+const isWarn = ref(false);
 
 onMounted(async () => {
   loadAttractionInfo();
   loadTapeLists();
-  if (isLogined.value) isLike.value = await isLikeAttraction(route.params.id);
+  if (isLogined.value) {
+    isLike.value = await isLikeAttraction(route.params.id); 
+    isWarn.value = await isWarnAttraction(route.params.id);
+  }
 });
 
 
@@ -77,6 +81,57 @@ const onClickLike = async () => {
     isLike.value = result ? true : false;
   }
 }
+
+const isWarnAttraction = async (attractionKey) => {
+	try {
+		const result = await connect({
+			method: "GET",
+			url: `/user/isReport/attraction?attractionKey=${attractionKey}&userId=${localStorage.getItem("userId")}`
+		})
+		return result.data;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+const onClickReport = async () => {
+if (isWarn.value) { // 신고 -> 취소
+    const result = await uncheckReportAttraction(route.params.id);
+    isWarn.value = result ? false : true;
+  } else {
+    if(confirm("해당 장소에 문제가 있을 경우, 신고가 가능하며 신고가 누적되면 관리자에 의해 삭제될 수 있습니다. 신고하시겠습니까?")){
+      const result = await checkReportAttraction(route.params.id);
+      isWarn.value = result ? true : false;
+    }
+  }
+}
+
+const checkReportAttraction = async (attractionKey) => {
+	try {
+		const result = await connect({
+			method: 'POST',
+			url: `/user/report/attraction/${attractionKey}/${localStorage.getItem("userId")}`,
+		});
+		return true;
+	} catch (error) {
+		console.log(error);
+		if (error.request.status === 409) return true; 
+		return false;
+	}
+}
+
+const uncheckReportAttraction = async (attractionKey) => {
+	try {
+		const result = await connect({
+			method: 'DELETE',
+			url: `/user/delete/report/attraction/${attractionKey}/${localStorage.getItem("userId")}`,
+		});
+		return true;
+	} catch (error) {
+		console.log(error);
+		return false;
+	}
+}
 </script>
 
 
@@ -91,11 +146,15 @@ const onClickLike = async () => {
       <p class="caption">{{ typeName }}</p>
       <div class="row">
         <h2>{{title}}</h2>
-        <LikeIcon
-          v-if="isLogined"
-          class="icon" :class="{'like-btn-unselected': !isLike, 'like-btn-selected': isLike}"
-          @click="onClickLike"
-        />
+        <div class="icons">
+          <LikeIcon
+            v-if="isLogined"
+            class="icon" :class="{'like-btn-unselected': !isLike, 'like-btn-selected': isLike}"
+            @click="onClickLike"
+          />
+          <img v-if="!isWarn" @click="onClickReport" class="reactive report-img" src="@/assets/icons/prevWarn.png">
+          <img v-if="isWarn" @click="onClickReport" class="reactive report-img" src="@/assets/icons/Warn.png">
+        </div>
           <!-- v-if="isLogined" -->
       </div>
       <p class="address">{{address}} | ♥ {{ popular }}</p>
@@ -165,8 +224,24 @@ p {
 	align-items: center;
 	justify-content: center;
 }
-
 h3 {
   margin: 16px 16px 8px 16px;
 }
+
+.icons {
+  display: flex;
+  flex-direction: row;
+}
+
+.report-img {
+  width:32px;
+  height: 32px;
+  padding: 0px;
+}
+
+.report-img :hover {
+  cursor: pointer;
+  transform: scale(10);
+}
+
 </style>
