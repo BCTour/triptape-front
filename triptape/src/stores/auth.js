@@ -1,7 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import http from "@/util/http-commons.js";
-import { connect } from "../util/access.js";
 import { useRouter } from 'vue-router';
 
 
@@ -65,10 +64,14 @@ export const useAuthStore = defineStore('auth', () => {
 
   const getUserInfo = async () => {
     try {
-      const result = await connect({
-        method: "GET",
+      const result = await http({
+        method: 'GET',
         url: `/user/info/${user.value.id}`,
+        headers: {
+          Authorization: localStorage.getItem("access-token")
+        }
       })
+      
       return result;
     } catch (error) {
       if (error.code === "REFRESH_TOKEN_EXPIRED") {
