@@ -11,11 +11,11 @@ const props = defineProps({
 })
 
 const router = useRouter();
-const currentPage = ref(1);
 
-onMounted( async () => {
+onMounted( () => {
 
 });
+
 
 const searchOptions = ref([
   { name: "제목", value: "title" },

@@ -13,7 +13,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="card container reactive">
+    <div>
         <p class="caption">#{{ idx + 1 }}</p>
         
         <h3>{{ title }}</h3>
@@ -28,11 +28,15 @@ defineProps({
 </template>
 
 <style scoped>
+.caption {
+    margin-bottom: 8px;;
+}
 .container{
     background-color: #F2F2F2;
 }
 .card {
     padding: 8px;
+    margin-bottom: 8px;
 }
 .row {
     display: flex;

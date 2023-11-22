@@ -24,7 +24,7 @@ const logout = () => {
 				:class="{ selected: selectedMenu === 'tapeList' ? true : false }">테이프</router-link>
 			<router-link @click="selectedMenu = 'attractionMap'" :to="{ name: 'attractionMap' }" class="nav-link"
 				:class="{ selected: selectedMenu === 'attractionMap' ? true : false }">관광지</router-link>
-			<router-link v-if="auth.user.role==1" :to="{name: 'admin'}" class="nav-link">관리자 메뉴</router-link>
+			<router-link v-if="auth.user.role==1" :to="{name: 'adminBanner'}" class="nav-link">관리자 메뉴</router-link>
 		</div>
 		<template v-if="!isLogined">
 			<router-link :to="{ name: 'login' }" class="">로그인</router-link>

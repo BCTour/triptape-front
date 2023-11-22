@@ -47,8 +47,8 @@ onMounted(async () => {
         <h3>{{ name }}</h3>
         <div style="display: flex;">
           <!-- <LikeIcon v-if="isLogined" @click.stop="onClickLike" class="icon"
-            :class="{ 'like-btn-unselected': !isLike, 'like-btn-selected': isLike }" />
-          <p class="popular">{{ popularNum }}</p> -->
+            :class="{ 'like-btn-unselected': !isLike, 'like-btn-selected': isLike }" /> -->
+          <p class="popular">♥{{ popularNum }}</p>
         </div>
       </div>
       <p class="description">{{ description }}</p>

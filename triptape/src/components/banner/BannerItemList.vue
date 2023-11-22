@@ -32,12 +32,31 @@ const onDeleteBanner = async (bannerKey) => {
 <template>
     <div class="list">
         <div v-if="banners == null || banners.length == 0" class="no-content">등록된 배너가 없습니다.</div>
-        <div v-for="(banner, idx) in banners" :key="banner.bannerKey">
-            <BannerItem :="banner" :idx="idx" @click="onClickItem(banner, idx)" />
-            <button class="primary-outline-btn" @click="onDeleteBanner(banner.bannerKey)">배너 삭제</button>
+        <div v-for="(banner, idx) in banners" :key="banner.bannerKey" class="card reactive">
+            <!-- <BannerItem :="banner" :idx="idx" @click="onClickItem(banner, idx)" /> -->
+            <BannerItem :="banner" :idx="idx"/>
+            <div class="row">
+                <button class="primary-outline-btn" @click="onClickItem(banner, idx)">배너 수정</button>
+                <button class="primary-btn" @click="onDeleteBanner(banner.bannerKey)">배너 삭제</button>
+            </div>
         </div>
-
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+.card {
+    padding: 8px;
+    background-color: #EEEEEE;
+    margin-bottom: 16px;
+}
+button {
+    margin-left: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+</style>

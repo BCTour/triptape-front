@@ -128,7 +128,19 @@ const router = createRouter({
 					alert("접근 권한이 없습니다.");
 					return { name: 'main' }
 				}
-			}
+			},
+			children: [
+				{
+					path: `/admin/banner`,
+					name: "adminBanner",
+					component: ()=>import("@/views/admin/AdminBannerView.vue")
+				},
+				{
+					path: `/admin/report`,
+					name: "adminReport",
+					component: ()=>import("@/views/admin/AdminReportView.vue")
+				}
+			]
 		},
 	]
 })
