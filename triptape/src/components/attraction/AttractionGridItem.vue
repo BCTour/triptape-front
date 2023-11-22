@@ -15,7 +15,7 @@ defineProps({
   <div class="card reactive">
 
     <img v-if="img && img.saveFile" :src="img.saveFile">
-    <img v-else src="/src/assets/img/no_image.png">
+    <img v-else src="@/assets/img/no_image.png">
     <div class="content">
       <h3>{{ name }}</h3>
 
