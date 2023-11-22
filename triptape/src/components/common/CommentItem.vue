@@ -1,4 +1,6 @@
 <script setup>
+import { ref, onMounted } from 'vue';
+import EditIcon from "@/assets/icons/EditIcon.vue";
 import CloseIcon from "@/assets/icons/CloseIcon.vue";
 import {connect} from '@/util/access.js';
 
@@ -10,6 +12,10 @@ const props = defineProps({
   createtime: String
 })
 
+onMounted(() => {
+  newContent.value = props.content;
+  viewedContent.value = props.content;
+})
 const emit = defineEmits(["onClickDelete"]);
 
 const loginUserId = localStorage.getItem("userId");
@@ -27,19 +33,63 @@ const onClickDelete = async () => {
     console.log(error);
   }
 }
+
+const onClickUpdate = async () => {
+  isModifying.value = true;
+}
+
+const onUpdate = async () => {
+  try {
+    const result = await connect({
+      method: 'PUT',
+      url: `/attraction/comment/modify`,
+      data: {
+        commentKey: props.commentKey,
+        content: newContent.value,
+        user: {
+          userId: loginUserId,
+        }
+      }
+    });
+    viewedContent.value = newContent.value;
+    alert("댓글 수정 완료!");
+    isModifying.value = false;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const isModifying = ref(false);
+const newContent = ref("");
+const viewedContent = ref("");
+
 </script>
 
 <template>
   <div class="comment-container reactive">
     <div class="meta-container">
       <div class="caption">@{{ user.userId }} / {{ createtime }}</div>
-      <CloseIcon v-if="loginUserId==user.userId" @click="onClickDelete" class="delete-icon"/>
+      <div class="row" v-if="!isModifying">
+        <EditIcon v-if="loginUserId==user.userId" @click="onClickUpdate" class="delete-icon" />
+        <CloseIcon v-if="loginUserId==user.userId" @click="onClickDelete" class="delete-icon"/>
+      </div>
     </div>
-    <div>{{ content }}</div>
+    <div v-if="!isModifying">{{ viewedContent }}</div>
+    <div v-else class="row">
+      <input type="text" v-model="newContent" />
+      <button class="primary-btn" @click="onUpdate">수정</button>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.row > input {
+  flex: 1;
+}
 .comment-container {
   border-bottom: 1px solid #DDDDDD;
   padding: 16px;
