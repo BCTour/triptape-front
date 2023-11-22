@@ -13,19 +13,19 @@ const type = ref(null);
 
 const typeOptions = ref([
   { name: "장소 분류", value: null },
-  { name: "관광지",    value: 1 },
-  { name: "문화시설",  value: 2 },
-  { name: "여행코스",  value: 3 },
-  { name: "레포츠",    value: 4 },
-  { name: "숙박",      value: 5 },
-  { name: "쇼핑",      value: 6 },
-  { name: "음식점",    value: 7 },
+  { name: "관광지", value: 1 },
+  { name: "문화시설", value: 2 },
+  { name: "여행코스", value: 3 },
+  { name: "레포츠", value: 4 },
+  { name: "숙박", value: 5 },
+  { name: "쇼핑", value: 6 },
+  { name: "음식점", value: 7 },
 ])
 </script>
 
 <template>
   <div class="search-bar">
-    <select v-if="isEnableType" v-model="type">
+    <select class="type" v-if="isEnableType" v-model="type">
       <option v-for="typeOption in typeOptions" :value="typeOption.value">{{ typeOption.name }}</option>
     </select>
     <select v-model="category">
@@ -33,7 +33,7 @@ const typeOptions = ref([
       <option v-for="option in options" :key="option.value" :value="option.value">{{ option.name }}</option>
     </select>
     <input type="text" v-model="searchText" />
-    <SearchIcon class="icon search-icon" @click="$emit('onClickSearch', category, searchText, type)"/>
+    <SearchIcon class="icon search-icon" @click="$emit('onClickSearch', category, searchText, type)" />
   </div>
 </template>
 
@@ -43,6 +43,7 @@ const typeOptions = ref([
   flex-direction: row;
   align-items: center;
 }
+
 .search-icon {
   width: 24px;
   height: 24px;
@@ -60,4 +61,8 @@ input {
   height: 36px;
 }
 
+.type {
+  border-radius: 18px;
+  margin-right: 5px;
+}
 </style>
