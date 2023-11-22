@@ -15,7 +15,6 @@ const tape = ref({
   }
 });
 
-let imgFile = null;
 const isValidTitle = ref(true);
 const isValidDescription = ref(true);
 
@@ -25,7 +24,7 @@ onMounted(() => {
 
 const checkValidation = () => {
   let isValid = true;
-
+  
   if (!tape.value.title) {
     isValidTitle.value = false;
     isValid = false;
@@ -38,12 +37,18 @@ const checkValidation = () => {
   } else {
     isValidDescription.value = true;
   }
-
+  
   return isValid;
 }
 
+let imgFile = null;
 const onFileChange = (event) => {
   imgFile = event.target.files[0];
+}
+const fileInput = ref(null);
+const onClickCancelFile = () => {
+	imgFile = null;
+	fileInput.value.value = null;
 }
 
 const onClickRegist = async () => {
@@ -89,7 +94,10 @@ const onClickRegist = async () => {
     </div>
     <div class="input-box">
       <label>대표 이미지</label>
-      <input type="file" @change="onFileChange" />
+      <div class="row">
+        <input type="file" accept=".jpg, .png" name="img" ref="fileInput" @change="onFileChange">
+        <button class="primary-outline-btn" @click="onClickCancelFile">취소</button>
+      </div>
     </div>
     <div class="input-box">
       <button class="primary-btn" @click="onClickRegist">등록하기</button>
@@ -98,6 +106,14 @@ const onClickRegist = async () => {
 </template>
 
 <style scoped>
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.row > input {
+  flex: 1;
+}
 .card {
   width: 500px;
   padding: 48px;

@@ -16,7 +16,7 @@ const user = ref({
   isAdmin: 0,
 })
 
-let imgFile = null;
+
 
 const confirmPw = ref("");
 
@@ -62,8 +62,14 @@ const checkValidation = () => {
   return isValid ? true : false;
 }
 
+let imgFile = null;
 const onFileChange = (event) => {
   imgFile = event.target.files[0];
+}
+const fileInput = ref(null);
+const onClickCancelFile = () => {
+	imgFile = null;
+	fileInput.value.value = null;
 }
 
 const onRegistClick = async () => {
@@ -82,7 +88,7 @@ const onRegistClick = async () => {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      data: formData
+      data: formData,
     })
     alert("회원가입에 성공했습니다.");
     router.push({ name: "login" });
@@ -142,7 +148,10 @@ const onRegistClick = async () => {
     </div>
     <div class="input-box">
       <label for="img">프로필 이미지</label>
-      <input type="file" name="img" @change="onFileChange">
+      <div class="row">
+        <input type="file" accept=".jpg, .png" name="img" ref="fileInput" @change="onFileChange">
+        <button class="primary-outline-btn" @click="onClickCancelFile">취소</button>
+      </div>
     </div>
     <div class="btn-box">
       <button class="primary-outline-btn" @click="router.go(-1)">취소</button>
@@ -153,6 +162,14 @@ const onRegistClick = async () => {
 
 <style scoped>
 
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.row > input {
+  flex: 1;
+}
 .card {
   width: 500px;
   padding: 48px;
@@ -175,6 +192,7 @@ div {
   flex-direction: column;
 }
 
+
 .btn-box {
   display: flex;
   flex-direction: row;
@@ -182,8 +200,8 @@ div {
   justify-content: space-between;
 }
 
-button {
-  width: 49%;
+.btn-box > button {
+  flex: 1
 }
 
 </style>

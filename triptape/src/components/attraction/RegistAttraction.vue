@@ -21,6 +21,14 @@ const attractionInfo = ref({
 })
 
 let imgFile = null;
+const onFileChange = (event) => {
+  imgFile = event.target.files[0];
+}
+const fileInput = ref(null);
+const onClickCancelFile = () => {
+	imgFile = null;
+	fileInput.value.value = null;
+}
 
 const options = ref([
   { name: "관광지", value: 1 },
@@ -37,7 +45,6 @@ onMounted(() => {
 })
 
 const onClickPoint = ({ latitude, longitude, address }) => {
-  console.log(`위도 : ${latitude}, 경도: ${longitude}, 주소: ${address}`);
   attractionInfo.value.address = address;
   attractionInfo.value.latitude = latitude;
   attractionInfo.value.longitude = longitude;
@@ -97,7 +104,6 @@ const onClickRegist = async () => {
       url: `/attraction/regist`,
       data: formData,
     });
-    console.log(result);
     alert("장소 등록이 완료되었습니다.");
     emit("closeModal");
   } catch (error) {
@@ -142,7 +148,10 @@ const onClickRegist = async () => {
         </div>
         <div class="input-box">
           <label>이미지</label>
-          <input type="file" @change="(event) => { imgFile = event.target.files[0] }" />
+          <div class="row">
+            <input type="file" accept=".jpg, .png" name="img" ref="fileInput" @change="onFileChange">
+            <button class="primary-outline-btn" @click="onClickCancelFile">취소</button>
+          </div>
         </div>
         <button class="primary-btn" @click="onClickRegist">등록</button>
       </div>
@@ -164,7 +173,9 @@ textarea {
   flex-direction: row;
   justify-content: space-between;
 }
-
+.row > input {
+  flex: 1;
+}
 .col {
   box-sizing: border-box;
   width: calc(50% - 8px);

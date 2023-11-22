@@ -138,7 +138,8 @@ const onClickCancelFile = () => {
 		</div>
 		<div class="input-box">
 			<span>이미지</span>
-			<input type="file" ref="fileInput" @change="onFileChange" />
+			<input type="file" accept=".jpg, .png" ref="fileInput" @change="onFileChange"/>
+
 			<button class="primary-outline-btn" @click="onClickCancelFile">취소</button>
 		</div>
 		<label v-show="!isValidContent" class="danger">내용을 입력해주세요.</label>

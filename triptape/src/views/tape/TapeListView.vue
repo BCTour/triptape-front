@@ -20,20 +20,6 @@ onMounted(async () => {
   // await getTapes();
 });
 
-const getTapes = async (keyword, word) => {
-  let url = "/tape/search?currentPage=1";
-  if (keyword) url += `&keyword=${keyword}&word=${word}`;
-  try {
-    const result = await connect({
-      method: "GET",
-      url: url,
-    });
-    console.log(result);
-    tapes.value = result.data.tape;
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 const loadTapes = async () => {
   let url = `/tape/search?currentPage=${currentPage.value++}`;
@@ -43,7 +29,6 @@ const loadTapes = async () => {
       method: "GET",
       url: url,
     });
-    // console.log(result);
     if (result.data.tape) tapes.value.push(...result.data.tape);
   } catch (error) {
     console.log(error);
@@ -78,6 +63,9 @@ const onClickSearch = async (category, text) => {
   <button class="primary-btn" @click="$router.push({name: 'createTape'})">+ 새로운 테이프 만들기</button>
   <div class="grid-wrap">
     <TapeGridItem v-for="tape in tapes" :key="tape.tapeKey" v-bind="tape" @click="router.push({name: 'tapeDetail', params: {id: tape.tapeKey}})"/> 
+    <div style="flex: 1; min-width: 300px; margin: 16px; padding: 8px"></div>
+    <div style="flex: 1; min-width: 300px; margin: 16px; padding: 8px"></div>
+    <div style="flex: 1; min-width: 300px; margin: 16px; padding: 8px"></div>
     <Observer @on-observed="loadTapes"/>
   </div>
 </template>

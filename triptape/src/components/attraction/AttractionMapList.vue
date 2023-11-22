@@ -8,7 +8,7 @@ const props = defineProps({
   attractions: Array,
 })
 
-const emit = defineEmits(["onLoadMore", "onClickItem"])
+const emit = defineEmits(["onLoadMore", "onClickItem", "onChangeCenter"])
 
 onMounted(() => {
 
@@ -17,12 +17,16 @@ onMounted(() => {
 const onClickItem = async (attractionInfo) => {
   emit("onClickItem", attractionInfo);
 }
+
+const onChangeCenter = (center) => {
+  emit("onChangeCenter", center);
+}
 </script>
 
 <template>
   <div class="attraction-map-view">
     <div class="col card">
-      <KakaoMap :attractions="attractions" :coord="coord"/>
+      <KakaoMap :attractions="attractions" :coord="coord" @on-change-center="onChangeCenter"/>
     </div>
     <div class="col">
       <AttractionItemList
