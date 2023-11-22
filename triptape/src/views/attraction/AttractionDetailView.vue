@@ -152,8 +152,8 @@ const uncheckReportAttraction = async (attractionKey) => {
             class="icon" :class="{'like-btn-unselected': !isLike, 'like-btn-selected': isLike}"
             @click="onClickLike"
           />
-          <img v-if="!isWarn" @click="onClickReport" class="reactive report-img" src="@/assets/icons/prevWarn.png">
-          <img v-if="isWarn" @click="onClickReport" class="reactive report-img" src="@/assets/icons/Warn.png">
+          <img v-if="isLogined && !isWarn" @click="onClickReport" class="reactive report-img" src="@/assets/icons/prevWarn.png">
+          <img v-if="isLogined && isWarn" @click="onClickReport" class="reactive report-img" src="@/assets/icons/Warn.png">
         </div>
           <!-- v-if="isLogined" -->
       </div>
