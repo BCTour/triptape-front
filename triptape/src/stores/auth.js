@@ -2,6 +2,8 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import http from "@/util/http-commons.js";
 import { connect } from "../util/access.js";
+import { useRouter } from 'vue-router';
+
 
 export const useAuthStore = defineStore('auth', () => {
   const isLogined = ref(false);
@@ -12,6 +14,7 @@ export const useAuthStore = defineStore('auth', () => {
     role: null,
   });
 
+  const router = useRouter();
   const login = async (id, pw) => {
     /**
      * TO-DO : axios.post로 로그인 수행
@@ -46,6 +49,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function logout() {
+
     user.value.id = null;
     user.value.name = null;
     user.value.role = null;
@@ -55,6 +59,8 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem("userId");
 
     isLogined.value = false;
+
+    router.push({ name: 'main' });
   }
 
   const getUserInfo = async () => {

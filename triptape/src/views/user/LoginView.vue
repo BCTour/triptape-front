@@ -7,14 +7,14 @@ import { useRouter } from 'vue-router';
 const auth = useAuthStore();
 const router = useRouter();
 
-
 const id = ref("");
 const pw = ref("");
 
 const onLoginClick = async () => {
   if (await auth.login(id.value, pw.value)) {
     alert("로그인 성공!");
-    router.push({name: 'main'});
+    // router.push({name: 'main'});
+    router.go(-1);
   } else {
     alert("로그인 실패!");
   }
@@ -41,12 +41,11 @@ const onRegistClick = () => {
       <button @click="onRegistClick" class="primary-outline-btn">회원가입</button>
       <button @click="onLoginClick" class="primary-btn">로그인</button>
     </div>
-    <router-link :to="{name: 'findPassword'}">비밀번호를 잊어버리셨나요?</router-link>
+    <router-link :to="{ name: 'findPassword' }">비밀번호를 잊어버리셨나요?</router-link>
   </div>
 </template>
 
 <style scoped>
-
 .card {
   width: 500px;
   height: 400px;
@@ -65,6 +64,7 @@ div {
   width: 100%;
   margin-bottom: 24px;
 }
+
 .input-box {
   display: flex;
   flex-direction: column;
@@ -82,5 +82,4 @@ div {
 button {
   width: 49%;
 }
-
 </style>
