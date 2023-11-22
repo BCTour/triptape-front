@@ -43,7 +43,49 @@ const onClickPoint = ({ latitude, longitude, address }) => {
   attractionInfo.value.longitude = longitude;
 }
 
+const isValidName = ref(true);
+const isValidType = ref(true);
+const isValidAddress = ref(true);
+const isValidDescription = ref(true);
+
+const checkValidation = () => {
+  let isValid = true;
+
+  if (!attractionInfo.value.name) {
+    isValid = false;
+    isValidName.value = false;
+  } else {
+    isValidName.value = true;
+  }
+
+  if (!attractionInfo.value.attractionType.typeCode) {
+    isValid = false;
+    isValidType.value = false;
+  } else {
+    isValidType.value = true;
+  }
+
+  if (!attractionInfo.value.address) {
+    isValid = false;
+    isValidAddress.value = false;
+  } else {
+    isValidAddress.value = true;
+  }
+
+  if (!attractionInfo.value.description) {
+    isValid = false;
+    isValidDescription.value = false;
+  } else {
+    isValidDescription.value = true;
+  }
+
+  return isValid;
+}
+
+
 const onClickRegist = async () => {
+  if (!checkValidation()) return;
+
   // console.log(attractionInfo.value);
   const formData = new FormData();
   const blob = new Blob([JSON.stringify(attractionInfo.value)], { type: "application/json" });
@@ -77,22 +119,26 @@ const onClickRegist = async () => {
         <div class="input-box">
           <label>장소 이름</label>
           <input type="text" v-model="attractionInfo.name" />
+          <label v-show="!isValidName" class="danger">장소 이름을 등록해주세요.</label>
         </div>
         <div class="input-box">
           <label>장소 종류</label>
           <select v-model="attractionInfo.attractionType.typeCode">
             <option v-for="option in options" :value="option.value">{{ option.name }}</option>
           </select>
+          <label v-show="!isValidType" class="danger">장소 종류를 등록해주세요.</label>
         </div>
         <div class="input-box">
           <label>주소</label>
           <div class="row">
             <input type="text" style="flex: 1" disabled v-model="attractionInfo.address" />
           </div>
+          <label v-show="!isValidAddress" class="danger">주소를 등록해주세요.</label>
         </div>
         <div class="input-box">
           <label>세부설명</label>
           <textarea v-model="attractionInfo.description"> </textarea>
+          <label v-show="!isValidDescription" class="danger">세부 설명을 작성해주세요.</label>
         </div>
         <div class="input-box">
           <label>이미지</label>
