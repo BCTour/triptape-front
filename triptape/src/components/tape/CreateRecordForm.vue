@@ -23,7 +23,7 @@ const isModalOpen = ref(false);
 const selectedAttraction = ref(null);
 
 const toggleModal = () => {
-  isModalOpen.value = isModalOpen.value ? false : true;
+	isModalOpen.value = isModalOpen.value ? false : true;
 }
 
 let imgFile = null;
@@ -37,8 +37,31 @@ const resetInput = () => {
 	content.value = "";
 	selectedAttraction.value = null;
 }
+const isValidContent = ref(true);
+
+const checkValidation = () => {
+	let isValid = false;
+	if (content.value) {
+		isValid = true;
+	}
+	if (selectedAttraction.value) {
+		isValid = true;
+	}
+	if (imgFile) {
+		isValid = true;
+	}
+
+	return isValid;
+}
 
 const onClickCreateRecord = async () => {
+	if (!checkValidation()) {
+		isValidContent.value = false;
+		return;
+	} else {
+		isValidContent.value = true;
+	}
+
 	try {
 		const recordData = {
 			tapeKey: route.params.id,
@@ -48,7 +71,7 @@ const onClickCreateRecord = async () => {
 			},
 		}
 		if (selectedAttraction.value) {
-			recordData["attraction"] = {"attractionKey": selectedAttraction.value.attractionKey,};
+			recordData["attraction"] = { "attractionKey": selectedAttraction.value.attractionKey, };
 		}
 		if (props.selectedRecord) {
 			recordData["parentRecordKey"] = props.selectedRecord;
@@ -63,7 +86,7 @@ const onClickCreateRecord = async () => {
 			method: "POST",
 			url: `/record/regist`,
 			data: formData,
-			headers : {
+			headers: {
 				"Content-Type": "multipart/form-data",
 			}
 		});
@@ -86,30 +109,40 @@ const onClickCancelFile = () => {
 	fileInput.value.value = null;
 }
 
+
+
 </script>
 
 <template>
 	<Modal v-if="isModalOpen" @close-modal="toggleModal">
-		<SelectAttraction @close-modal="toggleModal" @on-add-attraction="onAddAttraction"/>
+		<SelectAttraction @close-modal="toggleModal" @on-add-attraction="onAddAttraction" />
 	</Modal>
 	<div class="card">
 		<h4>테이프에 레코드 남기기</h4>
-		<div v-if="selectedRecord" class="parent-record"><span><span class="parent-num">#{{ selectedRecord }}</span>에 대한 답</span><CloseIcon @click="$emit('onUnselectRecord')" class="close-btn"/></div>
+		<div v-if="selectedRecord" class="parent-record"><span><span class="parent-num">#{{ selectedRecord }}</span>에 대한
+				답</span>
+			<CloseIcon @click="$emit('onUnselectRecord')" class="close-btn" />
+		</div>
 		<div v-else class="parent-record">레코드를 클릭해 레코드에 답을 달 수 있습니다.</div>
 		<div class="input-box">
-			<input type="text" placeholder="내용을 입력해주세요" v-model="content"/>
+			<input type="text" placeholder="내용을 입력해주세요" v-model="content" />
 			<button class="primary-outline-btn add-file-btn" @click="toggleModal">장소 추가</button>
 		</div>
 		<div class="card selected-attraction">
-			<div class="row"><h4>선택된 장소</h4> <CloseIcon class="close-btn" @click="selectedAttraction = null" /></div>
-			<p v-if="selectedAttraction">{{selectedAttraction.name}}</p>
+			<div class="row">
+				<h4>선택된 장소</h4>
+				<CloseIcon class="close-btn" @click="selectedAttraction = null" />
+			</div>
+			<p v-if="selectedAttraction">{{ selectedAttraction.name }}</p>
 			<p v-else>선택된 장소가 없습니다.</p>
 		</div>
 		<div class="input-box">
 			<span>이미지</span>
 			<input type="file" accept=".jpg, .png" ref="fileInput" @change="onFileChange"/>
+
 			<button class="primary-outline-btn" @click="onClickCancelFile">취소</button>
 		</div>
+		<label v-show="!isValidContent" class="danger">내용을 입력해주세요.</label>
 		<button class="primary-btn" @click="onClickCreateRecord">작성하기</button>
 	</div>
 </template>
@@ -121,6 +154,7 @@ const onClickCancelFile = () => {
 	justify-content: space-between;
 	align-items: center;
 }
+
 .card {
 	padding: 16px;
 }
@@ -128,6 +162,7 @@ const onClickCancelFile = () => {
 .selected-attraction {
 	margin-bottom: 8px;
 }
+
 .parent-record {
 	display: flex;
 	flex-direction: row;
@@ -135,6 +170,7 @@ const onClickCancelFile = () => {
 	color: var(--caption-color);
 	/* justify-content: space-between; */
 }
+
 .parent-num {
 	color: rgb(36, 140, 226);
 }
@@ -143,14 +179,17 @@ const onClickCancelFile = () => {
 	width: 18px;
 	fill: var(--caption-color)
 }
+
 .close-btn:hover {
 	fill: red;
 }
-input{
+
+input {
 	flex: 1;
 	/* width: calc(100% - 108px); */
 	margin-right: 8px;
 }
+
 .add-file-btn {
 	width: 100px;
 }
@@ -163,7 +202,7 @@ input{
 	align-items: center;
 }
 
-.input-box > span {
+.input-box>span {
 	margin-right: 8px;
 }
 </style>

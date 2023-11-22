@@ -22,7 +22,7 @@ onMounted(() => {
   tape.value.user.userId = localStorage.getItem("userId");
 })
 
-const isValidCheck = () => {
+const checkValidation = () => {
   let isValid = true;
   
   if (!tape.value.title) {
@@ -52,7 +52,7 @@ const onClickCancelFile = () => {
 }
 
 const onClickRegist = async () => {
-  if (!isValidCheck()) return;
+  if (!checkValidation()) return;
 
   const formData = new FormData();
   const blob = new Blob([JSON.stringify(tape.value)], { type: "application/json" });
