@@ -79,6 +79,13 @@ const onAddAttraction = async (attraction) => {
 	// console.log(attraction);
 	selectedAttraction.value = attraction;
 }
+
+const fileInput = ref(null);
+const onClickCancelFile = () => {
+	imgFile = null;
+	fileInput.value.value = null;
+}
+
 </script>
 
 <template>
@@ -100,8 +107,8 @@ const onAddAttraction = async (attraction) => {
 		</div>
 		<div class="input-box">
 			<span>이미지</span>
-			<input type="file" @change="onFileChange"/>
-			<button class="primary-outline-btn" @click="imgFile = null">취소</button>
+			<input type="file" ref="fileInput" @change="onFileChange"/>
+			<button class="primary-outline-btn" @click="onClickCancelFile">취소</button>
 		</div>
 		<button class="primary-btn" @click="onClickCreateRecord">작성하기</button>
 	</div>

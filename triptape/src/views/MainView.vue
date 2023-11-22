@@ -56,6 +56,7 @@ const loadPopularAttractions = async () => {
 			method: 'GET',
 			url: `/attraction/popular/4`,
 		});
+		console.log(result);
 		if (result.data.attraction) popularAttractions.value = result.data.attraction;
 	} catch (error) {
 		console.log(error);
@@ -81,22 +82,6 @@ onMounted(async () => {
 	await [loadPopularTapes(), loadRecentTapes(), loadBanner(), loadPopularAttractions()];
 });
 
-const current = ref(0);
-const transitionOn = ref(true);
-const slideCoord = ref(-300);
-
-
-const onClickRight = () => {
-	slideCoord = this.slideCoord - 300
-
-	// transitionOn은 true로 
-	this.transitionOn = true
-
-	// 0.5초 뒤에 배열의 순서를 바꾸고 slideCoord값을 다시 초기 값으로 설정
-	// 이때만 transition을 off하여 움직이지 않는 것 처럼 눈속임한다.
-	// 여기 setTimeout의 delay 시간은 css의 transition의 duration과 같게 설정해야한다.
-	setTimeout(this.resetCardArrayToRight, 500)
-};
 </script>
 
 

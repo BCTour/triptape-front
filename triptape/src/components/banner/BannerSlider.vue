@@ -45,9 +45,11 @@ onMounted(async ()=>{
 
 watch(index, ()=>{
   const banner = banners.value[index.value];
+  console.log(banners.value);
   curBanner.value = {
     title: banner.title,
     description: banner.description,
+    tapeKey: banner.tape.tapeKey,
   }
   console.log(banner);
   if (banner.tape.img && banner.tape.img.saveFile) curBanner.value['imgSrc'] = banner.tape.img.saveFile;

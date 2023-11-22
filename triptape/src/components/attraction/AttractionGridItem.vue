@@ -30,8 +30,8 @@ defineProps({
 
 <style scoped>
 .card {
-  width: calc(25% - 48px);
-  /* width: 22.5%; */
+  min-width: 300px;
+  flex: 1;
   height: 330px;
   margin: 16px 32px 16px 0px;
   padding: 8px;

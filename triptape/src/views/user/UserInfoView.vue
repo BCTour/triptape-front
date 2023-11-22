@@ -8,12 +8,15 @@ import TapeTable from '@/components/tape/TapeTable.vue';
 import AttractionTable from '@/components/attraction/AttractionTable.vue';
 import RecordTable from '@/components/tape/RecordTable.vue';
 import { useRouter } from "vue-router";
+import Modal from "@/components/common/Modal.vue";
+import DeleteUserForm from "@/components/user/DeleteUserForm.vue";
+
 const auth = useAuthStore();
 const userJoinedTapes = ref([]);
 const userLikedTapes = ref([]);
 const userLikedAttraction = ref([]);
 const userLikedRecord = ref([]);
-const isDisabled = ref(true);
+const isModifying = ref(false);
 let imgFile = null;
 const isValidName = ref(true);
 const isValidEmail = ref(true);
@@ -39,6 +42,7 @@ onMounted(async () => {
   loadLikedRecord();
 })
 
+const isModalOpen = ref(false);
 const loadUserInfo = async () => {
   try {
     const result = await connect({
@@ -101,12 +105,12 @@ const loadLikedRecord = async () => {
 }
 
 const clickModify = () => {
-  isDisabled.value = false;
+  isModifying.value = true;
 }
 
 const clickBack = async () => {
   await loadUserInfo();
-  isDisabled.value = true;
+  isModifying.value = false;
   isValidName.value = true;
   isValidEmail.value = true;
 }
@@ -149,7 +153,7 @@ const clickModifyInfo = async () => {
       data: formData
     })
     loadUserInfo();
-    isDisabled.value = true;
+    isModifying.value = false;
   } catch (error) {
     console.log(error);
   }
@@ -180,39 +184,40 @@ const onClickRecord = (tapeKey, recordKey) => {
       <img v-else class="profile-img" :src="userInfo.profileImg.saveFile">
 
       <p class="caption">@{{ userInfo.userId }}</p>
-      <h2 v-if="isDisabled">{{ userInfo.userName }}</h2>
+      <h2 v-if="!isModifying">{{ userInfo.userName }}</h2>
 
-      <div class="input-box" style="margin-top:10px" v-if="!isDisabled">
+      <div class="input-box" style="margin-top:10px" v-if="isModifying">
         <label>이름</label>
-        <input type="email" v-model="userInfo.userName" :disabled="isDisabled" />
+        <input type="email" v-model="userInfo.userName" :disabled="!isModifying" />
         <label v-show="!isValidName" class="danger">이름은 비어있을 수 없습니다.</label>
       </div>
       <div class="input-box">
         <label>이메일</label>
-        <input type="email" v-model="userInfo.email" :disabled="isDisabled" />
+        <input type="email" v-model="userInfo.email" :disabled="!isModifying" />
         <label v-show="!isValidEmail" class="danger">이메일은 비어있을 수 없습니다.</label>
       </div>
       <div class="input-box">
         <label>전화번호</label>
-        <input type="tel" v-model="userInfo.tel" :disabled="isDisabled" />
+        <input type="tel" v-model="userInfo.tel" :disabled="!isModifying" />
       </div>
       <div class="input-box">
         <label>생일</label>
-        <input type="date" v-model="userInfo.birthday" :disabled="isDisabled" />
+        <input type="date" v-model="userInfo.birthday" :disabled="!isModifying" />
       </div>
       <div class="input-box">
         <label for="gender">성별</label>
         <div style="display: flex; flex-direction: row; align-items: center;">
-          남성<input type="radio" name="gender" value="0" v-model="userInfo.gender" :disabled="isDisabled">
-          여성<input type="radio" name="gender" value="1" v-model="userInfo.gender" :disabled="isDisabled">
+          남성<input type="radio" name="gender" value="0" v-model="userInfo.gender" :disabled="!isModifying">
+          여성<input type="radio" name="gender" value="1" v-model="userInfo.gender" :disabled="!isModifying">
         </div>
       </div>
-      <div v-if="!isDisabled" class="input-box">
+      <div v-if="isModifying" class="input-box">
         <label for="img">프로필 이미지</label>
         <input type="file" name="img" @change="onFileChange">
       </div>
-      <button class="primary-btn" v-if="isDisabled" @click="clickModify">정보 수정</button>
-      <div class="btn-box" v-if="!isDisabled">
+      <button class="primary-btn" v-if="!isModifying" @click="clickModify">정보 수정</button>
+      <div v-if="!isModifying" @click="isModalOpen=true">회원탈퇴하기</div>
+      <div class="btn-box" v-if="isModifying">
         <button class="primary-outline-btn modify-btn" @click="clickBack">돌아가기</button>
         <button class="primary-btn modify-btn" @click="clickModifyInfo">저장</button>
       </div>
@@ -234,6 +239,9 @@ const onClickRecord = (tapeKey, recordKey) => {
       <RecordTable :records="userLikedRecord" @on-click-item="onClickRecord" />
     </div>
   </div>
+  <Modal v-if="isModalOpen" @close-modal="isModalOpen=false">
+    <DeleteUserForm @close-modal="isModalOpen=false"/>
+  </Modal>
 </template>
 
 <style scoped>

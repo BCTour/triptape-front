@@ -19,9 +19,8 @@ const toggleModal = () => {
 }
 
 const selectedAttraction = ref(null);
-const mapAttractions = computed(()=>{
-  return [selectedAttraction]
-})
+
+const mapAttractions = ref([]);
 const attractions = ref([]);
 
 const typeOptions = ref([
@@ -73,9 +72,8 @@ const onLoadMore = async () => {
 }
 
 const onClickItem = async (attraction) => {
-  // console.log(attractionId);
   selectedAttraction.value = attraction;
-  // console.log(selectedAttraction.value);
+  mapAttractions.value = [attraction];
 }
 
 </script>
@@ -96,7 +94,7 @@ const onClickItem = async (attraction) => {
         <p v-if="!selectedAttraction">선택된 장소가 없습니다.</p>
         <p v-else>{{selectedAttraction.name}}</p>
       </div>
-      <KakaoMap v-if="!isModalOpen" />
+      <KakaoMap :attractions="mapAttractions" v-if="!isModalOpen" />
       <div class="btn-box">
         <button class="primary-outline-btn" @click="toggleModal"> + 새로운 장소 등록</button>
         <button class="primary-btn" @click="$emit('onAddAttraction', selectedAttraction), $emit('closeModal')">레코드에 추가하기</button>

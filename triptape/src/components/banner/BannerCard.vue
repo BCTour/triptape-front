@@ -3,13 +3,14 @@ const props = defineProps({
   title: String,
   description: String,
   imgSrc: String,
+  tapeKey: Number,
 })
 
 const src = "https://images.dog.ceo/breeds/terrier-australian/n02096294_7317.jpg";
 </script>
 
 <template>
-  <div @click="console.log(imgSrc)" class="card" :style="{'background-image': `url(${imgSrc})`}">
+  <div @click="$router.push({name: 'tapeDetail', params: {id: tapeKey}})" class="card" :style="{'background-image': `url(${imgSrc})`}">
     <h1 class="text">{{ title }}</h1>
     <p class="text">{{ description }}</p>
   </div>
@@ -25,6 +26,7 @@ const src = "https://images.dog.ceo/breeds/terrier-australian/n02096294_7317.jpg
   box-sizing: border-box;
   background-repeat : no-repeat;
   background-size : cover;
+  background-position: 50% 50%;
 }
 .text {
   color: white;

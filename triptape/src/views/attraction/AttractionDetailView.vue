@@ -2,6 +2,8 @@
 
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth.js';
+import { storeToRefs } from "pinia";
 import CommentContainer from '@/components/common/CommentContainer.vue';
 import SubHeading from "@/components/common/SubHeading.vue";
 import TapeTable from "@/components/tape/TapeTable.vue";
@@ -12,6 +14,8 @@ import {isLikeAttraction, checkLikeAttraction, uncheckLikeAttraction} from "@/ut
 
 const route = useRoute();
 const router = useRouter();
+const auth = useAuthStore();
+const { isLogined } = storeToRefs(auth);
 
 const imgSrc = ref("");
 const address = ref("");
@@ -19,15 +23,16 @@ const typeName = ref("");
 const title = ref("");
 const description = ref("");
 const attraction = ref({});
-
+const popular = ref(0);
 const tapes = ref([]);
 const isLike = ref(false);
 
 onMounted(async () => {
   loadAttractionInfo();
   loadTapeLists();
-  isLike.value = await isLikeAttraction(route.params.id);
+  if (isLogined.value) isLike.value = await isLikeAttraction(route.params.id);
 });
+
 
 const loadAttractionInfo = async () => {
   try {
@@ -35,6 +40,7 @@ const loadAttractionInfo = async () => {
       url: `/attraction/info/${route.params.id}`
     })
     console.log(result);
+    popular.value = result.data.popular;
     attraction.value = result.data;
     address.value = result.data.address;
     typeName.value = result.data.attractionType.typeName;
@@ -86,12 +92,13 @@ const onClickLike = async () => {
       <div class="row">
         <h2>{{title}}</h2>
         <LikeIcon
+          v-if="isLogined"
           class="icon" :class="{'like-btn-unselected': !isLike, 'like-btn-selected': isLike}"
           @click="onClickLike"
         />
           <!-- v-if="isLogined" -->
       </div>
-      <p class="address">{{address}}</p>
+      <p class="address">{{address}} | ♥ {{ popular }}</p>
       <p class="description">{{description}}</p>
       <KakaoMap :attractions="[attraction]"/>
     </div>

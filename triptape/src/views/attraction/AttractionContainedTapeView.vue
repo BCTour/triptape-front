@@ -1,4 +1,5 @@
 <script setup>
+
 import AttractionMapList from '@/components/attraction/AttractionMapList.vue';
 import SubHeading from '@/components/common/SubHeading.vue';
 import {ref} from 'vue';
