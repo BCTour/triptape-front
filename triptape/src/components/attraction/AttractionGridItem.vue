@@ -22,8 +22,8 @@ defineProps({
       <div class="description">
         {{ description }}
       </div>
-      <p class="caption">{{ address }}</p>
-      <div class="caption" style="margin-top:5px">♥ {{ popular }}</div>
+      <div class="row"><p class="caption">{{ address }}</p><div class="caption" style="margin-top:5px">♥ {{ popular }}</div></div>
+      
     </div>
   </div>
 </template>
@@ -43,6 +43,7 @@ defineProps({
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 140%;
+  margin-bottom: 8px;
 }
 
 img {
@@ -68,5 +69,12 @@ img {
   line-height: 140%;
   color: var(--caption-color);
   font-size: smaller;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

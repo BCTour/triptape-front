@@ -108,4 +108,8 @@ const viewedContent = ref("");
 .delete-icon:hover {
   fill: red;
 }
+
+.caption {
+  margin-bottom: 8px;
+}
 </style>

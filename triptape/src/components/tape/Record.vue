@@ -19,21 +19,26 @@ const props = defineProps({
   user: Object,
   attraction: Object,
   parentRecordKey: Number,
+  likeNum: Number,
 })
 
 const isLikeCurRecord = ref(false);
+const curLikeNum = ref(0);
 
 onMounted(async () => {
   if (isLogined.value) isLikeCurRecord.value = await isLikeRecord(props.tapeKey, props.recordKey);
+  curLikeNum.value = props.likeNum;
 })
 
 const onClickLike = async () => {
   if (isLikeCurRecord.value){ // 좋아요 -> 안 좋아요
     const result = await uncheckLikeRecord(props.tapeKey, props.recordKey);
     isLikeCurRecord.value = result ? false : true; 
+    curLikeNum.value--;
   } else {
     const result = await checkLikeRecord(props.tapeKey, props.recordKey);
     isLikeCurRecord.value = result ? true : false;
+    curLikeNum.value++;
   }
 }
 
@@ -50,15 +55,23 @@ const onClickLike = async () => {
     </div>
     <div class="caption-container">
       <p class="caption">@{{ user.userId }} | {{createtime}} </p>
-      <LikeIcon
-        class="icon" :class="{'like-btn-unselected': !isLikeCurRecord, 'like-btn-selected': isLikeCurRecord}"
-        @click.stop="onClickLike"
-      />
+      <div class="row">
+        <p class="caption">{{ curLikeNum }}</p>
+        <LikeIcon
+          class="icon" :class="{'like-btn-unselected': !isLikeCurRecord, 'like-btn-selected': isLikeCurRecord}"
+          @click.stop="onClickLike"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .icon {
   width: 18px;
 }
@@ -86,9 +99,8 @@ const onClickLike = async () => {
   justify-content: space-between;
 }
 img {
-  /* max-height: 150px; */
-  /* max-width: 100%; */
+  max-height: 300px;
   height: auto;
-  width: auto;
+  width: fit-content;
 }
 </style>

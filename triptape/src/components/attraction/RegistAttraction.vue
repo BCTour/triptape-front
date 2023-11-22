@@ -4,6 +4,7 @@ import { ref, onMounted } from 'vue';
 
 import KakaoMapGeocoder from "@/components/map/KakaoMapGeocoder.vue";
 import SubHeading from "@/components/common/SubHeading.vue";
+
 import { connect } from "@/util/access.js";
 
 const emit = defineEmits("closeModal");
@@ -154,6 +155,7 @@ const onClickRegist = async () => {
           </div>
         </div>
         <button class="primary-btn" @click="onClickRegist">등록</button>
+        <button class="primary-outline-btn" @click="$emit('closeModal')">돌아가기</button>
       </div>
     </div>
   </div>
