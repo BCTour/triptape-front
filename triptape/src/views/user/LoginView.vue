@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth.js';
 import { useRouter } from 'vue-router';
 
@@ -10,11 +10,17 @@ const router = useRouter();
 const id = ref("");
 const pw = ref("");
 
+onMounted(() => {
+  if (auth.isLogined) {
+    auth.isLogined = false;
+  }
+})
+
 const onLoginClick = async () => {
   if (await auth.login(id.value, pw.value)) {
     alert("로그인 성공!");
     // router.push({name: 'main'});
-    router.go(-1);
+    router.push("/");
   } else {
     alert("로그인 실패!");
   }

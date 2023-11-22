@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useAuthStore } from "../stores/auth";
+
 const root = "http://localhost:8080"
 const attempts = 2;
 
@@ -28,15 +28,13 @@ const connect = async ({ method, url, data, headers }) => {
             continue; // 다시 시도
           } else { // 토큰 갱신 실패
             console.log("액세스 토큰 갱신 실패! 재갱신 필요함")
-            if (confirm("로그인이 만료되었습니다. 로그인 창으로 이동합니다.")) {
+            alert("로그인이 만료되었습니다. 로그인 창으로 이동합니다.")
 
-              location.href = "http://" + window.location.host + "/user/login";
-            }
             const refreshFailedError = new Error("refreshToken이 만료됨.");
             refreshFailedError.code = "REFRESH_TOKEN_EXPIRED";
             reject(refreshFailedError);
 
-            location.href = "http://" + window.location.host;
+            location.href = "http://" + window.location.host + "/user/login";
             return;
           }
         }
