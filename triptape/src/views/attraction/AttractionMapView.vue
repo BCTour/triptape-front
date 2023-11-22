@@ -51,7 +51,13 @@ const options = ref([
 
 const page = ref(1);
 const attractions = ref([]);
+
 const coord = ref({
+  latitude: 37.501328668708,
+  longitude: 127.03953821497
+})
+
+const curCoord = ref({
   latitude: 37.501328668708,
   longitude: 127.03953821497
 })
@@ -60,7 +66,7 @@ const onLoadMore = async () => {
   const category = searchCondition.value.category;
   const word = searchCondition.value.word;
   const type = searchCondition.value.type;
-
+  console.log(coord.value);
   try {
     let url = `/attraction/search?currentPage=${page.value++}&latitude=${coord.value.latitude}&longitude=${coord.value.longitude}`;
     if (category) url += `&${category}=${word}`;
@@ -98,7 +104,18 @@ const onClickItem = async (attraction) => {
   router.push({ name: 'attractionDetail', params: { id: attraction.attractionKey } })
 }
 
+const onChangeCenter = (center) => {
+  console.log(center);
+  curCoord.value.latitude = center.Ma;
+  curCoord.value.longitude = center.La;
+}
 
+const onClickSearchAgain = async () => {
+  console.log("============================================")
+  coord.value.latitude = curCoord.value.latitude;
+  coord.value.longitude = curCoord.value.longitude;
+  await onClickSearch();
+}
 
 </script>
 
@@ -108,8 +125,10 @@ const onClickItem = async (attraction) => {
     <SearchBar :options="options" :isEnableType="true" @on-click-search="onClickSearch" />
   </div>
   <button v-if="store.isLogined" class="primary-btn" @click="toggleModal">+ 새로운 관광지 추가</button>
+  <button v-if="store.isLogined" class="primary-btn" @click="onClickSearchAgain">지도 위치 기준 재검색</button>
+  
   <AttractionMapList v-if="!isModalOpen" :attractions="attractions" @on-load-more="onLoadMore"
-    @on-click-item="onClickItem" />
+    @on-click-item="onClickItem" @on-change-center="onChangeCenter"/>
   <Modal v-if="isModalOpen" @close-modal="toggleModal">
     <RegistAttraction @close-modal="toggleModal" />
   </Modal>
@@ -125,8 +144,9 @@ const onClickItem = async (attraction) => {
 .col {
   box-sizing: border-box;
   width: calc(50% - 8px);
-  /* display: flex; */
-  /* flex-direction: column; */
-
+}
+.primary-btn {
+  margin-right: 8px;
+  margin-bottom: 8px;
 }
 </style>

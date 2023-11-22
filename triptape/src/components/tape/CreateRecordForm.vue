@@ -107,7 +107,7 @@ const onClickCancelFile = () => {
 		</div>
 		<div class="input-box">
 			<span>이미지</span>
-			<input type="file" ref="fileInput" @change="onFileChange"/>
+			<input type="file" accept=".jpg, .png" ref="fileInput" @change="onFileChange"/>
 			<button class="primary-outline-btn" @click="onClickCancelFile">취소</button>
 		</div>
 		<button class="primary-btn" @click="onClickCreateRecord">작성하기</button>
