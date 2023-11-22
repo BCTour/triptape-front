@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import SubHeading from "@/components/common/SubHeading.vue";
 import { connect } from "@/util/access.js";
 import { useAuthStore } from "@/stores/auth.js";
@@ -33,6 +33,8 @@ const userInfo = ref({
     saveFile: String,
   },
 })
+
+const prevUserInfo = ref(null);
 
 onMounted(async () => {
   await loadUserInfo();
@@ -106,9 +108,21 @@ const loadLikedRecord = async () => {
 
 const clickModify = () => {
   isModifying.value = true;
+  prevUserInfo.value = JSON.parse(JSON.stringify(userInfo.value));
+}
+
+const isCheckModify = () => {
+  if(JSON.stringify(prevUserInfo.value) !== JSON.stringify(userInfo.value)) {
+    return true;
+  }
+  if(imgFile) return true;
+  return false;
 }
 
 const clickBack = async () => {
+  if(isCheckModify()) {
+    if(!confirm("변경사항이 있습니다. 정말로 돌아가겠습니까?")) return;
+  }
   await loadUserInfo();
   isModifying.value = false;
   isValidName.value = true;
@@ -136,6 +150,7 @@ const checkValidation = () => {
 
 
 const clickModifyInfo = async () => {
+  if(!confirm("개인 정보를 수정하시겠습니까?")) return;
   // 입력 필드 유효성 확인
   if (!checkValidation()) return;
 
@@ -154,6 +169,7 @@ const clickModifyInfo = async () => {
     })
     loadUserInfo();
     isModifying.value = false;
+    alert("수정을 완료하였습니다.");
   } catch (error) {
     console.log(error);
   }
