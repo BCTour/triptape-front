@@ -29,7 +29,11 @@ const loadTapes = async () => {
       method: "GET",
       url: url,
     });
-    if (result.data.tape) tapes.value.push(...result.data.tape);
+    console.log(result);
+    if (result.data.tape) {
+      tapes.value.push(...result.data.tape)
+      console.log(tapes);
+    }
   } catch (error) {
     console.log(error);
   }
@@ -49,6 +53,7 @@ const onClickSearch = async (category, text) => {
 
   keyword.value = category;
   word.value = text;
+  await loadTapes();
   // await getTapes(category, text);
 }
 
