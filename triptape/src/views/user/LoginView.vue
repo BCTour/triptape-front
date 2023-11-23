@@ -13,6 +13,9 @@ const pw = ref("");
 onMounted(() => {
   if (auth.isLogined) {
     auth.isLogined = false;
+    auth.user.id = false;  
+    auth.user.name = false;  
+    auth.user.role = 0;  
   }
 })
 
