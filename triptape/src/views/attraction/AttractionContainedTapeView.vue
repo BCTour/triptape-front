@@ -18,7 +18,7 @@ const loadAttractions = async () => {
       url: `/record/attraction?tapeKey=${route.params.id}&currentPage=${page.value++}`,
       method: "GET",
     })
-    console.log(result);
+    // console.log(result);
     if (result.data.attraction) attractions.value.push(...result.data.attraction);
   } catch (error) {
     console.log(error);

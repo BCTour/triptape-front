@@ -25,13 +25,17 @@ const currentPage = ref(1);
 //     records.value.push(...result.data.attraction);
 //   } catch (error) {
 //     console.log(error);
-//   }  
+//   }
 // }
+const emit = defineEmits(["onDeleteItem"]);
+const onDeleteItem = (recordKey) => {
+  emit("onDeleteItem", recordKey);
+}
 </script>
 
 <template>
   <div class="list scroll-view-container">
-    <Record v-for="record in records" :key="record.recordKey" v-bind="record" @click="$emit('onSelectRecord', record.recordKey)"/>
+    <Record v-for="record in records" :key="record.recordKey" v-bind="record" @click="$emit('onSelectRecord', record.recordKey)" @on-delete="onDeleteItem"/>
     <Observer @onObserved="$emit('onLoadMore')"/>
   </div>
 </template>

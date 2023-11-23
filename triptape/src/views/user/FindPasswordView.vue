@@ -52,7 +52,7 @@ const findPwEmail = async () => {
 }
 
 const onClickPassword = () => {
-  console.log(code.value + " " + codeResult.value);
+  // console.log(code.value + " " + codeResult.value);
   if(code.value == codeResult.value) {
     isCode.value = true;
     height.value = 250;

@@ -6,13 +6,13 @@ import axios from 'axios';
 const router = useRouter();
 
 const user = ref({
-  userId: "ssafy",
-  userPw: "ssafy",
-  userName: "ssafy",
+  userId: "",
+  userPw: "",
+  userName: "",
   gender: 0,
-  email: "ssafy@ssafy",
-  birthday: "2022-11-11",
-  tel: "010-0000-0000",
+  email: "",
+  birthday: "",
+  tel: "",
   isAdmin: 0,
 })
 

@@ -156,9 +156,7 @@ const onClickTape = (tapeKey) => {
 			selectedTape.value = tapes.value[i];
 		}
 	}
-	console.log(selectedTape.value)
 }
-
 
 </script>
 

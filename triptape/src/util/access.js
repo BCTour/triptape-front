@@ -21,13 +21,13 @@ const connect = async ({ method, url, data, headers }) => {
       } catch (error) {
         console.log(error);
         if (error.request !== undefined && error.request.status === 401) { // accessToken 만료
-          console.log("액세스 토큰 만료");
+          // console.log("액세스 토큰 만료");
           const refreshResult = await refreshToken();
           if (refreshResult) { // 토큰 갱신 성공
-            console.log("액세스 토큰 갱신 성공")
+            // console.log("액세스 토큰 갱신 성공")
             continue; // 다시 시도
           } else { // 토큰 갱신 실패
-            console.log("액세스 토큰 갱신 실패! 재갱신 필요함")
+            // console.log("액세스 토큰 갱신 실패! 재갱신 필요함")
             alert("로그인이 만료되었습니다. 로그인 창으로 이동합니다.")
 
             const refreshFailedError = new Error("refreshToken이 만료됨.");
@@ -38,7 +38,7 @@ const connect = async ({ method, url, data, headers }) => {
             return;
           }
         }
-        console.log("토큰이 아닌 다른 오류가 발생함");
+        // console.log("토큰이 아닌 다른 오류가 발생함");
         reject(error);
         return;
       }
@@ -52,7 +52,7 @@ const connect = async ({ method, url, data, headers }) => {
 
 const refreshToken = async () => {
   try {
-    console.log("토큰 갱신하러 옴");
+    // console.log("토큰 갱신하러 옴");
     const result = await axios({
       url: root + "/user/refresh?userId=" + localStorage.getItem("userId"),
       method: "POST",

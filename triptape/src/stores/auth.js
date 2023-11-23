@@ -19,7 +19,7 @@ export const useAuthStore = defineStore('auth', () => {
      * TO-DO : axios.post로 로그인 수행
      * 지금은 test용으로 ssafy만 입력하면 로그인 성공하게 해두었음
      */
-    console.log(id + " " + pw);
+    // console.log(id + " " + pw);
     try {
       const result = await http({
         method: "POST",
@@ -30,7 +30,7 @@ export const useAuthStore = defineStore('auth', () => {
           userPw: pw,
         }
       });
-      console.log(user.value);
+      // console.log(user.value);
       isLogined.value = true;
       user.value.id = id;
 

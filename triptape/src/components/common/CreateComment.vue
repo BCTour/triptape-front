@@ -22,7 +22,7 @@ const onClickWriteComment = async () => {
         content: content.value,
       }
     })
-    console.log(result);
+    // console.log(result);
     content.value = "";
     emit("onWriteComment");
   } catch (error) {

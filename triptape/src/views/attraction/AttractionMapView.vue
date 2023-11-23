@@ -38,8 +38,6 @@ const getCurCoordinate = () => {
   navigator.geolocation.getCurrentPosition((position) => {
     coord.value.latitude = position.coords.latitude;
     coord.value.longitude = position.coords.longitude;
-    console.log("coord : ");
-    console.log(coord.value);
   })
 }
 
@@ -66,18 +64,15 @@ const onLoadMore = async () => {
   const category = searchCondition.value.category;
   const word = searchCondition.value.word;
   const type = searchCondition.value.type;
-  console.log(coord.value);
   try {
     let url = `/attraction/search?currentPage=${page.value++}&latitude=${coord.value.latitude}&longitude=${coord.value.longitude}`;
     if (category) url += `&${category}=${word}`;
     if (type) url += `&typeCode=${type}`;
-    console.log("검색 url :" + url);
 
     const result = await connect({
       method: "GET",
       url: url,
     })
-    console.log(result);
     attractions.value.push(...result.data.attraction);
   } catch (error) {
     console.log(error);
@@ -105,7 +100,6 @@ const onClickItem = async (attraction) => {
 }
 
 const onChangeCenter = (center) => {
-  console.log(center);
   curCoord.value.latitude = center.Ma;
   curCoord.value.longitude = center.La;
 }

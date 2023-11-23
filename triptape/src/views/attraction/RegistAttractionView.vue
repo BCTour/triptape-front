@@ -36,14 +36,12 @@ onMounted(() => {
 })
 
 const onClickPoint = ({ latitude, longitude, address }) => {
-  console.log(`위도 : ${latitude}, 경도: ${longitude}, 주소: ${address}`);
   attractionInfo.value.address = address;
   attractionInfo.value.latitude = latitude;
   attractionInfo.value.longitude = longitude;
 }
 
 const onClickRegist = async () => {
-  // console.log(attractionInfo.value);
   const formData = new FormData();
   const blob = new Blob([JSON.stringify(attractionInfo.value)], { type: "application/json" });
   formData.append("attraction", blob);
@@ -54,7 +52,7 @@ const onClickRegist = async () => {
       url: `/attraction/regist`,
       data: formData,
     });
-    console.log(result);
+    // console.log(result);
   } catch (error) {
     console.log(error);
   }

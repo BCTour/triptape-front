@@ -24,7 +24,7 @@ onMounted(async () => {
       method: "GET",
       url: `/tape/search/info/${route.params.id}`,
     })
-    console.log(result);
+    // console.log(result);
     tape.value.title = result.data.tape.title;
     tape.value.description = result.data.tape.description;
   } catch (error){
@@ -51,7 +51,7 @@ const onClickModify = async () => {
         'Content-Type': "multipart/form-data",
       },
     })
-    console.log(result);
+    // console.log(result);
     router.go(-1);
   } catch (error) {
     console.log(error);

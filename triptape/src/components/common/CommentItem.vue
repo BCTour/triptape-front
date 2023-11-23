@@ -27,7 +27,7 @@ const onClickDelete = async () => {
       method: "DELETE",
       url: `/attraction/comment/delete/${props.commentKey}/${loginUserId}`,
     })
-    console.log(result);
+    // console.log(result);
     emit("onClickDelete");
   } catch (error) {
     console.log(error);

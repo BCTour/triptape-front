@@ -76,7 +76,7 @@ export const useLikeStore = defineStore('like', () => {
         method: 'POST',
         url: `/record/like/${tapeKey}/${recordKey}/${localStorage.getItem("userId")}`
       })
-      console.log(result);
+      // console.log(result);
     } catch (error) {
       console.log(error);
       if (error.request.status !== 409) return; // 409 conflict가 아니면 좋아요 불가
@@ -91,7 +91,7 @@ export const useLikeStore = defineStore('like', () => {
         method: 'DELETE',
         url: `/record/dislike/${tapeKey}/${recordKey}/${localStorage.getItem("userId")}`
       })
-      console.log(result);
+      // console.log(result);
     } catch (error) {
       console.log(error);
       return;
@@ -106,7 +106,7 @@ export const useLikeStore = defineStore('like', () => {
   }
 
   const checkLikeTape = async (tapeKey) => {
-    console.log("like tape " + tapeKey);
+    // console.log("like tape " + tapeKey);
 
     // 요청 전송
     try {
@@ -114,7 +114,7 @@ export const useLikeStore = defineStore('like', () => {
         method: 'POST',
         url: `/tape/like/${tapeKey}/${localStorage.getItem("userId")}`
       })
-      console.log(result);
+      // console.log(result);
     } catch (error) {
       console.log(error);
       if (error.request.status !== 409) return; // 409 conflict가 아니면 좋아요 불가
@@ -124,14 +124,14 @@ export const useLikeStore = defineStore('like', () => {
     likeTapes.value.push(Number(tapeKey));
   }
   const uncheckLikeTape = async (tapeKey) => {
-    console.log("dislike tape " + tapeKey);
+    // console.log("dislike tape " + tapeKey);
     // 요청 전송
     try {
       const result = await connect({
         method: 'DELETE',
         url: `/tape/dislike/${tapeKey}/${localStorage.getItem("userId")}`
       })
-      console.log(result);
+      // console.log(result);
     } catch (error) {
       console.log(error);
       return;
@@ -150,7 +150,7 @@ export const useLikeStore = defineStore('like', () => {
         method: 'POST',
         url: `/attraction/like/${attractionKey}/${localStorage.getItem("userId")}`
       })
-      console.log(result);
+      // console.log(result);
     } catch (error) {
       console.log(error);
       if (error.request.status !== 409) return; // 409 conflict가 아니면 좋아요 불가
@@ -165,7 +165,7 @@ export const useLikeStore = defineStore('like', () => {
         method: 'DELETE',
         url: `/attraction/dislike/${attractionKey}/${localStorage.getItem("userId")}`
       })
-      console.log(result);
+      // console.log(result);
     } catch (error) {
       console.log(error);
       return;

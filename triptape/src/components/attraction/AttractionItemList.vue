@@ -8,7 +8,7 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  console.log(props.attractions)
+  // console.log(props.attractions)
 });
 </script>
 

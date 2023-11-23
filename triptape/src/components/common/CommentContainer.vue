@@ -20,15 +20,15 @@ const reloadComment = async () => {
 }
 
 const onLoadMore = async () => {
-	console.log("나 더 로딩한다!!" + currentPage.value);
+	// console.log("나 더 로딩한다!!" + currentPage.value);
 	try {
 		const result = await connect({
 			url: `/attraction/comment/search/${route.params.id}?currentPage=${currentPage.value++}`,
 		method: "GET",
 		})
-    console.log(result);
+    // console.log(result);
     comments.value.push(...result.data.comment);
-		console.log(comments.value);
+		// console.log(comments.value);
   } catch (error) {
 		console.log(error);
   }

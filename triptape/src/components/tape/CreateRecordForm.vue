@@ -76,7 +76,7 @@ const onClickCreateRecord = async () => {
 		if (props.selectedRecord) {
 			recordData["parentRecordKey"] = props.selectedRecord;
 		}
-		console.log(recordData);
+		// console.log(recordData);
 		const formData = new FormData();
 		const blob = new Blob([JSON.stringify(recordData)], { type: "application/json" });
 		formData.append("record", blob);
@@ -91,7 +91,7 @@ const onClickCreateRecord = async () => {
 			}
 		});
 		emit("onWriteRecord");
-		console.log(result);
+		// console.log(result);
 		resetInput();
 	} catch (error) {
 		console.log(error);

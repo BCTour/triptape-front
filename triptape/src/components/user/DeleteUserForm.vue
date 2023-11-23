@@ -28,7 +28,7 @@ const onClickLeave = async () => {
         withdrawalReason : reason.value,
       }
     }) 
-    console.log(result);
+    // console.log(result);
     alert("탈퇴가 완료되었습니다.");
     auth.logout();
     router.push({ name: 'main' });

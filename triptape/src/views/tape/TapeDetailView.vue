@@ -17,7 +17,7 @@ onMounted(async () => {
       method: "GET",
       url: `/tape/search/info/${route.params.id}`,
     })
-    console.log(result);
+    // console.log(result);
     tape.value = result.data.tape;
   } catch (error){
     console.log(error);
@@ -38,9 +38,9 @@ const onLoadMoreRecord = async () => {
       method: "GET",
       url: `/record/search/${route.params.id}?currentPage=${recordPage.value++}`,
     })
-    console.log(result);
+    // console.log(result);
     if (result.data) records.value.push(...result.data.record);
-    console.log(records.value);
+    // console.log(records.value);
   } catch (error) {
     console.log(error);
   } 
@@ -60,14 +60,12 @@ const reloadRecord = async () => {
   await onLoadMoreRecord();
 }
 
-const onClickLike = async () => {
-  try {
-    
-  } catch (error) {
-    console.log(error);
-  }  
+const onDeleteRecordItem = (recordKey) => {
+  records.value = records.value.filter((item) => {
+    return item.recordKey !== recordKey;
+  })
+  if (selectedRecord.value == recordKey) selectedRecord.value = null;
 }
-
 </script>
 
 
@@ -83,6 +81,7 @@ const onClickLike = async () => {
         :records="records"
         @on-select-record="onSelectRecord"
         @on-load-more="onLoadMoreRecord"
+        @on-delete-item="onDeleteRecordItem"
       />
     </div>
     <div class="col">

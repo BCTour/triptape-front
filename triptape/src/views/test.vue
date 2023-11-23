@@ -7,7 +7,7 @@ import SubHeading from "@/components/common/SubHeading.vue";
 import { connect } from "@/util/access.js";
 
 const onClickPoint = ({ latitude, longitude, address }) => {
-  console.log(`위도 : ${latitude}, 경도: ${longitude}, 주소: ${address}`);
+  // console.log(`위도 : ${latitude}, 경도: ${longitude}, 주소: ${address}`);
   attractionInfo.value.address = address;
   attractionInfo.value.latitude = latitude;
   attractionInfo.value.longitude = longitude;
@@ -53,7 +53,7 @@ const onClickRegist = async () => {
       url: `/attraction/regist`,
       data: formData,
     });
-    console.log(result);
+    // console.log(result);
   } catch (error) {
     console.log(error);
   }

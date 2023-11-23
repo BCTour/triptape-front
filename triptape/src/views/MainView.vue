@@ -30,7 +30,7 @@ const loadPopularTapes = async () => {
 			method: "GET",
 			url: `/tape/search/popular/4`,
 		});
-		console.log(result);
+		// console.log(result);
 		if (result.data.tape)	poplularTapes.value = result.data.tape;
 	} catch (error) {
 		console.log(error);
@@ -43,7 +43,7 @@ const loadRecentTapes = async () => {
 			method: "GET",
 			url: `/tape/search/recent/4`,
 		});
-		console.log(result);
+		// console.log(result);
 		if (result.data.tape) recentTapes.value = result.data.tape;
 	} catch (error) {
 		console.log(error);
@@ -56,7 +56,7 @@ const loadPopularAttractions = async () => {
 			method: 'GET',
 			url: `/attraction/popular/4`,
 		});
-		console.log(result);
+		// console.log(result);
 		if (result.data.attraction) popularAttractions.value = result.data.attraction;
 	} catch (error) {
 		console.log(error);
@@ -69,9 +69,9 @@ const loadBanner = async () => {
 			method: "GET",
 			url: `/banner/search/`,
 		});
-		console.log(result);
+		// console.log(result);
 		bannerTapes.value = result.data.banner;
-		console.log(bannerTapes.value);
+		// console.log(bannerTapes.value);
 	} catch (error) {
 		console.log(error);
 	}

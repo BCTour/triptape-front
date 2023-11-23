@@ -42,7 +42,7 @@ const fileInput = ref(null);
 const onClickCancelFile = () => {
 	imgFile = null;
 	fileInput.value.value = null;
-  console.log(props);
+  // console.log(props);
 }
 
 const options = ref([
@@ -115,7 +115,7 @@ const checkValidation = () => {
 const onClickModify = async () => {
   if (!checkValidation()) return;
   
-  console.log(attractionInfo.value);
+  // console.log(attractionInfo.value);
 
   const formData = new FormData();
   const blob = new Blob([JSON.stringify(attractionInfo.value)], { type: "application/json" });

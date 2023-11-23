@@ -60,7 +60,7 @@ const makeInfo = (markerInfo) => {
 }
 
 watch(() => props.attractions, () => {
-  console.log(props.attractions);
+  // console.log(props.attractions);
   positions.value = [];
   try {
     props.attractions.forEach((attraction) => {

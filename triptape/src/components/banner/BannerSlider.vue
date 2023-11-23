@@ -20,7 +20,7 @@ const loadBanner = async () => {
       method: 'GET',
       url: `/banner/search`,
     });
-    console.log(result);
+    // console.log(result);
     if (result.data && result.data.banner) banners.value = result.data.banner;
     index.value = 0;
   } catch (error) {
@@ -45,13 +45,13 @@ onMounted(async ()=>{
 
 watch(index, ()=>{
   const banner = banners.value[index.value];
-  console.log(banners.value);
+  // console.log(banners.value);
   curBanner.value = {
     title: banner.title,
     description: banner.description,
     tapeKey: banner.tape.tapeKey,
   }
-  console.log(banner);
+  // console.log(banner);
   if (banner.tape.img && banner.tape.img.saveFile) curBanner.value['imgSrc'] = banner.tape.img.saveFile;
 })
 

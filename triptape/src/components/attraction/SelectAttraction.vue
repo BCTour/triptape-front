@@ -64,7 +64,7 @@ const onLoadMore = async () => {
       method: "GET",
       url: url,
     })
-    console.log(result);
+    // console.log(result);
     attractions.value.push(...result.data.attraction);
   } catch (error) {
     console.log(error);

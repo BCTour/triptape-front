@@ -7,7 +7,7 @@ const observe = ref(null);
 onMounted(() => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      console.log("observed")
+      // console.log("observed")
       emit("onObserved")
     });
   });

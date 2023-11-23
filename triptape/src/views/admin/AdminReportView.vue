@@ -19,7 +19,7 @@ const getReport = async () => {
             method: "GET",
             url: url,
         });
-        console.log(result);
+        // console.log(result);
         attractions.value = result.data.attraction;
     } catch (error) {
         console.log(error);

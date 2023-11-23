@@ -67,7 +67,7 @@ const onClickRegist = async () => {
         'Content-Type': "multipart/form-data",
       },
     })
-    console.log(result);
+    // console.log(result);
     router.push({ name: "tapeList" });
   } catch (error) {
     console.log(error);
