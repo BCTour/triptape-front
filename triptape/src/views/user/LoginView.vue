@@ -13,19 +13,19 @@ const pw = ref("");
 onMounted(() => {
   if (auth.isLogined) {
     auth.isLogined = false;
-    auth.user.id = false;  
-    auth.user.name = false;  
-    auth.user.role = 0;  
+    auth.user.id = false;
+    auth.user.name = false;
+    auth.user.role = 0;
   }
 })
 
 const onLoginClick = async () => {
   if (await auth.login(id.value, pw.value)) {
-    alert("로그인 성공!");
+    alert(`${auth.user.name}님 환영합니다.`);
     // router.push({name: 'main'});
     router.push("/");
   } else {
-    alert("로그인 실패!");
+    alert("아이디 또는 비밀번호가 일치하지 않습니다.");
   }
 }
 
